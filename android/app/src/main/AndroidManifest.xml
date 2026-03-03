@@ -1,0 +1,72 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        SMS permission: required to receive and read incoming SMS messages.
+        Play Store declaration: this app's core function is detecting SMS-based
+        scams for elderly users; SMS access is essential and not for any other purpose.
+    -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <!--
+        Phone-state permission: required to detect active phone calls so the risk
+        engine can flag OTPs that arrive during a call (a common social-engineering
+        pattern). READ_CALL_LOG is NOT requested — only state changes are observed.
+    -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- Required for placing the one-tap emergency call to a trusted contact. -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!-- Required by flutter_local_notifications on Android 13+. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:label="Elder Shield"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!--
+            SmsReceiver: listens for incoming SMS broadcasts.
+            exported=false — only the system (via implicit broadcast) triggers this.
+            Priority 999 ensures we see the SMS before other apps when possible.
+        -->
+        <receiver
+            android:name=".SmsReceiver"
+            android:exported="false"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter android:priority="999">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Flutter embedding meta-data — do not remove. -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+</manifest>
