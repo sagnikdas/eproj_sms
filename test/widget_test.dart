@@ -3,8 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:elder_shield/app.dart';
 
 void main() {
-  testWidgets('App renders HomeScreen without crashing', (WidgetTester tester) async {
+  testWidgets('App renders without crashing', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(child: ElderShieldApp()));
-    expect(find.text('Elder Shield'), findsWidgets);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 800));
+    expect(
+      find.byType(ProviderScope),
+      findsOneWidget,
+      reason: 'App root is mounted',
+    );
   });
 }

@@ -33,6 +33,9 @@ class NotificationService {
       channelDescription: _channelDesc,
       importance: Importance.high,
       priority: Priority.high,
+      ticker: title,
+      playSound: true,
+      enableVibration: true,
     );
     final details = NotificationDetails(android: androidDetails);
     await _plugin.show(id, title, body, details);

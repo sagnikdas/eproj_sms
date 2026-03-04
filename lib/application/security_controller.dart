@@ -1,14 +1,22 @@
 import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:elder_shield/platform/native_event_stream.dart';
+
+import 'package:elder_shield/application/app_providers.dart';
+import 'package:elder_shield/data/message_repository.dart'; // AnalyzedMessage
 import 'package:elder_shield/domain/detector/heuristic_detector.dart';
+import 'package:elder_shield/platform/native_event_stream.dart';
+import 'package:elder_shield/services/notification_service.dart';
 
 /// Tracks whether the user is currently on a phone call.
 /// Updated by [SecurityController] on every call-state event.
 final isInCallProvider = StateProvider<bool>((ref) => false);
 
+/// Anti-duplicate: don't alert twice for the same message within this window (ms).
+const _dedupeWindowMs = 60 * 1000;
+
 /// The [SecurityController] subscribes to native events, runs detection,
-/// and will (in later blocks) persist results and trigger alerts.
+/// persists results, and triggers notifications + in-app high-risk sheet.
 class SecurityController {
   SecurityController(this._ref);
 
@@ -16,11 +24,14 @@ class SecurityController {
   final _detector = const HeuristicDetector();
   StreamSubscription<NativeEvent>? _sub;
 
+  /// Keys "sender|body|timestamp" we've already alerted for (with expiry).
+  final _recentAlertKeys = <String>[];
+  static const _maxDedupeKeys = 100;
+
   void start() {
     _sub = NativeEventStream.instance.events.listen(
       _onEvent,
       onError: (Object err) {
-        // Log and continue — never crash on a stream error.
         // ignore: avoid_print
         print('[SecurityController] stream error: $err');
       },
@@ -50,7 +61,72 @@ class SecurityController {
     );
     // ignore: avoid_print
     print('[SecurityController] SMS from ${sms.sender} → $result');
-    // Persistence and alerting wired in Block 5 / Block 7.
+
+    final repo = _ref.read(messageRepositoryProvider);
+    unawaited(
+      repo
+          .saveAnalyzedMessage(
+            sender: sms.sender,
+            body: sms.body,
+            timestamp: sms.timestamp,
+            result: result,
+          )
+          .then((id) => _maybeAlert(
+                messageId: id,
+                sender: sms.sender,
+                body: sms.body,
+                timestamp: sms.timestamp,
+                result: result,
+              ))
+          .catchError((Object e) {
+        // ignore: avoid_print
+        print('[SecurityController] persist/alert error: $e');
+      }),
+    );
+  }
+
+  Future<void> _maybeAlert({
+    required int messageId,
+    required String sender,
+    required String body,
+    required int timestamp,
+    required DetectionResult result,
+  }) async {
+    final key = '$sender|$timestamp|${body.hashCode}';
+    if (_recentAlertKeys.contains(key)) return;
+    if (_recentAlertKeys.length >= _maxDedupeKeys) _recentAlertKeys.removeAt(0);
+    _recentAlertKeys.add(key);
+    Future.delayed(
+      const Duration(milliseconds: _dedupeWindowMs),
+      () => _recentAlertKeys.remove(key),
+    );
+
+    final band = result.band;
+    if (band == RiskBand.low) return;
+
+    final title = band == RiskBand.high
+        ? 'Warning: Possible scam message'
+        : 'Suspicious message';
+    final bodyShort = body.length > 80 ? '${body.substring(0, 80)}…' : body;
+    await NotificationService.instance.show(
+      id: messageId.clamp(0, 0x7FFFFFFF),
+      title: title,
+      body: 'From $sender — $bodyShort',
+    );
+
+    if (band == RiskBand.high) {
+      final message = AnalyzedMessage(
+        id: messageId,
+        sender: sender,
+        body: body,
+        timestamp: timestamp,
+        score: result.score,
+        band: result.band,
+        reasons: result.reasons,
+        feedbackLabel: null,
+      );
+      _ref.read(pendingHighRiskMessageProvider.notifier).state = message;
+    }
   }
 
   void _handleCallState(CallStateEvent call) {
