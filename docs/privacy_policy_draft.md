@@ -1,6 +1,6 @@
 # Elder Shield — Privacy Policy (Draft)
 
-*This draft matches the app’s implemented behaviour as of Block 9. Update before publishing.*
+*This draft matches the app’s implemented behaviour as of Block 10. The same text is shown in-app (Settings → Privacy policy). Update before publishing.*
 
 ---
 
@@ -80,4 +80,4 @@ For privacy-related questions or requests about Elder Shield, please contact [in
 
 ---
 
-*Last updated: [Block 9 — Privacy + Play Policy Readiness]. Replace placeholders before release.*
+*Last updated: Block 10 — In-app privacy. Replace placeholders before release.*

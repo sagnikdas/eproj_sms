@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:elder_shield/application/app_providers.dart';
+import 'package:elder_shield/presentation/settings/permissions_explained_screen.dart';
+import 'package:elder_shield/presentation/settings/privacy_policy_screen.dart';
 import 'package:elder_shield/services/settings_service.dart';
-/// Settings: sensitivity mode, trusted contacts, delete history, re-run permissions, version.
+/// Settings: sensitivity mode, trusted contacts, delete history, re-run permissions, version. Block 10: Privacy policy & permissions explained.
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
@@ -137,6 +139,32 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
               Text('A', style: TextStyle(fontSize: 22)),
             ],
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Legal & information',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: const Text('Privacy policy'),
+            subtitle: const Text('How we use your data'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const PrivacyPolicyScreen(),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.info_outline),
+            title: const Text('Permissions explained'),
+            subtitle: const Text('Why we need each permission'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const PermissionsExplainedScreen(),
+              ),
+            ),
           ),
           const SizedBox(height: 24),
           Text(
