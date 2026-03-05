@@ -86,10 +86,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     }
   }
 
+  Future<void> _onFontScaleChanged(double value) async {
+    ref.read(fontScaleProvider.notifier).state = value;
+    final settings = ref.read(settingsServiceProvider);
+    await settings.setFontScale(value);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final fontScale = ref.watch(fontScaleProvider);
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('assets/icon/icon.png', fit: BoxFit.contain),
+        ),
         title: const Text('Settings'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
@@ -97,7 +108,38 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text(
+          Text(
+            'Text size',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Adjust to see text larger or smaller. Changes apply immediately.',
+            style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              height: 1.3,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Text('A', style: TextStyle(fontSize: 14)),
+              Expanded(
+                child: Slider(
+                  value: fontScale.clamp(0.8, 1.5),
+                  min: 0.8,
+                  max: 1.5,
+                  divisions: 7,
+                  label: '${(fontScale.clamp(0.8, 1.5) * 100).round()}%',
+                  onChanged: (v) => _onFontScaleChanged(v),
+                ),
+              ),
+              Text('A', style: TextStyle(fontSize: 22)),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Text(
             'Sensitivity',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),

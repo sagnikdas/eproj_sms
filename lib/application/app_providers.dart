@@ -27,3 +27,6 @@ final settingsServiceProvider = Provider<SettingsService>((ref) {
 
 /// Index of the main shell bottom nav (0=Home, 1=Messages, 2=Settings).
 final shellTabIndexProvider = StateProvider<int>((ref) => 0);
+
+/// Text scale factor for the whole app (1.0 = 100%). Updated in Settings; applied via MaterialApp builder.
+final fontScaleProvider = StateProvider<double>((ref) => 1.0);

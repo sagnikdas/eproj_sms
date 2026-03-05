@@ -28,6 +28,10 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('assets/icon/icon.png', fit: BoxFit.contain),
+        ),
         title: const Text('Messages'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,

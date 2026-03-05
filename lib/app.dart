@@ -17,7 +17,10 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkOnboarding());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkOnboarding();
+      _loadFontScale();
+    });
   }
 
   Future<void> _checkOnboarding() async {
@@ -26,8 +29,18 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
     if (mounted) setState(() => _onboardingComplete = complete);
   }
 
+  Future<void> _loadFontScale() async {
+    final settings = ref.read(settingsServiceProvider);
+    final scale = await settings.getFontScale();
+    if (mounted) ref.read(fontScaleProvider.notifier).state = scale;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final fontScale = ref.watch(fontScaleProvider);
+    final systemScaler = MediaQuery.of(context).textScaler;
+    final combinedScaler = TextScaler.linear(systemScaler.scale(1.0) * fontScale);
+
     return MaterialApp(
       title: 'Elder Shield',
       debugShowCheckedModeBanner: false,
@@ -39,6 +52,12 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
           bodyLarge: TextStyle(fontSize: 18),
         ),
       ),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: combinedScaler),
+          child: child!,
+        );
+      },
       home: _buildHome(),
     );
   }

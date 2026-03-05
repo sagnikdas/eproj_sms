@@ -24,6 +24,10 @@ class FullScreenWarningScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('assets/icon/icon.png', fit: BoxFit.contain),
+        ),
         title: const Text('Elder Shield'),
         centerTitle: true,
         backgroundColor: Colors.red.shade700,

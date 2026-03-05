@@ -92,6 +92,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('assets/icon/icon.png', fit: BoxFit.contain),
+        ),
         title: const Text('Elder Shield'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,

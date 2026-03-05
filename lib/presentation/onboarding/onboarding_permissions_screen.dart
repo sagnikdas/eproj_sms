@@ -64,7 +64,7 @@ class _OnboardingPermissionsScreenState
                 'Why we need access',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
-                      fontSize: 22,
+                      fontSize: 24,
                     ),
               ),
               const SizedBox(height: 24),
@@ -79,7 +79,7 @@ class _OnboardingPermissionsScreenState
               Text(
                 'When you tap "Allow Permissions" below, your device will ask for: Messages, Phone, and Notifications (so we can alert you about possible scams even when the app is closed).',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 17,
                   height: 1.3,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
@@ -89,7 +89,7 @@ class _OnboardingPermissionsScreenState
                 Text(
                   'Some permissions were denied. Protection will be limited until you allow them.',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 16,
                     color: Theme.of(context).colorScheme.error,
                   ),
                   textAlign: TextAlign.center,
@@ -143,11 +143,11 @@ class _OnboardingPermissionsScreenState
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('• ', style: TextStyle(fontSize: 18)),
+        const Text('• ', style: TextStyle(fontSize: 20)),
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(fontSize: 16, height: 1.4),
+            style: const TextStyle(fontSize: 18, height: 1.4),
           ),
         ),
       ],
