@@ -103,16 +103,19 @@ class SecurityController {
 
     final band = result.band;
     if (band == RiskBand.low) return;
+    final appInForeground = _ref.read(appInForegroundProvider);
 
-    final title = band == RiskBand.high
-        ? 'Warning: Possible scam message'
-        : 'Suspicious message';
-    final bodyShort = body.length > 80 ? '${body.substring(0, 80)}…' : body;
-    await NotificationService.instance.show(
-      id: messageId.clamp(0, 0x7FFFFFFF),
-      title: title,
-      body: 'From $sender — $bodyShort',
-    );
+    if (appInForeground) {
+      final title = band == RiskBand.high
+          ? 'Warning: Possible scam message'
+          : 'Suspicious message';
+      final bodyShort = body.length > 80 ? '${body.substring(0, 80)}…' : body;
+      await NotificationService.instance.show(
+        id: messageId.clamp(0, 0x7FFFFFFF),
+        title: title,
+        body: 'From $sender — $bodyShort',
+      );
+    }
 
     if (band == RiskBand.high) {
       final message = AnalyzedMessage(

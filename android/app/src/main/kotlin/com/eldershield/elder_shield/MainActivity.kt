@@ -1,6 +1,9 @@
 package com.eldershield.elder_shield
 
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import android.util.Log
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -17,7 +20,11 @@ class MainActivity : FlutterActivity() {
     companion object {
         private const val EVENT_CHANNEL = "fraud_guard/events"
         private const val LAUNCH_CHANNEL = "elder_shield/launch"
+        private const val SYSTEM_CHANNEL = "elder_shield/system"
         private const val TAG = "MainActivity"
+
+        @Volatile
+        var isAppVisible: Boolean = false
     }
 
     private var callStateListener: CallStateListener? = null
@@ -26,6 +33,16 @@ class MainActivity : FlutterActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isAppVisible = true
+    }
+
+    override fun onPause() {
+        isAppVisible = false
+        super.onPause()
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -52,6 +69,39 @@ class MainActivity : FlutterActivity() {
                 }
             } else {
                 result.notImplemented()
+            }
+        }
+
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            SYSTEM_CHANNEL
+        ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "canDrawOverlays" -> {
+                    result.success(
+                        Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                            Settings.canDrawOverlays(this)
+                    )
+                }
+
+                "openOverlayPermissionSettings" -> {
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            val intent = Intent(
+                                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                Uri.parse("package:$packageName")
+                            ).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            startActivity(intent)
+                        }
+                        result.success(null)
+                    } catch (e: Exception) {
+                        result.error("overlay_settings", e.message, null)
+                    }
+                }
+
+                else -> result.notImplemented()
             }
         }
 
@@ -100,6 +150,7 @@ class MainActivity : FlutterActivity() {
     }
 
     override fun onDestroy() {
+        isAppVisible = false
         callStateListener?.stop()
         SmsEventEmitter.sink = null
         eventChannel?.setStreamHandler(null)

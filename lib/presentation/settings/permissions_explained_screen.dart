@@ -59,6 +59,14 @@ class PermissionsExplainedScreen extends StatelessWidget {
                 'so you can act quickly. You can turn off notifications in system '
                 'settings; you will still be able to use the app.',
           ),
+          _permissionCard(
+            context,
+            'Draw over other apps (optional)',
+            'If you enable the Android overlay permission in Settings, Elder Shield '
+                'can show an emergency warning above other apps when a high-risk '
+                'message arrives. This is optional and intended for personal-use '
+                'safety setups.',
+          ),
         ],
       ),
     );

@@ -23,16 +23,23 @@ class _HighRiskAlertListenerState extends ConsumerState<HighRiskAlertListener>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref.read(appInForegroundProvider.notifier).state = true;
+    });
   }
 
   @override
   void dispose() {
+    ref.read(appInForegroundProvider.notifier).state = false;
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    final isForeground = state == AppLifecycleState.resumed;
+    ref.read(appInForegroundProvider.notifier).state = isForeground;
     if (state == AppLifecycleState.resumed) {
       final pending = ref.read(pendingHighRiskMessageProvider);
       if (pending != null) _showSheetFor(pending);

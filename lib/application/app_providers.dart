@@ -8,6 +8,10 @@ import 'package:elder_shield/services/settings_service.dart';
 /// SecurityController sets this; [HighRiskAlertListener] shows the sheet and clears.
 final pendingHighRiskMessageProvider = StateProvider<AnalyzedMessage?>((ref) => null);
 
+/// True when the Flutter UI is visible in the foreground.
+/// Used to avoid duplicate alerts when native Android already interrupts the user.
+final appInForegroundProvider = StateProvider<bool>((ref) => true);
+
 final appDatabaseProvider = Provider<AppDatabase>((ref) => AppDatabase.instance);
 
 final messageRepositoryProvider = Provider<MessageRepository>((ref) {

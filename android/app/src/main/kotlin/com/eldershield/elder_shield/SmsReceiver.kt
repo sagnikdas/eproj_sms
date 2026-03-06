@@ -9,6 +9,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.provider.Settings
 import android.provider.Telephony
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -16,9 +19,9 @@ import androidx.core.app.NotificationManagerCompat
 
 /**
  * BroadcastReceiver for incoming SMS messages.
- * When Flutter is listening (sink != null): forwards to SmsEventEmitter → EventChannel.
- * When app is killed or not listening: runs a lightweight risk check and, if high risk,
- * shows a notification so the user can tap to open the app and see the full warning.
+ * When Flutter is listening and the app is visible: forwards to SmsEventEmitter → EventChannel.
+ * When the app is backgrounded or killed: runs a lightweight risk check and, if high risk,
+ * interrupts with a full-screen notification plus an overlay fallback if permitted.
  */
 class SmsReceiver : BroadcastReceiver() {
 
@@ -55,17 +58,23 @@ class SmsReceiver : BroadcastReceiver() {
         for ((sender, bodyBuilder) in grouped) {
             val body = bodyBuilder.toString()
             val sinkActive = SmsEventEmitter.sink != null
-            Log.d(tag, "Received SMS from $sender (${body.length} chars) sinkActive=$sinkActive")
+            val appVisible = MainActivity.isAppVisible
+            Log.d(tag, "Received SMS from $sender (${body.length} chars) sinkActive=$sinkActive appVisible=$appVisible")
 
             if (sinkActive) {
                 SmsEventEmitter.sendSms(sender = sender, body = body, timestamp = timestamp)
-            } else {
-                val highRisk = SimpleRiskCheck.looksHighRisk(sender, body)
-                Log.d(tag, "App not listening: looksHighRisk=$highRisk")
-                if (highRisk) {
-                    Log.d(tag, "Showing possible-scam notification")
-                    showHighRiskNotification(context, sender, body, timestamp)
-                }
+            }
+
+            val shouldInterruptNatively = !appVisible
+            if (!shouldInterruptNatively) continue
+
+            val highRisk = SimpleRiskCheck.looksHighRisk(sender, body)
+            Log.d(tag, "Background/killed app: looksHighRisk=$highRisk")
+            if (highRisk) {
+                Log.d(tag, "Showing possible-scam notification and overlay")
+                showHighRiskNotification(context, sender, body, timestamp)
+                maybeShowOverlay(context, sender, body, timestamp)
+                vibrateStrongly(context)
             }
         }
     }
@@ -98,8 +107,9 @@ class SmsReceiver : BroadcastReceiver() {
             .setContentTitle("Elder Shield: Possible scam message")
             .setContentText("From $sender — $bodyShort. Tap to see details.")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setCategory("alert") // Notification.CATEGORY_ALERT value
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setContentIntent(pending)
+            .setFullScreenIntent(pending, true)
             .setAutoCancel(true)
             .build()
 
@@ -147,7 +157,7 @@ class SmsReceiver : BroadcastReceiver() {
             .setContentTitle("Elder Shield: Possible scam message")
             .setContentText("From $sender — $bodyShort. Tap to see details.")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setCategory("alert")
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setContentIntent(pending)
             .setAutoCancel(true)
             .setOnlyAlertOnce(false) // Re-trigger heads-up so preview stays longer
@@ -174,5 +184,43 @@ class SmsReceiver : BroadcastReceiver() {
         }
         (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
             .createNotificationChannel(channel)
+    }
+
+    private fun maybeShowOverlay(
+        context: Context,
+        sender: String,
+        body: String,
+        timestamp: Long
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+            !Settings.canDrawOverlays(context)
+        ) {
+            return
+        }
+        try {
+            ScamOverlayService.show(context.applicationContext, sender, body, timestamp)
+        } catch (e: Exception) {
+            Log.e(tag, "Failed to start overlay service", e)
+        }
+    }
+
+    private fun vibrateStrongly(context: Context) {
+        try {
+            val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator ?: return
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(
+                    VibrationEffect.createWaveform(
+                        longArrayOf(0, 500, 200, 500, 200, 700),
+                        intArrayOf(0, 255, 0, 255, 0, 255),
+                        -1
+                    )
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator.vibrate(longArrayOf(0, 500, 200, 500, 200, 700), -1)
+            }
+        } catch (e: Exception) {
+            Log.e(tag, "Failed to vibrate strongly", e)
+        }
     }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:elder_shield/application/app_providers.dart';
+import 'package:elder_shield/platform/overlay_alerts.dart';
 import 'package:elder_shield/presentation/settings/about_screen.dart';
 import 'package:elder_shield/presentation/settings/permissions_explained_screen.dart';
 import 'package:elder_shield/presentation/settings/privacy_policy_screen.dart';
@@ -20,6 +21,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   String _sensitivityMode = 'conservative';
   String _themeMode = 'system';
+  bool _overlayEnabled = false;
   List<TrustedContact> _contacts = [];
 
   @override
@@ -33,10 +35,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final mode = await settings.getSensitivityMode();
     final theme = await settings.getThemeMode();
     final contacts = await settings.getTrustedContacts();
+    final overlayEnabled = await canDrawOverlays();
     if (mounted) {
       setState(() {
         _sensitivityMode = mode;
         _themeMode = theme;
+        _overlayEnabled = overlayEnabled;
         _contacts = contacts;
       });
     }
@@ -111,6 +115,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     await settings.setFontScale(value);
   }
 
+  Future<void> _openOverlayPermissionSettings() async {
+    selectionClick();
+    await openOverlayPermissionSettings();
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+    if (!mounted) return;
+    final enabled = await canDrawOverlays();
+    if (!mounted) return;
+    setState(() => _overlayEnabled = enabled);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          enabled
+              ? 'Emergency pop-up over other apps is enabled.'
+              : 'Overlay permission is still off. Turn it on in system settings for emergency pop-ups.',
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final fontScale = ref.watch(fontScaleProvider);
@@ -146,7 +169,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     return RadioListTile<String>(
                       title: Text(label),
                       value: mode,
+                      // ignore: deprecated_member_use
                       groupValue: _themeMode,
+                      // ignore: deprecated_member_use
                       onChanged: (v) => v != null ? _setThemeMode(v) : null,
                     );
                   }).toList(),
@@ -239,7 +264,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       title: Text(mode[0].toUpperCase() + mode.substring(1)),
                       subtitle: Text(desc, style: const TextStyle(fontSize: 13)),
                       value: mode,
+                      // ignore: deprecated_member_use
                       groupValue: _sensitivityMode,
+                      // ignore: deprecated_member_use
                       onChanged: (v) => v != null ? _setSensitivity(v) : null,
                     );
                   }).toList(),
@@ -338,6 +365,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   child: const Text('Re-run permissions check'),
                 ),
                 const SizedBox(height: 16),
+                ListTile(
+                  leading: Icon(Icons.open_in_new, color: theme.colorScheme.primary),
+                  title: const Text('Emergency pop-up over other apps'),
+                  subtitle: Text(
+                    _overlayEnabled
+                        ? 'Enabled: high-risk warnings can appear above other apps'
+                        : 'Off: tap to enable the Android overlay permission',
+                  ),
+                  onTap: _openOverlayPermissionSettings,
+                ),
+                const SizedBox(height: 8),
                 ListTile(
                   leading: Icon(Icons.info_outlined, color: theme.colorScheme.primary),
                   title: const Text('About Elder Shield'),
