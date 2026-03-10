@@ -99,9 +99,9 @@ class _OnboardingTrustedContactScreenState
                       ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Someone you can call if you get a scary message — like a family member.',
-                  style: TextStyle(fontSize: 16, height: 1.4),
+                Text(
+                  'Pick someone you’d call if you got a worrying message — like a family member or close friend.',
+                  style: const TextStyle(fontSize: 16, height: 1.4),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -112,7 +112,32 @@ class _OnboardingTrustedContactScreenState
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    selectionClick();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      elderSnackBar(
+                        'Device contact picker is not available yet on this preview build.',
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.contact_phone_outlined),
+                  label: const Text('Add from contacts'),
+                  style: OutlinedButton.styleFrom(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Or enter manually:',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 12),
                 TextField(
                   controller: _nameController,
                   decoration: const InputDecoration(

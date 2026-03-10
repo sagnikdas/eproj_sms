@@ -105,6 +105,15 @@ class _OnboardingPermissionsScreenState
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
+              const SizedBox(height: 12),
+              Text(
+                'We never read your messages for anything except checking for scams.',
+                style: TextStyle(
+                  fontSize: 16,
+                  height: 1.3,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
               const Spacer(),
               if (_showRetry) ...[
                 Text(

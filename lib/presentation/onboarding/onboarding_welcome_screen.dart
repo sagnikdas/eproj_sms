@@ -51,6 +51,15 @@ class OnboardingWelcomeScreen extends StatelessWidget {
                           ),
                       textAlign: TextAlign.center,
                     ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'You can call a trusted person with one tap if you’re ever unsure.',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            height: 1.4,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(height: 48),
                     SizedBox(
                       width: double.infinity,
