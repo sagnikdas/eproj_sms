@@ -8,6 +8,7 @@ import 'package:elder_shield/core/design_tokens.dart';
 import 'package:elder_shield/presentation/widgets/elder_shield_app_bar.dart';
 import 'package:elder_shield/utils/haptic.dart';
 import 'package:elder_shield/utils/responsive.dart';
+import 'package:elder_shield/utils/snackbars.dart';
 
 /// Home: protection status, today risk count, large "Call trusted contact" button.
 class HomeScreen extends ConsumerStatefulWidget {
@@ -24,6 +25,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String? _trustedContactName;
   String? _trustedContactNumber;
   bool _showCallButtonTooltip = false;
+  bool _showWhyTrustedContact = false;
 
   @override
   void initState() {
@@ -157,9 +159,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: ElderShieldAppBar(titleText: 'Elder Shield'),
       body: RefreshIndicator(
         onRefresh: () async {
+          final ctx = context;
           lightImpact();
           await _loadTodayCount();
           await _loadTrustedContact();
+          if (mounted) {
+            ScaffoldMessenger.of(ctx).showSnackBar(
+              elderSnackBar('Updated'),
+            );
+          }
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -169,6 +177,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: verticalPadding(context)),
+                Text(
+                  'Protection status',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
                 // Protection status
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -355,6 +371,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             icon: const Icon(Icons.person_add),
                             label: const Text('Add a trusted contact'),
                           ),
+                          const SizedBox(height: 4),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton(
+                              onPressed: () {
+                                selectionClick();
+                                setState(() {
+                                  _showWhyTrustedContact = !_showWhyTrustedContact;
+                                });
+                              },
+                              child: Text(
+                                _showWhyTrustedContact ? 'Hide why' : 'Why add a trusted contact?',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (_showWhyTrustedContact) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              'If you ever get a worrying message, you can tap one big button to call someone you trust instead of guessing what to do alone.',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                                height: 1.4,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
                         ],
                       ),
                     ),
