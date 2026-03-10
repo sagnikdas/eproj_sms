@@ -69,41 +69,57 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
             padding: EdgeInsets.symmetric(horizontal: padding, vertical: 12),
             child: Row(
               children: [
-                SizedBox(
-                  height: DesignTokens.minTouchTarget,
-                  child: FilterChip(
-                    label: const Text('All'),
-                    selected: !_highRiskOnly,
-                    showCheckmark: false,
-                    selectedColor: theme.colorScheme.primary,
-                    labelStyle: TextStyle(
-                      color: !_highRiskOnly
-                          ? theme.colorScheme.onSurface
-                          : theme.colorScheme.onPrimary,
+                Semantics(
+                  container: true,
+                  button: true,
+                  label: 'Show all messages',
+                  hint: 'Double tap to see all analyzed messages.',
+                  child: ExcludeSemantics(
+                    child: SizedBox(
+                      height: DesignTokens.minTouchTarget,
+                      child: FilterChip(
+                        label: const Text('All'),
+                        selected: !_highRiskOnly,
+                        showCheckmark: false,
+                        selectedColor: theme.colorScheme.primary,
+                        labelStyle: TextStyle(
+                          color: !_highRiskOnly
+                              ? theme.colorScheme.onSurface
+                              : theme.colorScheme.onPrimary,
+                        ),
+                        onSelected: (v) {
+                          selectionClick();
+                          setState(() => _highRiskOnly = false);
+                        },
+                      ),
                     ),
-                    onSelected: (v) {
-                      selectionClick();
-                      setState(() => _highRiskOnly = false);
-                    },
                   ),
                 ),
                 const SizedBox(width: 12),
-                SizedBox(
-                  height: DesignTokens.minTouchTarget,
-                  child: FilterChip(
-                    label: const Text('High Risk'),
-                    selected: _highRiskOnly,
-                    showCheckmark: false,
-                    selectedColor: theme.colorScheme.primary,
-                    labelStyle: TextStyle(
-                      color: _highRiskOnly
-                          ? theme.colorScheme.onPrimary
-                          : theme.colorScheme.onSurface,
+                Semantics(
+                  container: true,
+                  button: true,
+                  label: 'Show only high-risk messages',
+                  hint: 'Double tap to filter to the most serious warnings.',
+                  child: ExcludeSemantics(
+                    child: SizedBox(
+                      height: DesignTokens.minTouchTarget,
+                      child: FilterChip(
+                        label: const Text('High Risk'),
+                        selected: _highRiskOnly,
+                        showCheckmark: false,
+                        selectedColor: theme.colorScheme.primary,
+                        labelStyle: TextStyle(
+                          color: _highRiskOnly
+                              ? theme.colorScheme.onPrimary
+                              : theme.colorScheme.onSurface,
+                        ),
+                        onSelected: (v) {
+                          selectionClick();
+                          setState(() => _highRiskOnly = true);
+                        },
+                      ),
                     ),
-                    onSelected: (v) {
-                      selectionClick();
-                      setState(() => _highRiskOnly = true);
-                    },
                   ),
                 ),
               ],
@@ -158,11 +174,17 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
                   onRefresh: () {
                     lightImpact();
                     setState(() {});
-                    _scrollController.animateTo(
-                      0,
-                      duration: const Duration(milliseconds: 250),
-                      curve: Curves.easeOut,
-                    );
+                    final disableAnims =
+                        MediaQuery.of(context).disableAnimations;
+                    if (disableAnims) {
+                      _scrollController.jumpTo(0);
+                    } else {
+                      _scrollController.animateTo(
+                        0,
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeOut,
+                      );
+                    }
                     ScaffoldMessenger.of(context).showSnackBar(
                       elderSnackBar('List updated'),
                     );

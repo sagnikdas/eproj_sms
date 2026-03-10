@@ -220,22 +220,36 @@ class _RiskBandChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (label, color) = switch (band) {
-      RiskBand.low => ('LOW RISK', Colors.grey),
-      RiskBand.medium => ('MEDIUM RISK — Review', Colors.orange),
-      RiskBand.high => ('HIGH RISK — Possible Scam', Colors.red),
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final (label, Color bg, Color fg) = switch (band) {
+      RiskBand.low => (
+          'Low risk',
+          colorScheme.surfaceContainerHighest,
+          colorScheme.onSurface,
+        ),
+      RiskBand.medium => (
+          'Medium risk — review',
+          colorScheme.tertiaryContainer,
+          colorScheme.onTertiaryContainer,
+        ),
+      RiskBand.high => (
+          'High risk — possible scam',
+          colorScheme.errorContainer,
+          colorScheme.onErrorContainer,
+        ),
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.2),
+        color: bg,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         label,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: color.shade700,
+          color: fg,
           fontSize: 16,
         ),
       ),

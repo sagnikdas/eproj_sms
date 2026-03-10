@@ -159,15 +159,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: ElderShieldAppBar(titleText: 'Elder Shield'),
       body: RefreshIndicator(
         onRefresh: () async {
-          final ctx = context;
           lightImpact();
           await _loadTodayCount();
           await _loadTrustedContact();
-          if (mounted) {
-            ScaffoldMessenger.of(ctx).showSnackBar(
-              elderSnackBar('Updated'),
-            );
-          }
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            elderSnackBar('Updated'),
+          );
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -177,34 +175,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: verticalPadding(context)),
-                Text(
-                  'Protection status',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                Semantics(
+                  container: true,
+                  label: _permissionsGranted
+                      ? 'Protection status: Protected'
+                      : 'Protection status: Permissions needed',
+                  readOnly: true,
+                  child: ExcludeSemantics(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Protection status',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        // Protection status
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              _permissionsGranted
+                                  ? Icons.shield
+                                  : Icons.shield_outlined,
+                              size: 48,
+                              color: _permissionsGranted
+                                  ? Colors.green
+                                  : Colors.amber.shade700,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              _permissionsGranted
+                                  ? 'Protected'
+                                  : 'Permissions needed',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                // Protection status
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      _permissionsGranted ? Icons.shield : Icons.shield_outlined,
-                      size: 48,
-                      color: _permissionsGranted
-                          ? Colors.green
-                          : Colors.amber.shade700,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      _permissionsGranted ? 'Protected' : 'Permissions needed',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
                 ),
                 if (!_permissionsGranted) ...[
                   const SizedBox(height: 12),
@@ -218,64 +233,80 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ],
                 SizedBox(height: verticalPadding(context) * 1.5),
                 // Today's risk summary (tappable -> Messages tab)
-                Material(
-                  color: riskCardColor,
-                  elevation: 1,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(
-                      color: theme.colorScheme.outlineVariant.withValues(alpha: 0.7),
-                    ),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      selectionClick();
-                      ref.read(shellTabIndexProvider.notifier).state = 1;
-                    },
-                    borderRadius: BorderRadius.circular(12),
-                    child: Padding(
-                      padding: EdgeInsets.all(padding * 0.75),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  _todayRiskCount > 0
-                                      ? '$_todayRiskCount suspicious message${_todayRiskCount == 1 ? '' : 's'} detected today.'
-                                      : 'No suspicious activity today.',
-                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                    fontSize: _todayRiskCount > 0 ? 20 : null,
-                                    fontWeight: _todayRiskCount > 0 ? FontWeight.w700 : null,
-                                  ),
+                Semantics(
+                  container: true,
+                  button: true,
+                  label: _todayRiskCount > 0
+                      ? 'Today’s risk: $_todayRiskCount suspicious message${_todayRiskCount == 1 ? '' : 's'} detected.'
+                      : 'Today’s risk: no suspicious activity.',
+                  hint: 'Double tap to open the Messages tab.',
+                  child: ExcludeSemantics(
+                    child: Material(
+                      color: riskCardColor,
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color: theme.colorScheme.outlineVariant
+                              .withValues(alpha: 0.7),
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          selectionClick();
+                          ref.read(shellTabIndexProvider.notifier).state = 1;
+                        },
+                        borderRadius: BorderRadius.circular(12),
+                        child: Padding(
+                          padding: EdgeInsets.all(padding * 0.75),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      _todayRiskCount > 0
+                                          ? '$_todayRiskCount suspicious message${_todayRiskCount == 1 ? '' : 's'} detected today.'
+                                          : 'No suspicious activity today.',
+                                      style: theme.textTheme.bodyLarge?.copyWith(
+                                        fontSize:
+                                            _todayRiskCount > 0 ? 20 : null,
+                                        fontWeight: _todayRiskCount > 0
+                                            ? FontWeight.w700
+                                            : null,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Tap to see messages',
+                                      style:
+                                          theme.textTheme.bodySmall?.copyWith(
+                                        color: theme
+                                            .colorScheme.onSurfaceVariant,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  'Tap to see messages',
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.onSurfaceVariant,
-                                    fontStyle: FontStyle.italic,
-                                  ),
+                              ),
+                              Icon(
+                                Icons.chevron_right,
+                                size: 28,
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                'View',
+                                style: theme.textTheme.labelLarge?.copyWith(
+                                  color: theme.colorScheme.primary,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          Icon(
-                            Icons.chevron_right,
-                            size: 28,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            'View',
-                            style: theme.textTheme.labelLarge?.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -291,65 +322,79 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 SizedBox(height: verticalPadding(context) * 1.5),
                 // Large Call trusted contact button (min 56 dp)
                 if (hasTrusted)
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      SizedBox(
-                        height: 64,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            if (_showCallButtonTooltip) {
-                              _dismissCallButtonTooltip();
-                            }
-                            selectionClick();
-                            _callTrustedContact();
-                          },
-                          icon: const Icon(Icons.phone, size: 28),
-                          label: Text(
-                            'Call ${_trustedContactName?.isNotEmpty == true ? _trustedContactName! : 'Trusted Contact'}',
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(DesignTokens.minTouchTarget),
-                        backgroundColor: theme.colorScheme.primary,
-                            foregroundColor: theme.colorScheme.onPrimary,
-                          ),
-                        ),
-                      ),
-                      if (_showCallButtonTooltip)
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          bottom: 72,
-                          child: Material(
-                            elevation: 4,
-                            borderRadius: BorderRadius.circular(12),
-                            color: theme.colorScheme.surfaceContainerHighest,
-                            child: InkWell(
-                              onTap: () {
+                  Semantics(
+                    container: true,
+                    button: true,
+                    label:
+                        'Call ${_trustedContactName?.isNotEmpty == true ? _trustedContactName! : 'trusted contact'}',
+                    hint: 'Double tap to start a phone call.',
+                    child: ExcludeSemantics(
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          SizedBox(
+                            height: 64,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                if (_showCallButtonTooltip) {
+                                  _dismissCallButtonTooltip();
+                                }
                                 selectionClick();
-                                _dismissCallButtonTooltip();
+                                _callTrustedContact();
                               },
-                              borderRadius: BorderRadius.circular(12),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.lightbulb_outline, color: theme.colorScheme.primary, size: 24),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        'Tap here anytime you get a worrying message.',
-                                        style: theme.textTheme.bodyMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              icon: const Icon(Icons.phone, size: 28),
+                              label: Text(
+                                'Call ${_trustedContactName?.isNotEmpty == true ? _trustedContactName! : 'Trusted Contact'}',
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size.fromHeight(
+                                    DesignTokens.minTouchTarget),
+                                backgroundColor: theme.colorScheme.primary,
+                                foregroundColor: theme.colorScheme.onPrimary,
                               ),
                             ),
                           ),
-                        ),
-                    ],
+                          if (_showCallButtonTooltip)
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              bottom: 72,
+                              child: Material(
+                                elevation: 4,
+                                borderRadius: BorderRadius.circular(12),
+                                color:
+                                    theme.colorScheme.surfaceContainerHighest,
+                                child: InkWell(
+                                  onTap: () {
+                                    selectionClick();
+                                    _dismissCallButtonTooltip();
+                                  },
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 14),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.lightbulb_outline,
+                                            color: theme.colorScheme.primary,
+                                            size: 24),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Text(
+                                            'Tap here anytime you get a worrying message.',
+                                            style: theme.textTheme.bodyMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   )
                 else
                   Card(
