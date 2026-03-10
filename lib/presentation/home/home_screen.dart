@@ -6,6 +6,7 @@ import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/application/security_controller.dart';
 import 'package:elder_shield/core/design_tokens.dart';
 import 'package:elder_shield/presentation/widgets/elder_shield_app_bar.dart';
+import 'package:elder_shield/services/settings_service.dart';
 import 'package:elder_shield/utils/haptic.dart';
 import 'package:elder_shield/utils/responsive.dart';
 import 'package:elder_shield/utils/snackbars.dart';
@@ -26,10 +27,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String? _trustedContactNumber;
   bool _showCallButtonTooltip = false;
   bool _showWhyTrustedContact = false;
+  List<TrustedContact> _trustedContacts = [];
+  late final SecurityController _securityController;
+  late final SettingsService _settings;
 
   @override
   void initState() {
     super.initState();
+    _securityController = ref.read(securityControllerProvider);
+    _settings = ref.read(settingsServiceProvider);
     _ensurePermissionsAndStart();
     _loadTrustedContact();
     _loadTodayCount();
@@ -40,8 +46,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> _maybeShowCallButtonTooltip() async {
     if (!mounted) return;
-    final settings = ref.read(settingsServiceProvider);
-    if (await settings.isCallButtonTooltipShown()) return;
+    if (await _settings.isCallButtonTooltipShown()) return;
     if (!mounted) return;
     final hasTrusted = _trustedContactNumber != null && _trustedContactNumber!.trim().isNotEmpty;
     if (!hasTrusted) return;
@@ -51,14 +56,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> _dismissCallButtonTooltip() async {
     if (!_showCallButtonTooltip) return;
-    final settings = ref.read(settingsServiceProvider);
-    await settings.setCallButtonTooltipShown(true);
+    await _settings.setCallButtonTooltipShown(true);
     if (mounted) setState(() => _showCallButtonTooltip = false);
   }
 
   Future<void> _maybeShowPostOnboardingDialog() async {
-    final settings = ref.read(settingsServiceProvider);
-    if (await settings.isPostOnboardingDialogShown()) return;
+    if (await _settings.isPostOnboardingDialogShown()) return;
     if (!_permissionsGranted) return;
     if (!mounted) return;
     await _loadTrustedContact();
@@ -83,18 +86,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
       ),
     );
-    await settings.setPostOnboardingDialogShown(true);
+    await _settings.setPostOnboardingDialogShown(true);
   }
 
   Future<void> _loadTrustedContact() async {
-    final settings = ref.read(settingsServiceProvider);
-    final list = await settings.getTrustedContacts();
-    if (mounted && list.isNotEmpty) {
-      setState(() {
+    final list = await _settings.getTrustedContacts();
+    if (!mounted) return;
+    setState(() {
+      _trustedContacts = list;
+      if (list.isNotEmpty) {
         _trustedContactName = list.first.name;
         _trustedContactNumber = list.first.number;
-      });
-    }
+      } else {
+        _trustedContactName = null;
+        _trustedContactNumber = null;
+      }
+    });
   }
 
   Future<void> _loadTodayCount() async {
@@ -156,10 +163,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       }
     }
 
-    if (mounted) {
-      setState(() => _permissionsGranted = true);
-    }
-    ref.read(securityControllerProvider).start();
+    if (!mounted) return;
+    setState(() => _permissionsGranted = true);
+    _securityController.start();
     await _maybeShowPostOnboardingDialog();
   }
 
@@ -174,6 +180,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Keep trusted contacts in sync when user navigates back to Home tab.
+    ref.listen<int>(shellTabIndexProvider, (previous, next) {
+      if (next == 0) {
+        _loadTrustedContact();
+      }
+    });
     final hasTrusted = _trustedContactNumber != null &&
         _trustedContactNumber!.trim().isNotEmpty;
     final padding = horizontalPadding(context);
@@ -478,6 +490,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
+                if (_trustedContacts.isNotEmpty) ...[
+                  SizedBox(height: verticalPadding(context)),
+                  Text(
+                    'Your trusted contacts',
+                    style: theme.textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 8),
+                  Card(
+                    child: Column(
+                      children: _trustedContacts.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final contact = entry.value;
+                        final title = contact.name.isNotEmpty
+                            ? contact.name
+                            : contact.number;
+                        final subtitle =
+                            contact.name.isNotEmpty ? contact.number : null;
+                        return ListTile(
+                          leading: index == 0
+                              ? Icon(Icons.star,
+                                  size: 20, color: theme.colorScheme.primary)
+                              : const Icon(Icons.person_outline),
+                          title: Text(title),
+                          subtitle: subtitle != null ? Text(subtitle) : null,
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

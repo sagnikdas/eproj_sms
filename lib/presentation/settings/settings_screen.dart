@@ -564,9 +564,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           FilledButton(
             onPressed: () {
-              final number = numberController.text.trim();
-              final isValid =
-                  RegExp(r'^\\+?[0-9]{6,}$').hasMatch(number); // basic validation
+              final raw = numberController.text.trim();
+              // Allow spaces, dashes, brackets etc. by validating only cleaned digits / leading plus.
+              final cleaned = raw.replaceAll(RegExp(r'[^\d+]'), '');
+              final isValid = RegExp(r'^\+?\d{6,15}$').hasMatch(cleaned);
               if (!isValid) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   elderSnackBar('Enter a valid phone number'),
