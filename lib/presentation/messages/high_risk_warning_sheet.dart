@@ -39,10 +39,9 @@ class _HighRiskWarningContent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final repo = ref.read(messageRepositoryProvider);
     final settings = ref.read(settingsServiceProvider);
-     final theme = Theme.of(context);
-     final errorBg = theme.colorScheme.errorContainer;
-     final errorIcon = theme.colorScheme.error;
-     final errorText = theme.colorScheme.onErrorContainer;
+    final theme = Theme.of(context);
+    final errorBg = theme.colorScheme.error;
+    final errorText = theme.colorScheme.onError;
 
     return DraggableScrollableSheet(
       initialChildSize: 0.85,
@@ -57,17 +56,6 @@ class _HighRiskWarningContent extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                ),
-              ),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 decoration: BoxDecoration(
@@ -79,17 +67,31 @@ class _HighRiskWarningContent extends ConsumerWidget {
                     Icon(
                       Icons.warning_amber_rounded,
                       size: 40,
-                      color: errorIcon,
+                      color: errorText,
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: Text(
-                        'Warning: Possible scam message',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: errorText,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Danger: possible scam message',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: errorText,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Do not tap any links or share codes from this message.',
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 1.3,
+                              color: errorText,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
