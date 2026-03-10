@@ -9,6 +9,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
+import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.IBinder
 import android.provider.Settings
@@ -19,6 +21,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.ScrollView
 import androidx.core.app.NotificationCompat
 
 class ScamOverlayService : Service() {
@@ -114,42 +117,104 @@ class ScamOverlayService : Service() {
         removeOverlay()
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
+        // Dimmed backdrop so the card feels more premium and focused.
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setBackgroundColor(Color.parseColor("#FCE8E6"))
-            setPadding(48, 48, 48, 48)
-            elevation = 24f
+            setBackgroundColor(Color.parseColor("#66000000")) // 60% black
+            // Use smaller, responsive side padding so the card is not cramped on small screens.
+            val sidePadding = (resources.displayMetrics.density * 24).toInt()
+            setPadding(sidePadding, 0, sidePadding, 0)
+            gravity = Gravity.CENTER
         }
 
+        // Elevated card container
+        val cardBackground = GradientDrawable().apply {
+            cornerRadius = 32f
+            setColor(Color.parseColor("#FFF9F5"))
+        }
+
+        val card = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            background = cardBackground
+            val horizontal = (resources.displayMetrics.density * 20).toInt()
+            val vertical = (resources.displayMetrics.density * 24).toInt()
+            setPadding(horizontal, vertical, horizontal, vertical)
+            elevation = 24f
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
+
+        // Risk accent uses the same red as the in-app warning screens.
         val icon = ImageView(this).apply {
             setImageResource(android.R.drawable.ic_dialog_alert)
-            setColorFilter(Color.parseColor("#B3261E"))
+            setColorFilter(Color.parseColor("#D32F2F"))
         }
 
         val title = TextView(this).apply {
             text = "Possible scam message"
-            setTextColor(Color.parseColor("#B3261E"))
+            // Match high-risk red used in the main app.
+            setTextColor(Color.parseColor("#D32F2F"))
             textSize = 24f
-            setPadding(0, 24, 0, 12)
+            setTypeface(typeface, Typeface.BOLD)
+            setPadding(0, 24, 0, 6)
+            textAlignment = View.TEXT_ALIGNMENT_CENTER
+        }
+
+        val subtitle = TextView(this).apply {
+            text = "Take a moment before responding."
+            setTextColor(Color.parseColor("#8A000000"))
+            textSize = 16f
+            setPadding(0, 0, 0, 16)
+            textAlignment = View.TEXT_ALIGNMENT_CENTER
         }
 
         val senderView = TextView(this).apply {
             text = "From: $sender"
-            setTextColor(Color.BLACK)
+            setTextColor(Color.parseColor("#212121"))
             textSize = 18f
-            setPadding(0, 0, 0, 12)
+            setTypeface(typeface, Typeface.BOLD)
+            setPadding(0, 8, 0, 4)
         }
 
         val bodyView = TextView(this).apply {
-            val preview = if (body.length > 180) body.take(180) + "…" else body
+            // Show a readable, non-clickable preview. Truncate with an ellipsis if too long.
+            val preview = if (body.length > 200) body.take(200) + "…" else body
             text = preview
-            setTextColor(Color.DKGRAY)
-            textSize = 16f
+            setTextColor(Color.parseColor("#424242"))
+            textSize = 18f
+            setLineSpacing(0f, 1.2f)
             setPadding(0, 0, 0, 32)
+            maxLines = 5
+            ellipsize = android.text.TextUtils.TruncateAt.END
         }
 
+        val buttonRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            val top = (resources.displayMetrics.density * 8).toInt()
+            setPadding(0, top, 0, 0)
+        }
+
+        val dismissButton = Button(this).apply {
+            text = "Dismiss"
+            textSize = 14f
+            isAllCaps = false
+            // Use brand primary color for text to match the rest of the app.
+            setTextColor(Color.parseColor("#1565C0"))
+            setBackgroundColor(Color.TRANSPARENT)
+            minimumHeight = (resources.displayMetrics.density * 48).toInt()
+            setOnClickListener {
+                removeOverlay()
+                stopSelf()
+            }
+        }
+
+        // Primary action uses the same blue as the in-app buttons.
         val openButton = Button(this).apply {
             text = "Open warning"
+            textSize = 14f
+            isAllCaps = false
+            setTextColor(Color.WHITE)
+            setBackgroundColor(Color.parseColor("#1565C0"))
+            minimumHeight = (resources.displayMetrics.density * 48).toInt()
             setOnClickListener {
                 openWarning(
                     Intent().apply {
@@ -163,24 +228,51 @@ class ScamOverlayService : Service() {
             }
         }
 
-        val dismissButton = Button(this).apply {
-            text = "Dismiss"
-            setOnClickListener {
-                removeOverlay()
-                stopSelf()
-            }
+        val buttonLp = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+            setMargins(0, 0, (resources.displayMetrics.density * 12).toInt(), 0)
         }
+        val openButtonLp = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
 
-        root.addView(icon)
-        root.addView(title)
-        root.addView(senderView)
-        root.addView(bodyView)
-        root.addView(openButton)
-        root.addView(dismissButton)
+        buttonRow.addView(dismissButton, buttonLp)
+        buttonRow.addView(openButton, openButtonLp)
+
+        val iconLp = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
+        card.addView(icon, iconLp)
+        card.addView(title)
+        card.addView(subtitle)
+        card.addView(senderView)
+        card.addView(bodyView)
+        card.addView(buttonRow)
+
+        // Wrap card in a ScrollView so larger fonts remain usable.
+        val scroll = ScrollView(this).apply {
+            isFillViewport = false
+        }
+        scroll.addView(
+            card,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        )
+
+        // Center the scroll/card on screen.
+        root.addView(
+            scroll,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        )
 
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             else
@@ -191,8 +283,7 @@ class ScamOverlayService : Service() {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
         ).apply {
-            gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
-            y = 120
+            gravity = Gravity.CENTER
         }
 
         windowManager?.addView(root, params)
