@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elder_shield/application/app_providers.dart';
+import 'package:elder_shield/core/design_tokens.dart';
 import 'package:elder_shield/data/message_repository.dart';
 import 'package:elder_shield/domain/detector/heuristic_detector.dart';
 import 'package:elder_shield/presentation/messages/risk_detail_sheet.dart';
+import 'package:elder_shield/presentation/widgets/elder_shield_app_bar.dart';
 import 'package:elder_shield/utils/haptic.dart';
 import 'package:elder_shield/utils/responsive.dart';
 
@@ -31,37 +33,35 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
     final padding = horizontalPadding(context);
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/icon/icon.png', fit: BoxFit.contain),
-        ),
-        title: const Text('Messages'),
-        backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
-      ),
+      appBar: ElderShieldAppBar(titleText: 'Messages'),
       body: Column(
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: padding, vertical: 12),
             child: Row(
               children: [
-                FilterChip(
-                  label: const Text('All'),
-                  selected: !_highRiskOnly,
-                  onSelected: (v) {
-                    selectionClick();
-                    setState(() => _highRiskOnly = false);
-                  },
+                SizedBox(
+                  height: DesignTokens.minTouchTarget,
+                  child: FilterChip(
+                    label: const Text('All'),
+                    selected: !_highRiskOnly,
+                    onSelected: (v) {
+                      selectionClick();
+                      setState(() => _highRiskOnly = false);
+                    },
+                  ),
                 ),
                 const SizedBox(width: 12),
-                FilterChip(
-                  label: const Text('High Risk'),
-                  selected: _highRiskOnly,
-                  onSelected: (v) {
-                    selectionClick();
-                    setState(() => _highRiskOnly = true);
-                  },
+                SizedBox(
+                  height: DesignTokens.minTouchTarget,
+                  child: FilterChip(
+                    label: const Text('High Risk'),
+                    selected: _highRiskOnly,
+                    onSelected: (v) {
+                      selectionClick();
+                      setState(() => _highRiskOnly = true);
+                    },
+                  ),
                 ),
               ],
             ),
@@ -71,7 +71,19 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
               future: _fetchMessages(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return ListView(
+                    padding: EdgeInsets.symmetric(horizontal: padding),
+                    children: const [
+                      SizedBox(height: 24),
+                      _MessagesLoadingHeader(),
+                      SizedBox(height: 16),
+                      _MessageSkeletonTile(),
+                      SizedBox(height: 12),
+                      _MessageSkeletonTile(),
+                      SizedBox(height: 12),
+                      _MessageSkeletonTile(),
+                    ],
+                  );
                 }
                 final list = snapshot.data ?? [];
                 if (list.isEmpty) {
@@ -124,6 +136,81 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
                   ),
                 );
               },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MessagesLoadingHeader extends StatelessWidget {
+  const _MessagesLoadingHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        const SizedBox(
+          height: 22,
+          width: 22,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+        const SizedBox(width: 12),
+        Text(
+          'Loading messages…',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _MessageSkeletonTile extends StatelessWidget {
+  const _MessageSkeletonTile();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final base = theme.colorScheme.surfaceContainerHighest;
+    return Container(
+      height: 78,
+      decoration: BoxDecoration(
+        color: base,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 14,
+            width: 160,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: 12,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            height: 12,
+            width: 220,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
         ],

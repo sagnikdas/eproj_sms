@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elder_shield/application/app_providers.dart';
+import 'package:elder_shield/core/design_tokens.dart';
 import 'package:elder_shield/presentation/launch_gate.dart';
 import 'package:elder_shield/presentation/onboarding/onboarding_flow.dart';
 
@@ -44,22 +45,30 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
 
   static ThemeData _buildLightTheme() {
     return ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1565C0), brightness: Brightness.light),
+      colorScheme: ColorScheme.fromSeed(seedColor: DesignTokens.primary, brightness: Brightness.light),
       useMaterial3: true,
+      snackBarTheme: const SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        showCloseIcon: false,
+      ),
       textTheme: const TextTheme(
-        bodyMedium: TextStyle(fontSize: 16),
-        bodyLarge: TextStyle(fontSize: 18),
+        bodyMedium: TextStyle(fontSize: DesignTokens.fontBody),
+        bodyLarge: TextStyle(fontSize: DesignTokens.fontBodyLarge),
       ),
     );
   }
 
   static ThemeData _buildDarkTheme() {
     return ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1565C0), brightness: Brightness.dark),
+      colorScheme: ColorScheme.fromSeed(seedColor: DesignTokens.primary, brightness: Brightness.dark),
       useMaterial3: true,
+      snackBarTheme: const SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        showCloseIcon: false,
+      ),
       textTheme: const TextTheme(
-        bodyMedium: TextStyle(fontSize: 16),
-        bodyLarge: TextStyle(fontSize: 18),
+        bodyMedium: TextStyle(fontSize: DesignTokens.fontBody),
+        bodyLarge: TextStyle(fontSize: DesignTokens.fontBodyLarge),
       ),
     );
   }
@@ -101,7 +110,16 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
   Widget _buildHome() {
     if (_onboardingComplete == null) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 12),
+              Text('Loading…'),
+            ],
+          ),
+        ),
       );
     }
     if (_onboardingComplete == false) {

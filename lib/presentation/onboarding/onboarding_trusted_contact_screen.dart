@@ -4,6 +4,7 @@ import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/presentation/messages/example_warning_sheet.dart';
 import 'package:elder_shield/services/settings_service.dart';
 import 'package:elder_shield/utils/haptic.dart';
+import 'package:elder_shield/utils/snackbars.dart';
 
 /// Block 6 — Onboarding screen 3: add one trusted contact (name + number).
 class OnboardingTrustedContactScreen extends ConsumerStatefulWidget {
@@ -44,7 +45,7 @@ class _OnboardingTrustedContactScreenState
     final number = _numberController.text.trim();
     if (name.isEmpty || number.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter both name and number')),
+        elderSnackBar('Please enter both name and number'),
       );
       return;
     }

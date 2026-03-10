@@ -80,7 +80,16 @@ class _LaunchGateState extends ConsumerState<LaunchGate> {
   Widget build(BuildContext context) {
     if (!_checked) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 12),
+              Text('Checking…'),
+            ],
+          ),
+        ),
       );
     }
     if (_launchHighRiskMessage != null) {

@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/data/message_repository.dart';
 import 'package:elder_shield/domain/detector/heuristic_detector.dart';
+import 'package:elder_shield/utils/snackbars.dart';
 
 /// Risk detail bottom sheet: message, reasons, actions (Scam / Safe / Call Trusted / Block).
 void showRiskDetailSheet(
@@ -53,10 +54,8 @@ Future<void> confirmDeleteMessage(
   await repo.deleteMessage(message.id);
   if (context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Removed from Elder Shield. Opening messaging app so you can delete it from your phone.',
-        ),
+      elderSnackBar(
+        'Removed from Elder Shield. Opening messaging app so you can delete it from your phone.',
       ),
     );
     onDismiss();
@@ -141,7 +140,7 @@ class _RiskDetailSheetContent extends ConsumerWidget {
                   await repo.saveFeedback(messageId: message.id, label: 'scam');
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Marked as scam. Thank you.')),
+                      elderSnackBar('Marked as scam. Thank you.'),
                     );
                     onDismiss();
                     Navigator.of(context).pop();

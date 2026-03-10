@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:elder_shield/application/app_providers.dart';
+import 'package:elder_shield/core/design_tokens.dart';
 import 'package:elder_shield/platform/overlay_alerts.dart';
 import 'package:elder_shield/presentation/settings/about_screen.dart';
 import 'package:elder_shield/presentation/settings/how_it_works_screen.dart';
 import 'package:elder_shield/presentation/settings/permissions_explained_screen.dart';
 import 'package:elder_shield/presentation/settings/privacy_policy_screen.dart';
+import 'package:elder_shield/presentation/widgets/elder_shield_app_bar.dart';
 import 'package:elder_shield/services/settings_service.dart';
 import 'package:elder_shield/utils/haptic.dart';
 import 'package:elder_shield/utils/responsive.dart';
+import 'package:elder_shield/utils/snackbars.dart';
 
 /// Settings: collapsible sections (Appearance, Text size, Legal, Sensitivity, Trusted contacts), theme, haptics.
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -95,7 +98,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     await repo.clearAll();
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('History deleted')),
+        elderSnackBar('History deleted'),
       );
     }
   }
@@ -104,7 +107,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     await [Permission.sms, Permission.phone].request();
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Permission check done. Restart the app if you just granted access.')),
+        elderSnackBar('Permission check done. Restart the app if you just granted access.'),
       );
     }
   }
@@ -125,12 +128,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     if (!mounted) return;
     setState(() => _overlayEnabled = enabled);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          enabled
-              ? 'Emergency pop-up over other apps is enabled.'
-              : 'Overlay permission is still off. Turn it on in system settings for emergency pop-ups.',
-        ),
+      elderSnackBar(
+        enabled
+            ? 'Emergency pop-up over other apps is enabled.'
+            : 'Overlay permission is still off. Turn it on in system settings for emergency pop-ups.',
       ),
     );
   }
@@ -142,15 +143,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/icon/icon.png', fit: BoxFit.contain),
-        ),
-        title: const Text('Settings'),
-        backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
-      ),
+      appBar: ElderShieldAppBar(titleText: 'Settings'),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: padding, vertical: 16),
         children: [
@@ -304,6 +297,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.edit_outlined),
+                              constraints: const BoxConstraints(
+                                minWidth: DesignTokens.minTouchTarget,
+                                minHeight: DesignTokens.minTouchTarget,
+                              ),
                               onPressed: () {
                                 selectionClick();
                                 _showEditContactDialog(i);
@@ -311,6 +308,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             ),
                             IconButton(
                               icon: const Icon(Icons.remove_circle_outline),
+                              constraints: const BoxConstraints(
+                                minWidth: DesignTokens.minTouchTarget,
+                                minHeight: DesignTokens.minTouchTarget,
+                              ),
                               onPressed: () {
                                 selectionClick();
                                 _removeContact(i);

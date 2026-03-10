@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elder_shield/application/app_providers.dart';
+import 'package:elder_shield/core/design_tokens.dart';
 import 'package:elder_shield/presentation/home/home_screen.dart';
 import 'package:elder_shield/presentation/messages/messages_screen.dart';
 import 'package:elder_shield/presentation/settings/settings_screen.dart';
@@ -27,13 +28,18 @@ class MainShell extends ConsumerWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: true,
+        selectedFontSize: 14,
+        unselectedFontSize: 14,
+        selectedItemColor: DesignTokens.primary,
         onTap: (i) {
           selectionClick();
           ref.read(shellTabIndexProvider.notifier).state = i;
         },
         items: _tabs
             .map((t) => BottomNavigationBarItem(
-                  icon: Icon(t.icon),
+                  icon: Icon(t.icon, size: 28),
                   label: t.label,
                 ))
             .toList(),

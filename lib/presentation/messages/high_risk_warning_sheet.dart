@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/data/message_repository.dart';
 import 'package:elder_shield/presentation/messages/risk_detail_sheet.dart';
+import 'package:elder_shield/utils/snackbars.dart';
 
 /// Full-height bottom sheet for real-time high-risk alert (Block 7).
 /// Same actions as Risk Detail: This is a Scam / This is Safe / Call Trusted / Block sender.
@@ -127,8 +128,7 @@ class _HighRiskWarningContent extends ConsumerWidget {
                       messageId: message.id, label: 'scam');
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Marked as scam. Thank you.')),
+                      elderSnackBar('Marked as scam. Thank you.'),
                     );
                     onDismiss();
                     Navigator.of(context).pop();

@@ -4,6 +4,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/application/security_controller.dart';
+import 'package:elder_shield/core/design_tokens.dart';
+import 'package:elder_shield/presentation/widgets/elder_shield_app_bar.dart';
 import 'package:elder_shield/utils/haptic.dart';
 import 'package:elder_shield/utils/responsive.dart';
 
@@ -152,15 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         : (isDark ? theme.colorScheme.surfaceContainerHighest : Colors.grey.shade100);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/icon/icon.png', fit: BoxFit.contain),
-        ),
-        title: const Text('Elder Shield'),
-        backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
-      ),
+      appBar: ElderShieldAppBar(titleText: 'Elder Shield'),
       body: RefreshIndicator(
         onRefresh: () async {
           lightImpact();
@@ -210,7 +204,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 // Today's risk summary (tappable -> Messages tab)
                 Material(
                   color: riskCardColor,
-                  borderRadius: BorderRadius.circular(12),
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(
+                      color: theme.colorScheme.outlineVariant.withValues(alpha: 0.7),
+                    ),
+                  ),
                   child: InkWell(
                     onTap: () {
                       selectionClick();
@@ -230,7 +230,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   _todayRiskCount > 0
                                       ? '$_todayRiskCount suspicious message${_todayRiskCount == 1 ? '' : 's'} detected today.'
                                       : 'No suspicious activity today.',
-                                  style: theme.textTheme.bodyLarge,
+                                  style: theme.textTheme.bodyLarge?.copyWith(
+                                    fontSize: _todayRiskCount > 0 ? 20 : null,
+                                    fontWeight: _todayRiskCount > 0 ? FontWeight.w700 : null,
+                                  ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
@@ -291,7 +294,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             style: const TextStyle(fontSize: 18),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: theme.colorScheme.primary,
+                        minimumSize: const Size.fromHeight(DesignTokens.minTouchTarget),
+                        backgroundColor: theme.colorScheme.primary,
                             foregroundColor: theme.colorScheme.onPrimary,
                           ),
                         ),
