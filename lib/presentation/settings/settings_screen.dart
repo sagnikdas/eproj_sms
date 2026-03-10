@@ -329,7 +329,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       return ListTile(
                         title: Text(c.name.isEmpty ? c.number : c.name),
                         subtitle: c.name.isNotEmpty ? Text(c.number) : null,
-                        leading: i == 0 ? Icon(Icons.star, size: 20, color: theme.colorScheme.primary) : null,
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -350,9 +349,30 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                                 minWidth: DesignTokens.minTouchTarget,
                                 minHeight: DesignTokens.minTouchTarget,
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 selectionClick();
-                                _removeContact(i);
+                                final ok = await showDialog<bool>(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    title: const Text('Remove trusted contact?'),
+                                    content: const Text(
+                                      'This person will no longer appear in your trusted contacts or on the Home screen.',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.of(ctx).pop(false),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      FilledButton(
+                                        onPressed: () => Navigator.of(ctx).pop(true),
+                                        child: const Text('Remove'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                if (ok == true) {
+                                  _removeContact(i);
+                                }
                               },
                             ),
                           ],

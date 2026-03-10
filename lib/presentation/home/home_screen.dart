@@ -30,6 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   List<TrustedContact> _trustedContacts = [];
   late final SecurityController _securityController;
   late final SettingsService _settings;
+  int _selectedTrustedIndex = 0;
 
   @override
   void initState() {
@@ -95,9 +96,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     setState(() {
       _trustedContacts = list;
       if (list.isNotEmpty) {
-        _trustedContactName = list.first.name;
-        _trustedContactNumber = list.first.number;
+        if (_selectedTrustedIndex >= list.length) {
+          _selectedTrustedIndex = 0;
+        }
+        final selected = list[_selectedTrustedIndex];
+        _trustedContactName = selected.name;
+        _trustedContactNumber = selected.number;
       } else {
+        _selectedTrustedIndex = 0;
         _trustedContactName = null;
         _trustedContactNumber = null;
       }
@@ -186,8 +192,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         _loadTrustedContact();
       }
     });
-    final hasTrusted = _trustedContactNumber != null &&
-        _trustedContactNumber!.trim().isNotEmpty;
+    final hasTrusted = _trustedContacts.isNotEmpty;
     final padding = horizontalPadding(context);
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -384,7 +389,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               },
                               icon: const Icon(Icons.phone, size: 28),
                               label: Text(
-                                'Call ${_trustedContactName?.isNotEmpty == true ? _trustedContactName! : 'Trusted Contact'}',
+                                'Call ${_trustedContactName?.isNotEmpty == true ? _trustedContactName! : 'Trusted contact'}',
                                 style: const TextStyle(fontSize: 18),
                               ),
                               style: ElevatedButton.styleFrom(
@@ -498,26 +503,47 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ?.copyWith(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
-                  Card(
-                    child: Column(
-                      children: _trustedContacts.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final contact = entry.value;
-                        final title = contact.name.isNotEmpty
-                            ? contact.name
-                            : contact.number;
-                        final subtitle =
-                            contact.name.isNotEmpty ? contact.number : null;
-                        return ListTile(
-                          leading: index == 0
-                              ? Icon(Icons.star,
-                                  size: 20, color: theme.colorScheme.primary)
-                              : const Icon(Icons.person_outline),
+                  Column(
+                    children: _trustedContacts.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final contact = entry.value;
+                      final isSelected = index == _selectedTrustedIndex;
+                      final title =
+                          contact.name.isNotEmpty ? contact.name : contact.number;
+                      final subtitle =
+                          contact.name.isNotEmpty ? contact.number : null;
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: isSelected
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.outlineVariant,
+                          ),
+                        ),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          leading: const Icon(Icons.person_outline),
                           title: Text(title),
                           subtitle: subtitle != null ? Text(subtitle) : null,
-                        );
-                      }).toList(),
-                    ),
+                          trailing: isSelected
+                              ? Icon(Icons.check_circle,
+                                  color: theme.colorScheme.primary)
+                              : null,
+                          onTap: () {
+                            setState(() {
+                              _selectedTrustedIndex = index;
+                              _trustedContactName = contact.name;
+                              _trustedContactNumber = contact.number;
+                            });
+                          },
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ],
               ],
