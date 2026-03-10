@@ -152,167 +152,205 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Scaffold(
       appBar: ElderShieldAppBar(titleText: 'Settings'),
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: padding, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: padding, vertical: DesignTokens.s16),
         children: [
           // Appearance (theme)
-          ExpansionTile(
-            leading: Icon(Icons.palette_outlined, color: theme.colorScheme.primary),
-            title: Text('Appearance', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            subtitle: Text(_themeMode == 'system' ? 'System' : _themeMode == 'light' ? 'Light' : 'Dark', style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurfaceVariant)),
-            onExpansionChanged: (_) => lightImpact(),
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: ['light', 'dark', 'system'].map((mode) {
-                    final label = mode == 'system' ? 'System' : mode == 'light' ? 'Light' : 'Dark';
-                    return RadioListTile<String>(
-                      title: Text(label),
-                      value: mode,
-                      // ignore: deprecated_member_use
-                      groupValue: _themeMode,
-                      // ignore: deprecated_member_use
-                      onChanged: (v) => v != null ? _setThemeMode(v) : null,
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
-          ),
-          const Divider(height: 1),
-          // Text size
-          ExpansionTile(
-            leading: Icon(Icons.text_fields, color: theme.colorScheme.primary),
-            title: Text('Text size', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            subtitle: Text('${(fontScale.clamp(0.8, 1.5) * 100).round()}%', style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurfaceVariant)),
-            onExpansionChanged: (_) => lightImpact(),
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Adjust to see text larger or smaller. Changes apply immediately.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Elder Shield keeps you safe from scam messages.',
-                      style: theme.textTheme.bodyLarge,
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Text('A', style: TextStyle(fontSize: 14)),
-                        Expanded(
-                          child: Slider(
-                            value: fontScale.clamp(0.8, 1.5),
-                            min: 0.8,
-                            max: 1.5,
-                            divisions: 7,
-                            label:
-                                '${(fontScale.clamp(0.8, 1.5) * 100).round()}%',
-                            onChanged: (v) => _onFontScaleChanged(v),
-                          ),
-                        ),
-                        Text('A', style: TextStyle(fontSize: 22)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const Divider(height: 1),
-          // Legal & information
-          ExpansionTile(
-            leading: Icon(Icons.gavel_outlined, color: theme.colorScheme.primary),
-            title: Text('Legal & information', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            onExpansionChanged: (_) => lightImpact(),
-            children: [
-              ListTile(
-                leading: const Icon(Icons.privacy_tip_outlined),
-                title: const Text('Privacy policy'),
-                subtitle: const Text('How we use your data'),
-                onTap: () {
-                  selectionClick();
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()));
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.info_outline),
-                title: const Text('Permissions explained'),
-                subtitle: const Text('Why we need each permission'),
-                onTap: () {
-                  selectionClick();
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PermissionsExplainedScreen()));
-                },
-              ),
-            ],
-          ),
-          const Divider(height: 1),
-          // Sensitivity
-          ExpansionTile(
-            leading: Icon(Icons.tune, color: theme.colorScheme.primary),
-            title: Text('Sensitivity', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            subtitle: Text(
-              switch (_sensitivityMode) {
-                'conservative' => 'Fewer alerts',
-                'balanced' => 'Balanced',
-                'sensitive' => 'More alerts',
-                _ => _sensitivityMode,
-              },
-              style: TextStyle(
-                fontSize: 14,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
             ),
-            onExpansionChanged: (_) => lightImpact(),
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                child: Column(
-                  children: ['conservative', 'balanced', 'sensitive'].map((mode) {
-                    final desc = switch (mode) {
-                      'conservative' =>
-                          'Only very obvious scams. Good if you prefer fewer alerts.',
-                      'balanced' =>
-                          'Good for most people. A balance of scams caught and noise.',
-                      'sensitive' =>
-                          'Catches more scams but may sometimes flag safe messages.',
-                      _ => '',
-                    };
-                    final label = switch (mode) {
-                      'conservative' => 'Fewer alerts',
-                      'balanced' => 'Balanced',
-                      'sensitive' => 'More alerts',
-                      _ => mode[0].toUpperCase() + mode.substring(1),
-                    };
-                    return RadioListTile<String>(
-                      title: Text(label),
-                      subtitle: Text(desc, style: const TextStyle(fontSize: 13)),
-                      value: mode,
-                      // ignore: deprecated_member_use
-                      groupValue: _sensitivityMode,
-                      // ignore: deprecated_member_use
-                      onChanged: (v) => v != null ? _setSensitivity(v) : null,
-                    );
-                  }).toList(),
-                ),
+            margin: const EdgeInsets.only(bottom: 12),
+            child: ExpansionTile(
+              leading: Icon(Icons.palette_outlined, color: theme.colorScheme.primary, size: 24),
+              title: Text('Appearance', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+              subtitle: Text(
+                _themeMode == 'system' ? 'System' : _themeMode == 'light' ? 'Light' : 'Dark',
+                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
               ),
-            ],
+              onExpansionChanged: (_) => lightImpact(),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: ['light', 'dark', 'system'].map((mode) {
+                      final label = mode == 'system' ? 'System' : mode == 'light' ? 'Light' : 'Dark';
+                      return RadioListTile<String>(
+                        title: Text(label),
+                        value: mode,
+                        groupValue: _themeMode,
+                        onChanged: (v) => v != null ? _setThemeMode(v) : null,
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
           ),
-          const Divider(height: 1),
+          // Text size
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
+            ),
+            margin: const EdgeInsets.only(bottom: 12),
+            child: ExpansionTile(
+              leading: Icon(Icons.text_fields_rounded, color: theme.colorScheme.primary, size: 24),
+              title: Text('Text size', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+              subtitle: Text(
+                '${(fontScale.clamp(0.8, 1.5) * 100).round()}%',
+                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              ),
+              onExpansionChanged: (_) => lightImpact(),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Adjust to see text larger or smaller. Changes apply immediately.',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Elder Shield keeps you safe from scam messages.',
+                        style: theme.textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Text('A', style: theme.textTheme.bodyMedium),
+                          Expanded(
+                            child: Slider(
+                              value: fontScale.clamp(0.8, 1.5),
+                              min: 0.8,
+                              max: 1.5,
+                              divisions: 7,
+                              label: '${(fontScale.clamp(0.8, 1.5) * 100).round()}%',
+                              onChanged: (v) => _onFontScaleChanged(v),
+                            ),
+                          ),
+                          Text('A', style: theme.textTheme.titleMedium),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Legal & information
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
+            ),
+            margin: const EdgeInsets.only(bottom: 12),
+            child: ExpansionTile(
+              leading: Icon(Icons.gavel_rounded, color: theme.colorScheme.primary, size: 24),
+              title: Text('Legal & information', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+              onExpansionChanged: (_) => lightImpact(),
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.privacy_tip_outlined),
+                  title: const Text('Privacy policy'),
+                  subtitle: const Text('How we use your data'),
+                  trailing: const Icon(Icons.chevron_right_rounded, size: 22),
+                  onTap: () {
+                    selectionClick();
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info_outline_rounded),
+                  title: const Text('Permissions explained'),
+                  subtitle: const Text('Why we need each permission'),
+                  trailing: const Icon(Icons.chevron_right_rounded, size: 22),
+                  onTap: () {
+                    selectionClick();
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PermissionsExplainedScreen()));
+                  },
+                ),
+              ],
+            ),
+          ),
+          // Sensitivity
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
+            ),
+            margin: const EdgeInsets.only(bottom: 12),
+            child: ExpansionTile(
+              leading: Icon(Icons.tune_rounded, color: theme.colorScheme.primary, size: 24),
+              title: Text('Sensitivity', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+              subtitle: Text(
+                switch (_sensitivityMode) {
+                  'conservative' => 'Fewer alerts',
+                  'balanced' => 'Balanced',
+                  'sensitive' => 'More alerts',
+                  _ => _sensitivityMode,
+                },
+                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              ),
+              onExpansionChanged: (_) => lightImpact(),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: Column(
+                    children: ['conservative', 'balanced', 'sensitive'].map((mode) {
+                      final desc = switch (mode) {
+                        'conservative' =>
+                            'Only very obvious scams. Good if you prefer fewer alerts.',
+                        'balanced' =>
+                            'Good for most people. A balance of scams caught and noise.',
+                        'sensitive' =>
+                            'Catches more scams but may sometimes flag safe messages.',
+                        _ => '',
+                      };
+                      final label = switch (mode) {
+                        'conservative' => 'Fewer alerts',
+                        'balanced' => 'Balanced',
+                        'sensitive' => 'More alerts',
+                        _ => mode[0].toUpperCase() + mode.substring(1),
+                      };
+                      return RadioListTile<String>(
+                        title: Text(label),
+                        subtitle: Text(desc, style: const TextStyle(fontSize: 13)),
+                        value: mode,
+                        groupValue: _sensitivityMode,
+                        onChanged: (v) => v != null ? _setSensitivity(v) : null,
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
           // Trusted contacts
-          ExpansionTile(
-            leading: Icon(Icons.contacts_outlined, color: theme.colorScheme.primary),
-            title: Text('Trusted contacts', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            subtitle: Text(_contacts.isEmpty ? 'None' : '${_contacts.length} contact${_contacts.length == 1 ? '' : 's'}', style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurfaceVariant)),
-            onExpansionChanged: (_) => lightImpact(),
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
+            ),
+            margin: const EdgeInsets.only(bottom: 12),
+            child: ExpansionTile(
+              leading: Icon(Icons.contacts_outlined, color: theme.colorScheme.primary, size: 24),
+              title: Text('Trusted contacts', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+              subtitle: Text(
+                _contacts.isEmpty ? 'None' : '${_contacts.length} contact${_contacts.length == 1 ? '' : 's'}',
+                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              ),
+              onExpansionChanged: (_) => lightImpact(),
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -412,54 +450,63 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
             ],
           ),
-          const Divider(height: 1),
-          // Data & permissions (bottom actions)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Advanced',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w600,
+          ), // Trusted contacts Card
+          // Advanced & info
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                    child: Text(
+                      'Advanced',
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                TextButton.icon(
-                  onPressed: () {
-                    mediumImpact();
-                    _deleteAllHistory();
-                  },
-                  icon: const Icon(Icons.delete_outline),
-                  label: const Text('Delete all history'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.red,
+                  TextButton.icon(
+                    onPressed: () {
+                      mediumImpact();
+                      _deleteAllHistory();
+                    },
+                    icon: const Icon(Icons.delete_outline_rounded, size: 22),
+                    label: const Text('Delete all history'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                TextButton(
-                  onPressed: () {
-                    lightImpact();
-                    _rerunPermissions();
-                  },
-                  child: const Text('Re-run permissions check'),
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.open_in_new, color: theme.colorScheme.primary),
+                  TextButton(
+                    onPressed: () {
+                      lightImpact();
+                      _rerunPermissions();
+                    },
+                    child: const Text('Re-run permissions check'),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
+                  leading: Icon(Icons.open_in_new_rounded, color: theme.colorScheme.primary, size: 24),
                   title: const Text('Emergency pop-up over other apps'),
                   subtitle: Text(
                     '${_overlayEnabled ? 'Enabled: high-risk warnings can appear above other apps.' : 'Off: tap to enable the Android overlay permission.'} Recommended so we can warn you even when you’re in another app.',
                   ),
+                  trailing: const Icon(Icons.chevron_right_rounded, size: 22),
                   onTap: _openOverlayPermissionSettings,
                 ),
-                const SizedBox(height: 8),
                 ListTile(
-                  leading: Icon(Icons.help_outline, color: theme.colorScheme.primary),
+                  leading: Icon(Icons.help_outline_rounded, color: theme.colorScheme.primary, size: 24),
                   title: const Text('How Elder Shield works'),
                   subtitle: const Text('What we check, when we alert, what to do'),
+                  trailing: const Icon(Icons.chevron_right_rounded, size: 22),
                   onTap: () {
                     selectionClick();
                     Navigator.of(context).push(
@@ -467,11 +514,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: 8),
                 ListTile(
-                  leading: Icon(Icons.info_outlined, color: theme.colorScheme.primary),
+                  leading: Icon(Icons.info_outline_rounded, color: theme.colorScheme.primary, size: 24),
                   title: const Text('About Elder Shield'),
                   subtitle: Text(AboutScreen.appVersion),
+                  trailing: const Icon(Icons.chevron_right_rounded, size: 22),
                   onTap: () {
                     selectionClick();
                     Navigator.of(context).push(
@@ -481,6 +528,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
               ],
             ),
+          ),
           ),
         ],
       ),

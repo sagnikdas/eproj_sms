@@ -227,42 +227,58 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       : 'Protection status: Permissions needed',
                   readOnly: true,
                   child: ExcludeSemantics(
-                    child: Column(
-                      children: [
-                        Text(
-                          'Protection status',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: padding * 1.25,
+                        vertical: DesignTokens.s24,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? theme.colorScheme.surfaceContainerHighest
+                            : theme.colorScheme.surfaceContainerLow,
+                        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+                        border: Border.all(
+                          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Protection status',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 8),
-                        // Protection status
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              _permissionsGranted
-                                  ? Icons.shield
-                                  : Icons.shield_outlined,
-                              size: 48,
-                              color: _permissionsGranted
-                                  ? Colors.green
-                                  : Colors.amber.shade700,
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              _permissionsGranted
-                                  ? 'Protected'
-                                  : 'Permissions needed',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                          const SizedBox(height: DesignTokens.s12),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                _permissionsGranted
+                                    ? Icons.shield_rounded
+                                    : Icons.shield_outlined,
+                                size: 52,
+                                color: _permissionsGranted
+                                    ? Colors.green
+                                    : Colors.amber.shade700,
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              const SizedBox(width: DesignTokens.s12),
+                              Text(
+                                _permissionsGranted
+                                    ? 'Protected'
+                                    : 'Permissions needed',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: -0.2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -288,12 +304,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: ExcludeSemantics(
                     child: Material(
                       color: riskCardColor,
-                      elevation: 1,
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
                         side: BorderSide(
                           color: theme.colorScheme.outlineVariant
-                              .withValues(alpha: 0.7),
+                              .withValues(alpha: 0.6),
                         ),
                       ),
                       child: InkWell(
@@ -301,7 +317,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           selectionClick();
                           ref.read(shellTabIndexProvider.notifier).state = 1;
                         },
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
                         child: Padding(
                           padding: EdgeInsets.all(padding * 0.75),
                           child: Row(
@@ -337,8 +353,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ),
                               ),
                               Icon(
-                                Icons.chevron_right,
-                                size: 28,
+                                Icons.chevron_right_rounded,
+                                size: 26,
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),
                               const SizedBox(width: 4),
@@ -379,7 +395,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         children: [
                           SizedBox(
                             height: 64,
-                            child: ElevatedButton.icon(
+                            child: FilledButton.icon(
                               onPressed: () {
                                 if (_showCallButtonTooltip) {
                                   _dismissCallButtonTooltip();
@@ -387,16 +403,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 selectionClick();
                                 _callTrustedContact();
                               },
-                              icon: const Icon(Icons.phone, size: 28),
+                              icon: const Icon(Icons.phone_rounded, size: 26),
                               label: Text(
                                 'Call ${_trustedContactName?.isNotEmpty == true ? _trustedContactName! : 'Trusted contact'}',
-                                style: const TextStyle(fontSize: 18),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.2,
+                                ),
                               ),
-                              style: ElevatedButton.styleFrom(
+                              style: FilledButton.styleFrom(
                                 minimumSize: const Size.fromHeight(
                                     DesignTokens.minTouchTarget),
                                 backgroundColor: theme.colorScheme.primary,
                                 foregroundColor: theme.colorScheme.onPrimary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(DesignTokens.radiusPill),
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 32),
                               ),
                             ),
                           ),
@@ -406,8 +430,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               right: 0,
                               bottom: 72,
                               child: Material(
-                                elevation: 4,
-                                borderRadius: BorderRadius.circular(12),
+                                elevation: 2,
+                                shadowColor: Colors.black26,
+                                borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
                                 color:
                                     theme.colorScheme.surfaceContainerHighest,
                                 child: InkWell(
@@ -415,7 +440,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     selectionClick();
                                     _dismissCallButtonTooltip();
                                   },
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 14),
@@ -443,6 +468,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   )
                 else
                   Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+                    ),
                     child: Padding(
                       padding: EdgeInsets.all(padding),
                       child: Column(
@@ -502,7 +530,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     style: theme.textTheme.titleMedium
                         ?.copyWith(fontWeight: FontWeight.w600),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: DesignTokens.s8),
                   Column(
                     children: _trustedContacts.asMap().entries.map((entry) {
                       final index = entry.key;
@@ -513,26 +541,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       final subtitle =
                           contact.name.isNotEmpty ? contact.number : null;
                       return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
                           side: BorderSide(
                             color: isSelected
                                 ? theme.colorScheme.primary
-                                : theme.colorScheme.outlineVariant,
+                                : theme.colorScheme.outlineVariant.withValues(alpha: 0.7),
+                            width: isSelected ? 2 : 1,
                           ),
                         ),
                         child: ListTile(
                           contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
+                            horizontal: DesignTokens.s16,
+                            vertical: 10,
                           ),
-                          leading: const Icon(Icons.person_outline),
-                          title: Text(title),
-                          subtitle: subtitle != null ? Text(subtitle) : null,
+                          leading: Icon(
+                            Icons.person_outline_rounded,
+                            color: isSelected
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.onSurfaceVariant,
+                          ),
+                          title: Text(
+                            title,
+                            style: TextStyle(
+                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                            ),
+                          ),
+                          subtitle: subtitle != null
+                              ? Text(
+                                  subtitle,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                  ),
+                                )
+                              : null,
                           trailing: isSelected
-                              ? Icon(Icons.check_circle,
-                                  color: theme.colorScheme.primary)
+                              ? Icon(
+                                  Icons.check_circle_rounded,
+                                  color: theme.colorScheme.primary,
+                                  size: 24,
+                                )
                               : null,
                           onTap: () {
                             setState(() {

@@ -16,6 +16,8 @@ class MainShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(shellTabIndexProvider);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
       body: IndexedStack(
@@ -26,31 +28,75 @@ class MainShell extends ConsumerWidget {
           SettingsScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        type: BottomNavigationBarType.fixed,
-        showUnselectedLabels: true,
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        selectedItemColor: DesignTokens.primary,
-        onTap: (i) {
-          selectionClick();
-          ref.read(shellTabIndexProvider.notifier).state = i;
-        },
-        items: _tabs
-            .map((t) => BottomNavigationBarItem(
-                  icon: Icon(t.icon, size: 28),
-                  label: t.label,
-                ))
-            .toList(),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 12,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(_tabs.length, (i) {
+                final t = _tabs[i];
+                final selected = i == currentIndex;
+                return Expanded(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        selectionClick();
+                        ref.read(shellTabIndexProvider.notifier).state = i;
+                      },
+                      borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              t.icon,
+                              size: 26,
+                              color: selected
+                                  ? DesignTokens.primary
+                                  : colorScheme.onSurfaceVariant,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              t.label,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                                color: selected
+                                    ? DesignTokens.primary
+                                    : colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ),
+        ),
       ),
     );
   }
 
   static const _tabs = [
-    _Tab(label: 'Home', icon: Icons.home),
-    _Tab(label: 'Messages', icon: Icons.message),
-    _Tab(label: 'Settings', icon: Icons.settings),
+    _Tab(label: 'Home', icon: Icons.home_rounded),
+    _Tab(label: 'Messages', icon: Icons.chat_bubble_outline_rounded),
+    _Tab(label: 'Settings', icon: Icons.settings_rounded),
   ];
 }
 

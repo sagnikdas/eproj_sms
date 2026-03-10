@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 class DesignTokens {
   // Brand
   static const Color primary = Color(0xFF1565C0);
+  static const Color primaryDark = Color(0xFF0D47A1);
+  static const Color primaryLight = Color(0xFF42A5F5);
 
   // Risk colors
   static const Color riskLow = Color(0xFF607D8B); // blue-grey
@@ -20,6 +22,19 @@ class DesignTokens {
   static const double s24 = 24;
   static const double s32 = 32;
 
+  // Radii (modern rounded corners)
+  static const double radiusSmall = 8;
+  static const double radiusMedium = 12;
+  static const double radiusLarge = 16;
+  static const double radiusXLarge = 20;
+  static const double radiusPill = 999;
+
+  // Elevation / shadows (subtle depth)
+  static const double elevationCard = 0;
+  static const double elevationCardHover = 1;
+  static const double elevationAppBar = 0;
+  static const double elevationNav = 8;
+
   // Accessibility / interaction
   static const double minTouchTarget = 48;
 
@@ -27,5 +42,9 @@ class DesignTokens {
   static const double fontBody = 16;
   static const double fontBodyLarge = 18;
   static const double fontTitle = 20;
+
+  // Animation
+  static const Duration animationFast = Duration(milliseconds: 150);
+  static const Duration animationNormal = Duration(milliseconds: 250);
 }
 

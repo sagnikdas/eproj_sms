@@ -71,7 +71,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: padding, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: padding, vertical: DesignTokens.s12),
             child: Row(
               children: [
                 Semantics(
@@ -80,19 +80,11 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
                   label: 'Show all messages',
                   hint: 'Double tap to see all analyzed messages.',
                   child: ExcludeSemantics(
-                    child: SizedBox(
-                      height: DesignTokens.minTouchTarget,
-                      child: FilterChip(
-                        label: const Text('All'),
+                    child: Expanded(
+                      child: _FilterSegment(
+                        label: 'All',
                         selected: !_highRiskOnly,
-                        showCheckmark: false,
-                        selectedColor: theme.colorScheme.primary,
-                        labelStyle: TextStyle(
-                          color: !_highRiskOnly
-                              ? theme.colorScheme.onSurface
-                              : theme.colorScheme.onPrimary,
-                        ),
-                        onSelected: (v) {
+                        onTap: () {
                           selectionClick();
                           setState(() => _highRiskOnly = false);
                         },
@@ -100,26 +92,18 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 10),
                 Semantics(
                   container: true,
                   button: true,
                   label: 'Show only high-risk messages',
                   hint: 'Double tap to filter to the most serious warnings.',
                   child: ExcludeSemantics(
-                    child: SizedBox(
-                      height: DesignTokens.minTouchTarget,
-                      child: FilterChip(
-                        label: const Text('High Risk'),
+                    child: Expanded(
+                      child: _FilterSegment(
+                        label: 'High Risk',
                         selected: _highRiskOnly,
-                        showCheckmark: false,
-                        selectedColor: theme.colorScheme.primary,
-                        labelStyle: TextStyle(
-                          color: _highRiskOnly
-                              ? theme.colorScheme.onPrimary
-                              : theme.colorScheme.onSurface,
-                        ),
-                        onSelected: (v) {
+                        onTap: () {
                           selectionClick();
                           setState(() => _highRiskOnly = true);
                         },
@@ -249,6 +233,49 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
   }
 }
 
+class _FilterSegment extends StatelessWidget {
+  const _FilterSegment({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    return Material(
+      color: selected
+          ? colorScheme.primary
+          : colorScheme.surfaceContainerHighest,
+      borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Center(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+                color: selected
+                    ? colorScheme.onPrimary
+                    : colorScheme.onSurface,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _MessagesLoadingHeader extends StatelessWidget {
   const _MessagesLoadingHeader();
 
@@ -257,12 +284,15 @@ class _MessagesLoadingHeader extends StatelessWidget {
     final theme = Theme.of(context);
     return Row(
       children: [
-        const SizedBox(
+        SizedBox(
           height: 22,
           width: 22,
-          child: CircularProgressIndicator(strokeWidth: 2),
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: theme.colorScheme.primary,
+          ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: DesignTokens.s12),
         Text(
           'Loading messages…',
           style: theme.textTheme.bodyMedium?.copyWith(
@@ -284,10 +314,10 @@ class _MessageSkeletonTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: base,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+        border: Border.all(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.6)),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -296,25 +326,25 @@ class _MessageSkeletonTile extends StatelessWidget {
             width: 160,
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHigh,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSmall),
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           Container(
             height: 8,
             width: double.infinity,
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHigh,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSmall),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Container(
             height: 8,
             width: 220,
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHigh,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSmall),
             ),
           ),
         ],
@@ -397,56 +427,65 @@ class _MessageTile extends StatelessWidget {
 
     final theme = Theme.of(context);
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 72),
-        child: ListTile(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          title: Text(
-            message.sender,
-            style: const TextStyle(fontWeight: FontWeight.w600),
+      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+        side: BorderSide(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.6),
+        ),
+      ),
+      child: ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        title: Text(
+          message.sender,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
           ),
-          subtitle: Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Text(
-              snippet,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            snippet,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: badgeBg,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  badgeLabel,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: badgeText,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                dateStr,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-          onTap: onTap,
         ),
+        trailing: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: badgeBg,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSmall),
+              ),
+              child: Text(
+                badgeLabel,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: badgeText,
+                ),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              dateStr,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        onTap: onTap,
       ),
     );
   }

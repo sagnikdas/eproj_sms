@@ -44,13 +44,56 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
   }
 
   static ThemeData _buildLightTheme() {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: DesignTokens.primary,
+      brightness: Brightness.light,
+      primary: DesignTokens.primary,
+    );
     return ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: DesignTokens.primary, brightness: Brightness.light),
+      colorScheme: colorScheme,
       useMaterial3: true,
-      snackBarTheme: const SnackBarThemeData(
+      snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         showCloseIcon: false,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusMedium)),
       ),
+      cardTheme: CardThemeData(
+        elevation: DesignTokens.elevationCard,
+        shadowColor: Colors.black26,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusLarge)),
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusLarge)),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusLarge)),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusMedium)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      ),
+      listTileTheme: ListTileThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusMedium)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      expansionTileTheme: ExpansionTileThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusMedium)),
+        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      dividerTheme: DividerThemeData(color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(fontSize: DesignTokens.fontBody),
         bodyLarge: TextStyle(fontSize: DesignTokens.fontBodyLarge),
@@ -59,13 +102,56 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
   }
 
   static ThemeData _buildDarkTheme() {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: DesignTokens.primary,
+      brightness: Brightness.dark,
+      primary: DesignTokens.primaryLight,
+    );
     return ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: DesignTokens.primary, brightness: Brightness.dark),
+      colorScheme: colorScheme,
       useMaterial3: true,
-      snackBarTheme: const SnackBarThemeData(
+      snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         showCloseIcon: false,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusMedium)),
       ),
+      cardTheme: CardThemeData(
+        elevation: DesignTokens.elevationCard,
+        shadowColor: Colors.black45,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusLarge)),
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusLarge)),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusLarge)),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusMedium)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      ),
+      listTileTheme: ListTileThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusMedium)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      expansionTileTheme: ExpansionTileThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusMedium)),
+        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      dividerTheme: DividerThemeData(color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(fontSize: DesignTokens.fontBody),
         bodyLarge: TextStyle(fontSize: DesignTokens.fontBodyLarge),
