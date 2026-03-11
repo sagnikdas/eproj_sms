@@ -63,6 +63,26 @@ class HeuristicDetector {
       reasons.add('Mentions bank account, KYC, or payment details');
     }
 
+    if (_containsPaymentRequestKeywords(lowerBody)) {
+      score += _config.weightPaymentRequest;
+      reasons.add('Asks you to send or approve a payment');
+    }
+
+    if (_containsRewardScamKeywords(lowerBody)) {
+      score += _config.weightRewardScam;
+      reasons.add('Looks like a prize or lottery reward scam');
+    }
+
+    if (_containsParcelScamKeywords(lowerBody)) {
+      score += _config.weightParcelScam;
+      reasons.add('Mentions a suspicious parcel or delivery issue');
+    }
+
+    if (_containsCryptoScamKeywords(lowerBody)) {
+      score += _config.weightCryptoScam;
+      reasons.add('Mentions risky crypto investment or guaranteed returns');
+    }
+
     if (_isSuspectSender(sender)) {
       score += _config.weightSuspectSender;
       reasons.add('Sender name looks unusual or suspicious');
@@ -96,6 +116,11 @@ class HeuristicDetector {
 
   bool _containsOtpPattern(String body) {
     // Matches patterns like "OTP: 123456", "code is 784321", etc.
+    final lower = body.toLowerCase();
+    for (final kw in _config.otpKeywords) {
+      if (lower.contains(kw)) return true;
+    }
+
     final otpRegex = RegExp(
       r'\b(otp|one.?time.?(password|code|pin)|verification code|auth.?code)\b',
       caseSensitive: false,
@@ -113,6 +138,34 @@ class HeuristicDetector {
 
   bool _containsBankKeywords(String lower) {
     for (final kw in _config.bankKeywords) {
+      if (lower.contains(kw)) return true;
+    }
+    return false;
+  }
+
+  bool _containsPaymentRequestKeywords(String lower) {
+    for (final kw in _config.paymentRequestKeywords) {
+      if (lower.contains(kw)) return true;
+    }
+    return false;
+  }
+
+  bool _containsRewardScamKeywords(String lower) {
+    for (final kw in _config.rewardScamKeywords) {
+      if (lower.contains(kw)) return true;
+    }
+    return false;
+  }
+
+  bool _containsParcelScamKeywords(String lower) {
+    for (final kw in _config.parcelScamKeywords) {
+      if (lower.contains(kw)) return true;
+    }
+    return false;
+  }
+
+  bool _containsCryptoScamKeywords(String lower) {
+    for (final kw in _config.cryptoScamKeywords) {
       if (lower.contains(kw)) return true;
     }
     return false;

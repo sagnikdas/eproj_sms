@@ -71,16 +71,19 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: padding, vertical: DesignTokens.s12),
+            padding: EdgeInsets.symmetric(
+              horizontal: padding,
+              vertical: DesignTokens.s12,
+            ),
             child: Row(
               children: [
-                Semantics(
-                  container: true,
-                  button: true,
-                  label: 'Show all messages',
-                  hint: 'Double tap to see all analyzed messages.',
-                  child: ExcludeSemantics(
-                    child: Expanded(
+                Expanded(
+                  child: Semantics(
+                    container: true,
+                    button: true,
+                    label: 'Show all messages',
+                    hint: 'Double tap to see all analyzed messages.',
+                    child: ExcludeSemantics(
                       child: _FilterSegment(
                         label: 'All',
                         selected: !_highRiskOnly,
@@ -93,13 +96,14 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Semantics(
-                  container: true,
-                  button: true,
-                  label: 'Show only high-risk messages',
-                  hint: 'Double tap to filter to the most serious warnings.',
-                  child: ExcludeSemantics(
-                    child: Expanded(
+                Expanded(
+                  child: Semantics(
+                    container: true,
+                    button: true,
+                    label: 'Show only high-risk messages',
+                    hint:
+                        'Double tap to filter to the most serious warnings.',
+                    child: ExcludeSemantics(
                       child: _FilterSegment(
                         label: 'High Risk',
                         selected: _highRiskOnly,
