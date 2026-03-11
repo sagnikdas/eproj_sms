@@ -162,7 +162,16 @@ class AppLocalizationsHi extends AppLocalizations {
   String get languageUrduName => 'उर्दू';
 
   @override
-  String get languageAssameseName => 'Assamese';
+  String get languageAssameseName => 'असमिया';
+
+  @override
+  String get languageTamilName => 'तमिल';
+
+  @override
+  String get languageMalayalamName => 'मलयालम';
+
+  @override
+  String get languageTeluguName => 'तेलुगू';
 
   @override
   String languageSectionSubtitle(String languageName) {

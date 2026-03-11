@@ -190,7 +190,7 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
         languageCode == null || languageCode.isEmpty ? null : Locale(languageCode);
 
     return MaterialApp(
-      onGenerateTitle: (ctx) => AppLocalizations.of(ctx)!.appTitle,
+      onGenerateTitle: (_) => 'Elder Shield',
       title: 'Elder Shield',
       debugShowCheckedModeBanner: false,
       locale: locale,

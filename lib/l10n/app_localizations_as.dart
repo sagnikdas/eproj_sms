@@ -165,6 +165,15 @@ class AppLocalizationsAs extends AppLocalizations {
   String get languageAssameseName => 'অসমীয়া';
 
   @override
+  String get languageTamilName => 'তামিল';
+
+  @override
+  String get languageMalayalamName => 'মালয়ালম';
+
+  @override
+  String get languageTeluguName => 'তেলুগু';
+
+  @override
   String languageSectionSubtitle(String languageName) {
     return 'বৰ্তমান: $languageName';
   }

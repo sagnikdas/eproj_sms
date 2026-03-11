@@ -91,6 +91,10 @@
   "languageKannadaName": "कन्नड़",
   "languageHindiName": "हिन्दी",
   "languageUrduName": "उर्दू",
+  "languageAssameseName": "असमिया",
+  "languageTamilName": "तमिल",
+  "languageMalayalamName": "मलयालम",
+  "languageTeluguName": "तेलुगू",
   "languageSectionSubtitle": "वर्तमान: {languageName}",
   "@languageSectionSubtitle": {
     "description": "वर्तमान चुनी हुई भाषा दिखाने वाला सबटाइटल।",

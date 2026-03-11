@@ -92,6 +92,9 @@
   "languageHindiName": "হিন্দী",
   "languageUrduName": "উৰ্দু",
   "languageAssameseName": "অসমীয়া",
+  "languageTamilName": "তামিল",
+  "languageMalayalamName": "মালয়ালম",
+  "languageTeluguName": "তেলুগু",
   "languageSectionSubtitle": "বৰ্তমান: {languageName}",
   "@languageSectionSubtitle": {
     "description": "বৰ্তমান বাছনি কৰা ভাষা দেখুওৱা সাব-টাইটেল।",

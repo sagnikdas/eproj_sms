@@ -10,6 +10,9 @@ import 'app_localizations_bn.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_hi.dart';
 import 'app_localizations_kn.dart';
+import 'app_localizations_ml.dart';
+import 'app_localizations_ta.dart';
+import 'app_localizations_te.dart';
 import 'app_localizations_ur.dart';
 
 // ignore_for_file: type=lint
@@ -100,6 +103,9 @@ abstract class AppLocalizations {
     Locale('en'),
     Locale('hi'),
     Locale('kn'),
+    Locale('ml'),
+    Locale('ta'),
+    Locale('te'),
     Locale('ur')
   ];
 
@@ -402,6 +408,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Assamese'**
   String get languageAssameseName;
+
+  /// No description provided for @languageTamilName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tamil'**
+  String get languageTamilName;
+
+  /// No description provided for @languageMalayalamName.
+  ///
+  /// In en, this message translates to:
+  /// **'Malayalam'**
+  String get languageMalayalamName;
+
+  /// No description provided for @languageTeluguName.
+  ///
+  /// In en, this message translates to:
+  /// **'Telugu'**
+  String get languageTeluguName;
 
   /// Subtitle showing currently selected language.
   ///
@@ -1349,7 +1373,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['as', 'bn', 'en', 'hi', 'kn', 'ur'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['as', 'bn', 'en', 'hi', 'kn', 'ml', 'ta', 'te', 'ur'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1365,6 +1389,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
     case 'en': return AppLocalizationsEn();
     case 'hi': return AppLocalizationsHi();
     case 'kn': return AppLocalizationsKn();
+    case 'ml': return AppLocalizationsMl();
+    case 'ta': return AppLocalizationsTa();
+    case 'te': return AppLocalizationsTe();
     case 'ur': return AppLocalizationsUr();
   }
 

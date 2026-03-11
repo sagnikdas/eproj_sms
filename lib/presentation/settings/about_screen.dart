@@ -36,7 +36,7 @@ class AboutScreen extends StatelessWidget {
                 Image.asset('assets/icon/icon.png', width: 80, height: 80, fit: BoxFit.contain),
                 const SizedBox(height: 16),
                 Text(
-                  l10n.appTitle,
+                  'Elder Shield',
                   style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),

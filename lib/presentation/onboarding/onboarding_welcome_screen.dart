@@ -37,7 +37,7 @@ class OnboardingWelcomeScreen extends StatelessWidget {
                     const Icon(Icons.shield, size: 100, color: Color(0xFF1565C0)),
                     const SizedBox(height: 24),
                     Text(
-                      l10n.appTitle,
+                      'Elder Shield',
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 28,

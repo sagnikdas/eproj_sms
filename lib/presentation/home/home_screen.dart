@@ -206,7 +206,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         : (isDark ? theme.colorScheme.surfaceContainerHighest : Colors.grey.shade100);
 
     return Scaffold(
-      appBar: ElderShieldAppBar(titleText: l10n.homeAppBarTitle),
+      appBar: ElderShieldAppBar(titleText: 'Elder Shield'),
       body: RefreshIndicator(
         onRefresh: () async {
           lightImpact();

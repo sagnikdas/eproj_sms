@@ -91,6 +91,10 @@
   "languageKannadaName": "ಕನ್ನಡ",
   "languageHindiName": "ಹಿಂದಿ",
   "languageUrduName": "ಉರ್ದು",
+  "languageAssameseName": "ಅಸ್ಸಾಮೀಸ್",
+  "languageTamilName": "ತಮಿಳು",
+  "languageMalayalamName": "ಮಲಯಾಳಂ",
+  "languageTeluguName": "ತೆಲುಗು",
   "languageSectionSubtitle": "ಪ್ರಸ್ತುತ: {languageName}",
   "@languageSectionSubtitle": {
     "description": "Subtitle showing currently selected language.",

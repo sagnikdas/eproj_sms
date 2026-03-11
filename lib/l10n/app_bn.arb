@@ -91,6 +91,10 @@
   "languageKannadaName": "কন্নড়",
   "languageHindiName": "হিন্দি",
   "languageUrduName": "উর্দু",
+  "languageAssameseName": "অসমীয়া",
+  "languageTamilName": "তামিল",
+  "languageMalayalamName": "মালয়ালম",
+  "languageTeluguName": "তেলুগু",
   "languageSectionSubtitle": "বর্তমান ভাষা: {languageName}",
   "@languageSectionSubtitle": {
     "description": "Subtitle showing currently selected language.",

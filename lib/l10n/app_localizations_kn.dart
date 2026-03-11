@@ -162,7 +162,16 @@ class AppLocalizationsKn extends AppLocalizations {
   String get languageUrduName => 'ಉರ್ದು';
 
   @override
-  String get languageAssameseName => 'Assamese';
+  String get languageAssameseName => 'ಅಸ್ಸಾಮೀಸ್';
+
+  @override
+  String get languageTamilName => 'ತಮಿಳು';
+
+  @override
+  String get languageMalayalamName => 'ಮಲಯಾಳಂ';
+
+  @override
+  String get languageTeluguName => 'ತೆಲುಗು';
 
   @override
   String languageSectionSubtitle(String languageName) {

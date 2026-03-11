@@ -162,7 +162,16 @@ class AppLocalizationsBn extends AppLocalizations {
   String get languageUrduName => 'উর্দু';
 
   @override
-  String get languageAssameseName => 'Assamese';
+  String get languageAssameseName => 'অসমীয়া';
+
+  @override
+  String get languageTamilName => 'তামিল';
+
+  @override
+  String get languageMalayalamName => 'মালয়ালম';
+
+  @override
+  String get languageTeluguName => 'তেলুগু';
 
   @override
   String languageSectionSubtitle(String languageName) {

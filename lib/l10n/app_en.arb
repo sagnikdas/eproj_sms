@@ -92,6 +92,9 @@
   "languageHindiName": "Hindi",
   "languageUrduName": "Urdu",
   "languageAssameseName": "Assamese",
+  "languageTamilName": "Tamil",
+  "languageMalayalamName": "Malayalam",
+  "languageTeluguName": "Telugu",
   "languageSectionSubtitle": "Current: {languageName}",
   "@languageSectionSubtitle": {
     "description": "Subtitle showing currently selected language.",

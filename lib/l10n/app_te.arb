@@ -1,0 +1,323 @@
+{
+  "@@locale": "te",
+
+  "appTitle": "ఎల్డర్ షీల్డ్",
+
+  "settingsTitle": "సెట్టింగ్‌లు",
+
+  "homeAppBarTitle": "ఎల్డర్ షీల్డ్",
+  "homePostOnboardingTitle": "మీరు రక్షించబడ్డారు",
+  "homePostOnboardingBody": "హోమ్ నుండి ఎప్పుడైనా {contactName}ని కాల్ చేయవచ్చు.",
+  "@homePostOnboardingBody": {
+    "description": "ఆన్‌బోర్డింగ్ తర్వాత చూపించే సందేశం; contactName విశ్వసనీయ సంప్రదింపు పేరు లేదా సాధారణ పదబంధం.",
+    "placeholders": {
+      "contactName": {
+        "type": "String"
+      }
+    }
+  },
+  "commonGotIt": "అర్థమైంది",
+
+  "homeTrustedContactFallbackName": "మీ విశ్వసనీయ సంప్రదింపు",
+
+  "permissionsDialogTitle": "సెట్టింగ్‌లలో రక్షణను ఎనేబుల్ చేయండి",
+  "permissionsDialogBody": "మోసం సందేశాలను తనిఖీ చేయడానికి ఎల్డర్ షీల్డ్‌కు SMS మరియు ఫోన్ యాక్సెస్ అవసరం.\n\nఈ అనుమతులను ఆన్ చేయడానికి యాప్ సెట్టింగ్‌లను తెరవాలా?",
+  "commonCancel": "రద్దు",
+  "permissionsDialogOpenSettings": "సెట్టింగ్‌లను తెరువండి",
+
+  "homeProtectionStatusLabel": "రక్షణ స్థితి",
+  "homeProtectionStatusProtected": "రక్షించబడింది",
+  "homeProtectionStatusPermissionsNeeded": "అనుమతులు అవసరం",
+  "homeEnableProtectionButton": "రక్షణను ఎనేబుల్ చేయండి",
+
+  "homeTodayRiskSummaryWithCount": "ఈ రోజు {count} అనుమానాస్పద సందేశం(లు) గుర్తించబడ్డాయి.",
+  "@homeTodayRiskSummaryWithCount": {
+    "description": "ఈ రోజు అనుమానాస్పద సందేశాల సారాంశం, గణనతో.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeTodayRiskSummaryNoRisk": "ఈ రోజు అనుమానాస్పద కార్యకలాపం లేదు.",
+  "homeTodayRiskTapToSeeMessages": "సందేశాలను చూడటానికి టాప్ చేయండి",
+  "commonView": "చూడండి",
+
+  "homeAutoCheckInfo": "ఎల్డర్ షీల్డ్ కొత్త సందేశాలను స్వయంచాలకంగా తనిఖీ చేస్తుంది.",
+
+  "homeCallTrustedButtonLabel": "{name}ని కాల్ చేయండి",
+  "@homeCallTrustedButtonLabel": {
+    "description": "ప్రధాన 'విశ్వసనీయ సంప్రదింపును కాల్ చేయండి' బటన్ లేబుల్.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+
+  "homeCallTooltipText": "భయపెట్టే సందేశం వచ్చినప్పుడల్లా ఇక్కడ టాప్ చేయండి.",
+
+  "homeAddTrustedIntro": "భయపెట్టే సందేశం వస్తే వేగంగా కాల్ చేయగల విశ్వసనీయ సంప్రదింపును జోడించండి.",
+  "homeAddTrustedButton": "విశ్వసనీయ సంప్రదింపును జోడించండి",
+  "homeWhyAddTrustedShow": "విశ్వసనీయ సంప్రదింపు ఎందుకు జోడించాలి?",
+  "homeWhyAddTrustedHide": "కారణాన్ని దాచు",
+  "homeWhyAddTrustedExplanation": "భయపెట్టే సందేశం వస్తే, ఒంటరిగా ఊహించకుండా ఒక పెద్ద బటన్ టాప్ చేసి విశ్వసించే వ్యక్తిని కాల్ చేయవచ్చు.",
+  "homeTrustedContactsHeader": "మీ విశ్వసనీయ సంప్రదింపులు",
+
+  "highRiskHeaderTitle": "హెచ్చరిక: ఇది మోసం సందేశంగా ఉండవచ్చు",
+  "highRiskHeaderBody": "ఈ సందేశంలోని ఏ లింక్‌లపైనా టాప్ చేయవద్దు, కోడ్‌లను షేర్ చేయవద్దు.",
+  "highRiskWhyFlaggedTitle": "ఎందుకు ఫ్లాగ్ చేయబడింది:",
+
+  "actionScam": "ఇది మోసం",
+  "actionSafe": "ఇది సురక్షితం",
+
+  "snackbarGenericError": "ఏదో తప్పు జరిగింది. మళ్లీ ప్రయత్నించండి.",
+  "snackbarMarkedScam": "మోసంగా గుర్తించబడింది. ధన్యవాదాలు.",
+
+  "highRiskSwipeUpForDetails": "మరింత వివరాలకు పైకి స్వైప్ చేయండి",
+
+  "riskLowLabel": "తక్కువ ప్రమాదం",
+  "riskMediumLabel": "మధ్యస్థ ప్రమాదం — సమీక్షించండి",
+  "riskHighLabel": "అధిక ప్రమాదం — సాధ్యమైన మోసం",
+
+  "deleteMessageTitle": "సందేశాన్ని తొలగించాలా?",
+  "deleteMessageBody": "ఖచ్చితమా? ఇది సందేశాన్ని ఎల్డర్ షీల్డ్ నుండి మాత్రమే తొలగిస్తుంది.",
+  "deleteMessageConfirm": "తొలగించు",
+  "deleteMessageDeletedSnackbar": "ఎల్డర్ షీల్డ్ నుండి తొలగించబడింది.",
+
+  "languageSectionTitle": "భాష",
+  "languageEnglishName": "ఇంగ్లీష్",
+  "languageBengaliName": "బెంగాలి",
+  "languageKannadaName": "కన్నడ",
+  "languageHindiName": "హిందీ",
+  "languageUrduName": "ఉర్దూ",
+  "languageAssameseName": "అస్సామీస్",
+  "languageTamilName": "తమిళం",
+  "languageMalayalamName": "మలయాళం",
+  "languageTeluguName": "తెలుగు",
+  "languageSectionSubtitle": "ప్రస్తుతం: {languageName}",
+  "@languageSectionSubtitle": {
+    "description": "ప్రస్తుతం ఎంచుకున్న భాషను చూపించే ఉపశీర్షిక.",
+    "placeholders": {
+      "languageName": {
+        "type": "String"
+      }
+    }
+  },
+
+  "snackbarUpdated": "నవీకరించబడింది",
+
+  "settingsAppearanceTitle": "రూపం",
+  "settingsThemeSystem": "సిస్టమ్",
+  "settingsThemeLight": "లైట్",
+  "settingsThemeDark": "డార్క్",
+
+  "settingsTextSizeTitle": "టెక్స్ట్ సైజ్",
+  "settingsTextSizeDescription": "టెక్స్ట్ పెద్దగా లేదా చిన్నగా చూడడానికి సర్దుబాటు చేయండి. మార్పులు వెంటనే వర్తిస్తాయి.",
+  "settingsTextSizeSample": "ఎల్డర్ షీల్డ్ మోసం సందేశాల నుండి మిమ్మల్ని రక్షిస్తుంది.",
+
+  "settingsLegalTitle": "చట్టం మరియు సమాచారం",
+  "settingsPrivacyPolicyTitle": "గోప్యతా విధానం",
+  "settingsPrivacyPolicySubtitle": "మీ డేటాను ఎలా ఉపయోగిస్తాము",
+  "settingsPermissionsExplainedTitle": "అనుమతులు వివరణ",
+  "settingsPermissionsExplainedSubtitle": "ప్రతి అనుమతి ఎందుకు అవసరం",
+
+  "settingsSensitivityTitle": "సున్నితత్వం",
+  "settingsSensitivityLabelConservative": "తక్కువ హెచ్చరికలు",
+  "settingsSensitivityLabelBalanced": "సమతుల్యం",
+  "settingsSensitivityLabelSensitive": "ఎక్కువ హెచ్చరికలు",
+  "settingsSensitivityDescConservative": "చాలా స్పష్టమైన మోసాలు మాత్రమే. తక్కువ హెచ్చరికలు ఇష్టమైతే అనువైనది.",
+  "settingsSensitivityDescBalanced": "చాలా మందికి అనువైనది. పట్టుకున్న మోసాలు మరియు శబ్దం సమతుల్యం.",
+  "settingsSensitivityDescSensitive": "ఎక్కువ మోసాలను పట్టుకుంటుంది; కొన్నిసార్లు సురక్షిత సందేశాలను కూడా ఫ్లాగ్ చేయవచ్చు.",
+
+  "settingsTrustedContactsTitle": "విశ్వసనీయ సంప్రదింపులు",
+  "settingsTrustedContactsNone": "ఏవీ లేవు",
+  "settingsTrustedContactsCount": "{count} సంప్రదింపు(లు)",
+  "@settingsTrustedContactsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTrustedContactsExplanation": "హోమ్ నుండి లేదా మోసం హెచ్చరిక చూపించినప్పుడు ఒక టాప్‌తో వారిని కాల్ చేయవచ్చు. జాబితాలో మొదటిది ప్రధాన \"కాల్\" బటన్‌కు ఉపయోగించబడుతుంది.",
+  "settingsTrustedContactsAddContactTitle": "సంప్రదింపును జోడించండి",
+  "settingsTrustedContactsAddContactSubtitle": "పేరు మరియు ఫోన్ నంబర్ టైప్ చేయండి",
+  "settingsTrustedContactsChooseFromContactsTitle": "సంప్రదింపుల నుండి ఎంచుకోండి",
+  "settingsTrustedContactsChooseFromContactsSubtitle": "మీ ఫోన్ నుండి నంబర్ ఎంచుకోండి",
+  "settingsTrustedContactsPickerUnavailable": "ఈ ప్రివ్యూ బిల్డ్‌లో డివైస్ కాంటాక్ట్ పికర్ ఇంకా అందుబాటులో లేదు.",
+
+  "settingsTrustedContactsRemoveDialogTitle": "విశ్వసనీయ సంప్రదింపును తొలగించాలా?",
+  "settingsTrustedContactsRemoveDialogBody": "ఈ వ్యక్తి విశ్వసనీయ సంప్రదింపులు లేదా హోమ్ స్క్రీన్‌లో ఇకపై కనిపించరు.",
+  "settingsTrustedContactsRemoveDialogRemove": "తొలగించు",
+
+  "settingsAdvancedSectionTitle": "అధునాతన",
+  "settingsDeleteAllHistoryButton": "అన్ని చరిత్రను తొలగించండి",
+  "settingsRerunPermissionsButton": "అనుమతి చెక్ మళ్లీ రన్ చేయండి",
+
+  "settingsDeleteAllHistoryDialogTitle": "అన్ని చరిత్రను తొలగించాలా?",
+  "settingsDeleteAllHistoryDialogBody": "ఈ డివైస్ నుండి అన్ని విశ్లేషించిన సందేశాలు మరియు కారణాలు శాశ్వతంగా తొలగించబడతాయి. తిరిగి చేయలేము.",
+  "settingsDeleteAllHistoryDialogConfirm": "అన్నీ తొలగించు",
+  "settingsHistoryDeletedSnackbar": "చరిత్ర తొలగించబడింది",
+
+  "settingsRerunPermissionsSnackbar": "అనుమతి చెక్ పూర్తయింది. అనుమతి ఇచ్చినట్లయితే యాప్‌ను రీస్టార్ట్ చేయండి.",
+
+  "settingsOverlayTitle": "ఇతర యాప్‌ల మీద అత్యవసర పాప్-అప్",
+  "settingsOverlaySubtitleEnabled": "ఎనేబుల్: అధిక ప్రమాద హెచ్చరికలు ఇతర యాప్‌ల మీద కనిపించవచ్చు. మరొక యాప్‌లో ఉన్నప్పటికీ హెచ్చరించాలనుకుంటే సిఫార్సు.",
+  "settingsOverlaySubtitleDisabled": "ఆఫ్: ఆండ్రాయిడ్ ఓవర్లే అనుమతిని ఎనేబుల్ చేయడానికి ఇక్కడ టాప్ చేయండి. మరొక యాప్ ఉపయోగిస్తున్నప్పటికీ హెచ్చరిక ఎనేబుల్ ఉండటం మంచిది.",
+
+  "settingsHowItWorksTitle": "ఎల్డర్ షీల్డ్ ఎలా పనిచేస్తుంది",
+  "settingsHowItWorksSubtitle": "మేము ఏమి తనిఖీ చేస్తాము, ఎప్పుడు హెచ్చరిస్తాము, మీరు ఏమి చేయాలి",
+  "settingsAboutTitle": "ఎల్డర్ షీల్డ్ గురించి",
+
+  "settingsAddTrustedDialogTitle": "విశ్వసనీయ సంప్రదింపును జోడించండి",
+  "settingsAddTrustedDialogConsent": "హోమ్ నుండి లేదా మోసం హెచ్చరిక చూపించినప్పుడు ఒక టాప్‌తో వారిని కాల్ చేయవచ్చు.",
+  "settingsAddTrustedDialogConfirm": "జోడించండి",
+  "settingsEditTrustedDialogTitle": "విశ్వసనీయ సంప్రదింపును సవరించండి",
+  "settingsEditTrustedDialogConfirm": "సేవ్",
+  "settingsContactNameLabel": "పేరు",
+  "settingsContactNameHint": "ఉదా: నా కుమారుడు",
+  "settingsContactNumberLabel": "ఫోన్ నంబర్",
+  "settingsContactNumberHint": "ఉదా: +91 98765 43210",
+  "settingsContactDialogCancel": "రద్దు",
+  "settingsContactInvalidNumber": "చెల్లుబాటు అయ్యే ఫోన్ నంబర్ నమోదు చేయండి",
+
+  "howItWorksBulletWhatWeCheck": "మేము ఏమి తనిఖీ చేస్తాము: మీ SMSను చదివి మోసం సంకేతాల కోసం చూస్తాము — అనుమానాస్పద లింక్‌లు, అత్యవసర/బెదిరించే భాష, OTP లేదా బ్యాంక్ వివరాలను అడిగే సందేశాలు, మీ బ్యాంక్ లేదా తెలిసిన సేవలా నటించే సందేశాలు.",
+  "howItWorksBulletWhenWeAlert": "ఎప్పుడు హెచ్చరిస్తాము: సందేశం ప్రమాదంగా ఉంటే తెలియజేస్తాము. అధిక ప్రమాద సందేశాలకు యాప్ బ్యాక్‌గ్రౌండ్‌లో ఉన్నప్పటికీ పాప్-అప్ చూపించవచ్చు; సందేశాలు ట్యాబ్‌లో జాబితా చేయబడతాయి.",
+  "howItWorksBulletWhatToDo": "హెచ్చరిక చూసినప్పుడు ఏమి చేయాలి: సందేశంలోని ఏ లింక్‌పైనా టాప్ చేయవద్దు. \"ఇది మోసం\" లేదా \"ఇది సురక్షితం\" గుర్తించి మాకు నేర్చుకోవడానికి సహాయపడవచ్చు. ఉత్తమం: హెచ్చరిక స్క్రీన్ నుండి లేదా హోమ్ నుండి విశ్వసనీయ సంప్రదింపును కాల్ చేయండి.",
+  "howItWorksBulletCallTrusted": "విశ్వసనీయ సంప్రదింపును ఎలా కాల్ చేయాలి: హోమ్ స్క్రీన్‌లో పెద్ద \"కాల్ [పేరు]\" బటన్‌ను ఎప్పుడైనా టాప్ చేయండి — ముఖ్యంగా భయపెట్టే సందేశం వచ్చినప్పుడు. సాధ్యమైన మోసం చూపించినప్పుడు హెచ్చరిక స్క్రీన్ నుండి కూడా కాల్ చేయవచ్చు.",
+  "howItWorksSeeWarningCta": "హెచ్చరిక ఎలా ఉంటుంది చూడండి",
+
+  "permissionsIntro": "ఎల్డర్ షీల్డ్ మోసం నుండి రక్షణ కోసం మాత్రమే అనుమతులను ఉపయోగిస్తుంది. ఏ అనుమతినైనా నిరాకరించవచ్చు; రక్షణ పరిమితంగా ఉంటుంది కానీ యాప్ ఇంకా పనిచేస్తుంది.",
+  "permissionsSmsTitle": "సందేశాలు (SMS)",
+  "permissionsSmsBody": "వచ్చే SMSను స్వీకరించి మోసం సంకేతాల కోసం (అనుమానాస్పద లింక్‌లు, OTP ఫిషింగ్, బ్యాంక్ పదాలు) విశ్లేషించి అవసరమైతే హెచ్చరిస్తాము. ఏ సందేశ కంటెంట్ కూడా మీ డివైస్ నుండి పంపబడదు. సెట్టింగ్‌ల నుండి అన్ని విశ్లేషణ చరిత్రను తొలగించవచ్చు.",
+  "permissionsPhoneStateTitle": "ఫోన్ (స్థితి చదవండి)",
+  "permissionsPhoneStateBody": "మీరు కాల్‌లో ఉన్నప్పుడు తెలుసుకోవాలి; కాల్‌లో ఉన్నప్పుడు OTP వచ్చినప్పుడు ప్రమాద స్థాయిని పెంచడానికి (సాధారణ మోసం నమూనా). కాల్‌లను రికార్డ్ చేయము, ఆడియో వినము, కాల్ లాగ్ యాక్సెస్ చేయము.",
+  "permissionsPhoneCallTitle": "ఫోన్ (కాల్‌లు చేయండి)",
+  "permissionsPhoneCallBody": "హోమ్ నుండి లేదా హెచ్చరిక నుండి \"విశ్వసనీయ సంప్రదింపును కాల్ చేయండి\" బటన్ టాప్ చేసి కాల్ ప్రారంభించడానికి. మీరు బటన్ టాప్ చేసినప్పుడు మాత్రమే, విశ్వసనీయ సంప్రదింపులుగా జోడించిన నంబర్‌లకు మాత్రమే కాల్ చేస్తాము.",
+  "permissionsNotificationsTitle": "నోటిఫికేషన్‌లు",
+  "permissionsNotificationsBody": "అనుమానాస్పద లేదా అధిక ప్రమాద సందేశాన్ని గుర్తించినప్పుడు వేగంగా తెలియజేయడానికి. సిస్టమ్ సెట్టింగ్‌లలో నోటిఫికేషన్‌లను ఆఫ్ చేయవచ్చు; యాప్ ఇంకా ఉపయోగించవచ్చు.",
+  "permissionsOverlayTitle": "ఇతర యాప్‌ల మీద చూపించండి (ఐచ్ఛికం)",
+  "permissionsOverlayBody": "సెట్టింగ్‌లలో ఆండ్రాయిడ్ ఓవర్లే అనుమతిని ఎనేబుల్ చేస్తే, అధిక ప్రమాద సందేశం వచ్చినప్పుడు ఎల్డర్ షీల్డ్ ఇతర యాప్‌ల మీద అత్యవసర హెచ్చరిక చూపించవచ్చు. పూర్తిగా ఐచ్ఛికం; వ్యక్తిగత భద్రత కోసం.",
+
+  "privacyTitle": "గోప్యతా విధానం",
+  "privacySection1Title": "1. మేము ఎవరు",
+  "privacySection1Body": "ఎల్డర్ షీల్డ్ డివైస్‌లోనే సందేశాలను విశ్లేషించి అనుమానాస్పదమైనవాటిని హెచ్చరించి, వృద్ధులను SMS మరియు కాల్ మోసాల నుండి రక్షించడానికి సహాయించే ఆండ్రాయిడ్ యాప్.",
+  "privacySection2Title": "2. మేము ఏ డేటాను ప్రాసెస్ చేస్తాము",
+  "privacySection2Paragraphs": "అన్ని ప్రాసెసింగ్ మీ డివైస్‌లోనే జరుగుతుంది. మీ సందేశాలు, కాల్ స్థితి లేదా ఇతర వ్యక్తిగత డేటాను మా సర్వర్‌లకు లేదా మూడవ పక్షానికి పంపము.\n\nసందేశ డేటా: SMS వచ్చినప్పుడు యాప్ పంపినవారు, బాడీ, టైమ్‌స్టాంప్ చదువుతుంది. ఈ డేటా డివైస్ మోసం గుర్తింపు కోసం మాత్రమే. ఫలితాలు మీ డివైస్‌లోనే నిల్వ చేయబడతాయి. సెట్టింగ్‌ల → అన్ని చరిత్రను తొలగించండి ద్వారా ఎప్పుడైనా తొలగించవచ్చు.\n\nకాల్ స్థితి: మీరు కాల్‌లో ఉన్నారా అని తనిఖీ చేస్తుంది. కాల్‌లను రికార్డ్/వినడం/కాల్ లాగ్ యాక్సెస్ చేయము. కాల్ స్థితి గుర్తింపును మెరుగుపరచడానికి మాత్రమే (ఉదా కాల్‌లో ఉన్నప్పుడు OTP వచ్చినప్పుడు హెచ్చరిక).\n\nసెట్టింగ్‌లు మరియు విశ్వసనీయ సంప్రదింపులు: డివైస్ సురక్షిత నిల్వలో మాత్రమే. \"విశ్వసనీయ సంప్రదింపును కాల్ చేయండి\" బటన్ కోసం మాత్రమే; స్వయంచాలకంగా కాల్ లేదా మెసేజ్ చేయము.",
+  "privacySection3Title": "3. మేము చేయనివి",
+  "privacySection3Paragraphs": "మీ SMS కంటెంట్, కాల్ స్థితి లేదా కాంటాక్ట్ లిస్ట్‌ను ఇంటర్నెట్‌కు పంపము.\n\nఅడ్వర్టైజర్‌లు/డేటా బ్రోకర్‌లకు డేటాను విక్రయ/అద్దె/షేర్ చేయము.\n\nఖాతా లేదా సైన్-ఇన్ అవసరం లేదు. అనుమతులు ఇచ్చిన తర్వాత యాప్ పూర్తిగా ఆఫ్‌లైన్‌లో పనిచేస్తుంది.\n\nRCS/చాట్ సందేశాలను చదువము లేదా విశ్లేషించము; స్టాండర్డ్ SMS మాత్రమే.",
+  "privacySection4Title": "4. అనుమతులు మరియు ఎందుకు అవసరం",
+  "privacySection4Paragraphs": "SMS (స్వీకరించు/చదువు): వచ్చే SMS చదివి మోసం నమూనాలను గుర్తించి హెచ్చరించడానికి. ఫోన్ (కాల్ స్థితి చదువు): కాల్‌లో ఉన్నప్పుడు తెలుసుకోవడానికి; కాల్‌లో ఉన్నప్పుడు OTP వచ్చినప్పుడు అధిక ప్రమాదం. కాల్‌లను రికార్డ్/వినడం లేదు. ఫోన్ (కాల్): \"విశ్వసనీయ సంప్రదింపును కాల్ చేయండి\" టాప్. మీరు విశ్వసనీయ సంప్రదింపులుగా జోడించిన నంబర్‌లకు మాత్రమే, మీరు టాప్ చేసినప్పుడు మాత్రమే. నోటిఫికేషన్‌లు: అనుమానాస్పద/అధిక ప్రమాద సందేశాన్ని గుర్తించినప్పుడు తెలియజేయడానికి. \"ఈ పంపినవారిని బ్లాక్ చేయండి\" ఎంచుకుంటే యాప్ మెసేజింగ్ యాప్‌ను తెరుస్తుంది; యాప్ స్వయంగా SMS పంపదు.",
+  "privacySection5Title": "5. డేటా నిలుపుదల మరియు మీ ఎంపికలు",
+  "privacySection5Paragraphs": "విశ్లేషించిన సందేశాలు/కారణాలు: సెట్టింగ్‌ల → అన్ని చరిత్రను తొలగించండి ఎంచుకునే వరకు డివైస్‌లోనే. సెట్టింగ్‌లు/విశ్వసనీయ సంప్రదింపులు: మార్చు/తొలగించు లేదా యాప్ అన్‌ఇన్‌స్టాల్ చేయే వరకు డివైస్‌లోనే. మా సర్వర్‌లలో మీ డేటా కాపీ నిల్వ చేయము; సేకరించము.",
+  "privacySection6Title": "6. పిల్లలు మరియు సున్నితమైన వినియోగదారులు",
+  "privacySection6Paragraphs": "యాప్ వృద్ధులు మరియు ఇతర హాని వాటాదారులను మోసం నుండి రక్షించడానికి ఉద్దేశించబడింది. పేరెంటల్ సమ్మతి అవసరమైన రీతిలో పిల్లల నుండి డేటా సేకరించము; యాప్ డేటాను డివైస్ నుండి పంపదు.\n\nమరొకరికోసం (ఉదా వృద్ధ కుటుంబ సభ్యుడు) యాప్ సెటప్ చేసినప్పుడు అనుమతులు మరియు ఈ విధానాన్ని సాధారణ భాషలో వివరించడం సిఫార్సు.",
+  "privacySection7Title": "7. ఈ విధానంలో మార్పులు",
+  "privacySection7Paragraphs": "ఈ విధానాన్ని మారుస్తే (ఉదా భవిష్యత్ వెర్షన్‌లో ఐచ్ఛిక క్లౌడ్ ఫీచర్‌లు), ఈ డాక్యుమెంట్‌ను నవీకరించి చట్టం/స్టోర్ విధానం ప్రకారం తెలియజేస్తాము లేదా సమ్మతి అడుగుతాము.",
+  "privacySection8Title": "8. సంప్రదించండి",
+  "privacySection8Body": "ఎల్డర్ షీల్డ్ గురించి గోప్యతా ప్రశ్నలు/అభ్యర్థనలకు ఇక్కడ సంప్రదించండి: [మీ ఇమెయిల్ లేదా సపోర్ట్ URL ఇక్కడ జోడించండి].",
+  "privacyLastUpdatedNote": "చివరి నవీకరణ: బ్లాక్ 10. రిలీజ్ కు ముందు ప్లేస్‌హోల్డర్‌లను వాస్తవ సమాచారంతో భర్తీ చేయండి.",
+
+  "aboutTagline": "వృద్ధ వినియోగదారులకు డివైస్‌లోనే మోసం రక్షణ.",
+
+  "messagesAppBarTitle": "సందేశాలు",
+  "messagesFilterAll": "అన్నీ",
+  "messagesFilterHighRisk": "అధిక ప్రమాదం",
+  "messagesFilterAllSemanticsLabel": "అన్ని సందేశాలను చూపించండి",
+  "messagesFilterAllSemanticsHint": "అన్ని విశ్లేషించిన సందేశాలను చూడడానికి డబుల్ టాప్ చేయండి.",
+  "messagesFilterHighRiskSemanticsLabel": "అధిక ప్రమాద సందేశాలను మాత్రమే చూపించండి",
+  "messagesFilterHighRiskSemanticsHint": "అత్యంత తీవ్రమైన హెచ్చరికలకు ఫిల్టర్ చేయడానికి డబుల్ టాప్ చేయండి.",
+  "messagesErrorTitle": "సందేశాలు లోడ్ అవుతున్నప్పుడు ఏదో తప్పు జరిగింది.",
+  "messagesErrorSubtitle": "మళ్లీ ప్రయత్నించడానికి కిందకి లాగండి.",
+  "messagesEmptyTitle": "ఇంకా సందేశం విశ్లేషించబడలేదు. ఎల్డర్ షీల్డ్ కొత్త సందేశాలను స్వయంచాలకంగా తనిఖీ చేస్తుంది.",
+  "messagesEmptySubtitle": "అనుమానాస్పదమైనది కనుగొన్నప్పుడు తెలియజేస్తాము; ఇక్కడ నుండి తెరవవచ్చు.",
+  "messagesRefreshSnackbar": "జాబితా నవీకరించబడింది",
+  "messagesLoadingHeader": "సందేశాలు లోడ్ అవుతున్నాయి…",
+  "messagesDateToday": "ఈ రోజు, {time}",
+  "messagesDateYesterday": "నిన్న, {time}",
+  "messagesDateOther": "{month} {day}, {time}",
+  "@messagesDateToday": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "@messagesDateYesterday": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "@messagesDateOther": {
+    "placeholders": {
+      "month": { "type": "String" },
+      "day": { "type": "int" },
+      "time": { "type": "String" }
+    }
+  },
+
+  "onboardingStepOf": "దశ {step} / {total}",
+  "@onboardingStepOf": {
+    "placeholders": {
+      "step": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "onboardingWelcomeBody1": "ఎల్డర్ షీల్డ్ మీ సందేశాలు మరియు కాల్‌లను చూస్తుంది; మోసం ఉంటే ముందుగా హెచ్చరిస్తుంది.",
+  "onboardingWelcomeBody2": "ఎప్పుడైనా ఖచ్చితంగా తెలియకపోతే ఒక టాప్‌తో విశ్వసించే వ్యక్తిని కాల్ చేయవచ్చు.",
+  "onboardingGetStarted": "ప్రారంభించండి",
+
+  "onboardingPermissionsTitle": "మాకు యాక్సెస్ ఎందుకు అవసరం",
+  "onboardingPermissionsBulletMessages": "సందేశాలు: మీ టెక్స్ట్‌ను చదివి మోసంలా ఉంటే హెచ్చరించడానికి.",
+  "onboardingPermissionsBulletPhone": "ఫోన్: మీరు కాల్‌లో ఉన్నప్పుడు తెలుసుకోవడానికి. మోసగాళ్లు కాల్‌లో ఉన్నప్పుడు OTP అడుగుతారు.",
+  "onboardingPermissionsBody1": "క్రింద \"అనుమతులను అనుమతించండి\" టాప్ చేస్తే మీ డివైస్ అడుగుతుంది: సందేశాలు, ఫోన్, నోటిఫికేషన్‌లు (యాప్ మూసిఉన్నప్పటికీ సాధ్యమైన మోసం హెచ్చరిక).",
+  "onboardingPermissionsBody2": "మోసం తనిఖీ కోసం మాత్రమే సందేశాలను చదివేది; మరేదికీ కాదు.",
+  "onboardingPermissionsRetryWarning": "కొన్ని అనుమతులు నిరాకరించబడ్డాయి. అనుమతి ఇచ్చే వరకు రక్షణ పరిమితంగా ఉంటుంది.",
+  "onboardingPermissionsPrimaryAllow": "అనుమతులను అనుమతించండి",
+  "onboardingPermissionsPrimaryRetry": "మళ్లీ ప్రయత్నించండి",
+  "onboardingSkipForNow": "ఇప్పుడు దాటవేయండి",
+
+  "onboardingTrustedTitle": "విశ్వసనీయ సంప్రదింపును జోడించండి",
+  "onboardingTrustedBody1": "భయపెట్టే సందేశం వస్తే కాల్ చేసే వ్యక్తిని ఎంచుకోండి — కుటుంబ సభ్యుడు లేదా దగ్గరి మిత్రుడు.",
+  "onboardingTrustedBody2": "జోడించిన తర్వాత హోమ్ స్క్రీన్ నుండి లేదా మోసం హెచ్చరిక చూపించినప్పుడు ఒక టాప్‌తో ఈ వ్యక్తిని కాల్ చేయవచ్చు.",
+  "onboardingTrustedAddFromContacts": "సంప్రదింపుల నుండి జోడించండి",
+  "onboardingTrustedAddFromContactsUnavailable": "ఈ ప్రివ్యూ బిల్డ్‌లో డివైస్ కాంటాక్ట్ పికర్ ఇంకా అందుబాటులో లేదు.",
+  "onboardingTrustedOrEnterManually": "లేదా నంబర్ మాన్యువల్‌గా నమోదు చేయండి:",
+  "onboardingTrustedDone": "పూర్తి",
+  "onboardingTrustedSeeWarningCta": "హెచ్చరిక ఎలా ఉంటుంది చూడండి",
+  "onboardingTrustedMissingFields": "పేరు మరియు నంబర్ రెండూ నమోదు చేయండి",
+
+  "launchGateChecking": "తనిఖీ చేస్తోంది…",
+
+  "exampleWarningBanner": "ఇది ఒక ఉదాహరణ మాత్రమే. నిజమైన సందేశం లేదా చర్య లేదు.",
+  "exampleWarningSnackbar": "ఇది ఒక ఉదాహరణ. ఏ చర్యా తీసుకోలేదు.",
+  "exampleWarningButton": "అర్థమైంది — ఇది ఒక ఉదాహరణ",
+  "exampleWarningSenderUnknown": "తెలియదు",
+  "exampleWarningBody": "మీ బ్యాంక్ ఖాతా 24 గంటలలో బ్లాక్ చేయబడుతుంది. ధృవీకరించడానికి ఇక్కడ క్లిక్ చేయండి: http://secure-bank-verify.com. ఎవరితోనూ షేర్ చేయవద్దు.",
+  "exampleWarningReasonSuspiciousLink": "అనుమానాస్పద లింక్ ఉంది",
+  "exampleWarningReasonPretendBank": "మీ బ్యాంక్‌లా నటిస్తుంది",
+  "exampleWarningReasonUrgentLanguage": "అత్యవసర లేదా బెదిరించే భాష ఉపయోగిస్తుంది",
+
+  "reasonShortUrl": "చిన్న లేదా అనుమానాస్పద లింక్ ఉంది",
+  "reasonOtpMention": "ఒక-సారి కోడ్ (OTP) అడుగుతుంది లేదా ప్రస్తావిస్తుంది",
+  "reasonUrgentLanguage": "అత్యవసర లేదా బెదిరించే భాష ఉపయోగిస్తుంది",
+  "reasonBankKyc": "బ్యాంక్ ఖాతా, KYC లేదా చెల్లింపు వివరాలను ప్రస్తావిస్తుంది",
+  "reasonPaymentRequest": "చెల్లింపు పంపడం లేదా అనుమోదించడం అడుగుతుంది",
+  "reasonPrizeLottery": "బహుమతి లేదా లాటరీ రివార్డ్ మోసంలా ఉంది",
+  "reasonParcelDelivery": "అనుమానాస్పద పార్సెల్ లేదా డెలివరీ సమస్యను ప్రస్తావిస్తుంది",
+  "reasonCryptoInvestment": "ప్రమాదకర క్రిప్టో ఇన్వెస్ట్‌మెంట్ లేదా హామీ రిటర్న్‌లను ప్రస్తావిస్తుంది",
+  "reasonSenderSuspicious": "పంపినవారి పేరు అసాధారణంగా లేదా అనుమానాస్పదంగా ఉంది",
+  "reasonInCallOtp": "మీరు ఫోన్ కాల్‌లో ఉన్నప్పుడు OTP వచ్చింది — సాధారణ మోసం నమూనా",
+
+  "messageFromLabel": "పంపినవారు: {sender}",
+  "@messageFromLabel": {
+    "placeholders": {
+      "sender": { "type": "String" }
+    }
+  },
+
+  "fullScreenWarningTitle": "సాధ్యమైన మోసం",
+  "fullScreenWarningClosingNote": "ఈ స్క్రీన్ మూసివేయడం మీ ఫోన్ నుండి సందేశాన్ని తొలగించదు.",
+  "fullScreenWarningDeleteAction": "సందేశాన్ని తొలగించండి",
+  "fullScreenWarningDeleteSnackbar": "ఎల్డర్ షీల్డ్ నుండి తొలగించబడింది. మీ మెసేజింగ్ యాప్‌ను తెరుస్తోంది; అక్కడ నుండి కూడా తొలగించవచ్చు.",
+  "fullScreenWarningBlockSender": "ఈ పంపినవారిని బ్లాక్ చేయండి (మెసేజింగ్ యాప్ తెరుస్తుంది)"
+}

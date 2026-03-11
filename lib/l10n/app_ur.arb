@@ -91,6 +91,10 @@
   "languageKannadaName": "کنڑ",
   "languageHindiName": "ہندی",
   "languageUrduName": "اردو",
+  "languageAssameseName": "آسامی",
+  "languageTamilName": "تامل",
+  "languageMalayalamName": "ملیالم",
+  "languageTeluguName": "تیلگو",
   "languageSectionSubtitle": "موجودہ: {languageName}",
   "@languageSectionSubtitle": {
     "description": "موجودہ منتخب زبان دکھانے والا سب ٹائٹل۔",
