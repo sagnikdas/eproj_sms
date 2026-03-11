@@ -162,6 +162,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get languageUrduName => 'ಉರ್ದು';
 
   @override
+  String get languageAssameseName => 'Assamese';
+
+  @override
   String languageSectionSubtitle(String languageName) {
     return 'ಪ್ರಸ್ತುತ: $languageName';
   }

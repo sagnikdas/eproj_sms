@@ -1,0 +1,337 @@
+{
+  "@@locale": "as",
+
+  "appTitle": "এল্ডাৰ শিল্ড",
+
+  "settingsTitle": "ছেটিংছ",
+
+  "homeAppBarTitle": "এল্ডাৰ শিল্ড",
+  "homePostOnboardingTitle": "আপুনি এতিয়া সুৰক্ষিত",
+  "homePostOnboardingBody": "হোম স্ক্ৰিনৰ পৰা যিকোনো সময়ত আপুনি {contactName}ক কল কৰিব পাৰে।",
+  "@homePostOnboardingBody": {
+    "description": "অনবোর্ডিং সম্পূৰ্ণ হোৱাৰ পাছত দেখুওৱা বাৰ্তা; contactName হৈছে ভৰসাযোগ্য যোগাযোগজনৰ নাম বা এটা সাধাৰণ শব্দ।",
+    "placeholders": {
+      "contactName": {
+        "type": "String"
+      }
+    }
+  },
+  "commonGotIt": "বুজিলো",
+
+  "homeTrustedContactFallbackName": "আপোনাৰ ভৰসাযোগ্য যোগাযোগ",
+
+  "permissionsDialogTitle": "ছেটিংছত সুৰক্ষা অন কৰক",
+  "permissionsDialogBody": "এল্ডাৰ শিল্ডে আপোনাৰ বাৰ্তাত স্কেম আছে নে নাই চাবলৈ SMS আৰু ফোনৰ অনুমতিৰ প্ৰয়োজন।\n\nএই অনুমতিসমূহ অন কৰিবলৈ আপুনি এপ ছেটিংছ খুলিব নে?",
+  "commonCancel": "বাতিল",
+  "permissionsDialogOpenSettings": "ছেটিংছ খোলক",
+
+  "homeProtectionStatusLabel": "সুৰক্ষাৰ অৱস্থা",
+  "homeProtectionStatusProtected": "সুৰক্ষিত",
+  "homeProtectionStatusPermissionsNeeded": "অনুমতিৰ প্ৰয়োজন",
+  "homeEnableProtectionButton": "সুৰক্ষা অন কৰক",
+
+  "homeTodayRiskSummaryWithCount": "আজি {count}টা সন্দেহজনক বাৰ্তা পোৱা গৈছে।",
+  "@homeTodayRiskSummaryWithCount": {
+    "description": "আজিৰ সন্দেহজনক বাৰ্তাসমূহৰ সংক্ষিপ্ত বিৱৰণ, গননাসহ।",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeTodayRiskSummaryNoRisk": "আজি কোনো সন্দেহজনক কাৰ্যকলাপ নাই।",
+  "homeTodayRiskTapToSeeMessages": "বাৰ্তাসমূহ চাবলৈ টেপ কৰক",
+  "commonView": "চাওক",
+
+  "homeAutoCheckInfo": "এল্ডাৰ শিল্ডে নতুন বাৰ্তাসমূহ স্বয়ংক্ৰিয়ভাৱে পৰীক্ষা কৰে।",
+
+  "homeCallTrustedButtonLabel": "{name}ক কল কৰক",
+  "@homeCallTrustedButtonLabel": {
+    "description": "ডাঙৰ \"ভৰসাযোগ্য যোগাযোগক কল কৰক\" বুটামৰ লেবেল।",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+
+  "homeCallTooltipText": "যেতিয়া বেছি চিন্তাজনক বাৰ্তা আহে, তেতিয়া ইয়াত টেপ কৰক।",
+
+  "homeAddTrustedIntro": "এজন ভৰসাযোগ্য যোগাযোগ যোগ কৰক, যাতে ভয়লগা বাৰ্তা পালে আপুনি সহস্ৰে তেখেতক কল কৰিব পাৰে।",
+  "homeAddTrustedButton": "ভৰসাযোগ্য যোগাযোগ যোগ কৰক",
+  "homeWhyAddTrustedShow": "ভৰসাযোগ্য যোগাযোগ কিয় যোগ কৰিব?",
+  "homeWhyAddTrustedHide": "কাৰণ লুকুৱাওক",
+  "homeWhyAddTrustedExplanation": "যদি কেতিয়াবা চিন্তাজনক বাৰ্তা আহে, তেন্তে আপুনি একেলগে সিদ্ধান্ত লৈ অহোৰাত্র চিন্তা নকৰাকৈ এটা ডাঙৰ বুটাম টেপ কৰি ভৰসাযোগ্য ব্যক্তিজনক কল কৰিব পাৰে — এই বাবেই।",
+  "homeTrustedContactsHeader": "আপোনাৰ ভৰসাযোগ্য যোগাযোগসমূহ",
+
+  "highRiskHeaderTitle": "সাৱধান: এইটো স্কেম বাৰ্তা হ'ব পাৰে",
+  "highRiskHeaderBody": "এই বাৰ্তাৰ কোনো লিঙ্কত টেপ নকৰিব, কোনো কোড অপূৰ্ণ ভাগ নকৰিব।",
+  "highRiskWhyFlaggedTitle": "কিয় চিহ্নিত কৰা হৈছে:",
+
+  "actionScam": "ই এটা স্কেম",
+  "actionSafe": "ই সুৰক্ষিত",
+
+  "snackbarGenericError": "কিছুতো ভুল হ’ল। পুনৰ চেষ্টা কৰক।",
+  "snackbarMarkedScam": "স্কেম হিচাপে চিহ্নিত কৰা হ’ল। ধন্যবাদ।",
+
+  "highRiskSwipeUpForDetails": "অধিক বিৱৰণ চাবলৈ ওপৰৰ ফালে সুইপ কৰক",
+
+  "riskLowLabel": "অল্প ঝুঁকি",
+  "riskMediumLabel": "মধ্যম ঝুঁকি — পৰীক্ষা কৰক",
+  "riskHighLabel": "উচ্চ ঝুঁকি — সম্ভাব্য স্কেম",
+
+  "deleteMessageTitle": "বাৰ্তা মচি পেলাব নে?",
+  "deleteMessageBody": "আপুনি নিশ্চিত নে? ইয়াতকৈ কেৱল এল্ডাৰ শিল্ডৰ পৰা এই বাৰ্তা আঁতৰোৱা হ’ব।",
+  "deleteMessageConfirm": "মচি পেলাওক",
+  "deleteMessageDeletedSnackbar": "এল্ডাৰ শিল্ডৰ পৰা আঁতৰোৱা হ’ল।",
+
+  "languageSectionTitle": "ভাষা",
+  "languageEnglishName": "ইংৰাজী",
+  "languageBengaliName": "বাংলা",
+  "languageKannadaName": "কন্নড়",
+  "languageHindiName": "হিন্দী",
+  "languageUrduName": "উৰ্দু",
+  "languageAssameseName": "অসমীয়া",
+  "languageSectionSubtitle": "বৰ্তমান: {languageName}",
+  "@languageSectionSubtitle": {
+    "description": "বৰ্তমান বাছনি কৰা ভাষা দেখুওৱা সাব-টাইটেল।",
+    "placeholders": {
+      "languageName": {
+        "type": "String"
+      }
+    }
+  },
+
+  "snackbarUpdated": "আপডেট সম্পূৰ্ণ",
+
+  "settingsAppearanceTitle": "দেখাত কেনেকুৱা",
+  "settingsThemeSystem": "চিষ্টেম",
+  "settingsThemeLight": "লাইট",
+  "settingsThemeDark": "ডাৰ্ক",
+
+  "settingsTextSizeTitle": "আখৰৰ আকাৰ",
+  "settingsTextSizeDescription": "আখৰ ডাঙৰ বা সৰু কৰি সুবিধাজনক আকাৰলৈ ঠিক কৰক। সলনি তৎক্ষণাৎ প্ৰযোজ্য হ’ব।",
+  "settingsTextSizeSample": "এল্ডাৰ শিল্ডে আপোনাক স্কেম বাৰ্তাৰ পৰা সুৰক্ষিত ৰাখে।",
+
+  "settingsLegalTitle": "আইনী ও তথ্য",
+  "settingsPrivacyPolicyTitle": "গোপনীয়তা নীতি",
+  "settingsPrivacyPolicySubtitle": "আপোনাৰ তথ্য আমি কেনেকৈ ব্যৱহাৰ কৰোঁ",
+  "settingsPermissionsExplainedTitle": "অনুমতিৰ বিৱৰণ",
+  "settingsPermissionsExplainedSubtitle": "প্ৰত্যেক অনুমতি কিয় প্ৰয়োজন",
+
+  "settingsSensitivityTitle": "সংবেদনশীলতা",
+  "settingsSensitivityLabelConservative": "কম সতৰ্কবাৰ্তা",
+  "settingsSensitivityLabelBalanced": "সন্তুলিত",
+  "settingsSensitivityLabelSensitive": "বেশি সতৰ্কবাৰ্তা",
+  "settingsSensitivityDescConservative": "কেৱল অতি স্পষ্ট স্কেমসমূহ ধৰা পৰে। আপুনি যদি কম সতৰ্কবাৰ্তা পছন্দ কৰে, তেন্তে ই ভাল।",
+  "settingsSensitivityDescBalanced": "বেশিৰভাগ লোকৰ বাবে ভাল। ধৰা পোৱা স্কেম আৰু অপ্রয়োজনীয় সতৰ্কবাৰ্তাৰ মাজত এটা ভাল সন্তুলন।",
+  "settingsSensitivityDescSensitive": "বেশি স্কেম ধৰে, কিন্তু কেতিয়াবা সুৰক্ষিত বাৰ্তাকো ফ্লেগ কৰিব পাৰে।",
+
+  "settingsTrustedContactsTitle": "ভৰসাযোগ্য যোগাযোগ",
+  "settingsTrustedContactsNone": "কোনো নাই",
+  "settingsTrustedContactsCount": "{count}টা যোগাযোগ",
+  "@settingsTrustedContactsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTrustedContactsExplanation": "আপুনি হোম স্ক্ৰিন বা স্কেম সতর্কতা দেখুওৱা স্ক্ৰিনৰ পৰা এটা টেপতেই এইসকলক কল কৰিব পাৰে। সূচীৰ প্ৰথম যোগাযোগজন মূল \"কল\" বুটামত দেখুওৱা হয়।",
+  "settingsTrustedContactsAddContactTitle": "যোগাযোগ যোগ কৰক",
+  "settingsTrustedContactsAddContactSubtitle": "নাম আৰু ফোন নম্বৰ লিখক",
+  "settingsTrustedContactsChooseFromContactsTitle": "যোগাযোগৰ পৰা বাছনি কৰক",
+  "settingsTrustedContactsChooseFromContactsSubtitle": "আপোনাৰ ফোনৰ যোগাযোগৰ পৰা নম্বৰ বাছনি কৰক",
+  "settingsTrustedContactsPickerUnavailable": "এই প্ৰিভিউ বিল্ডত ডিভাইচ কন্টেক্ট পিকাৰ এতিয়াও উপলব্ধ নহয়।",
+
+  "settingsTrustedContactsRemoveDialogTitle": "ভৰসাযোগ্য যোগাযোগ আঁতৰাব নে?",
+  "settingsTrustedContactsRemoveDialogBody": "এই ব্যক্তিজন আরু ভৰসাযোগ্য যোগাযোগৰ তালিকা বা হোম স্ক্ৰিনত দেখা নাপাব।",
+  "settingsTrustedContactsRemoveDialogRemove": "আঁতৰাওক",
+
+  "settingsAdvancedSectionTitle": "এডভান্সড",
+  "settingsDeleteAllHistoryButton": "সমস্ত হিস্টৰি মচি পেলাওক",
+  "settingsRerunPermissionsButton": "অনুমতি পুনৰ চেক কৰক",
+
+  "settingsDeleteAllHistoryDialogTitle": "সমস্ত হিস্টৰি মচি পেলাব নে?",
+  "settingsDeleteAllHistoryDialogBody": "এই ডিভাইচৰ পৰা সকলো বিশ্লেষণ কৰা বাৰ্তা আৰু কারণ স্থায়ীভাৱে মচি পেলোৱা হ’ব। ই ঘূৰাই আনিব নোৱাৰি।",
+  "settingsDeleteAllHistoryDialogConfirm": "সকলো মচি পেলাওক",
+  "settingsHistoryDeletedSnackbar": "হিস্টৰি মচি পেলোৱা হ’ল",
+
+  "settingsRerunPermissionsSnackbar": "অনুমতিৰ চেক সম্পূৰ্ণ। যদি আপুনি এতিয়া অনুমতি দিলে, তেন্তে এপখন পুনৰ আৰম্ভ কৰক।",
+
+  "settingsOverlayTitle": "অন্য এপৰ ওপৰত ইমাৰ্জেঞ্চি পপ-আপ",
+  "settingsOverlaySubtitleEnabled": "অন: উচ্চ ঝুঁকিৰ সতর্কতা অন্য এপৰ ওপৰতো দেখা যাব। আপুনি অন্য এপত থাকোতে সতৰ্ক কৰিবলৈ ই সুপারিশকৃত।",
+  "settingsOverlaySubtitleDisabled": "অফ: এণ্ড্ৰয়েড ওভাৰলে অনুমতি অন কৰিবৰ বাবে ইয়াত টেপ কৰক। আপুনি অন্য এপ ব্যৱহাৰ কৰোঁতে সতৰ্ক হোৱা বাবে ই অন ৰখা ভাল।",
+
+  "settingsHowItWorksTitle": "এল্ডাৰ শিল্ডে কেনেকৈ কাম কৰে",
+  "settingsHowItWorksSubtitle": "আমি কি চাওঁ, কেতিয়া সতর্ক কৰোঁ, আৰু আপুনি কি কৰিব",
+  "settingsAboutTitle": "এল্ডাৰ শিল্ড সম্বন্ধে",
+
+  "settingsAddTrustedDialogTitle": "ভৰসাযোগ্য যোগাযোগ যোগ কৰক",
+  "settingsAddTrustedDialogConsent": "তেওঁলোকক হোম স্ক্ৰিন বা স্কেম সতর্কতা স্ক্ৰিনৰ পৰা একে টেপতে কল কৰিব পৰা যায়।",
+  "settingsAddTrustedDialogConfirm": "যোগ কৰক",
+  "settingsEditTrustedDialogTitle": "ভৰসাযোগ্য যোগাযোগ সম্পাদনা কৰক",
+  "settingsEditTrustedDialogConfirm": "ছেভ কৰক",
+  "settingsContactNameLabel": "নাম",
+  "settingsContactNameHint": "যেনে: মোৰ ল’ৰা",
+  "settingsContactNumberLabel": "ফোন নম্বৰ",
+  "settingsContactNumberHint": "যেনে: +91 98765 43210",
+  "settingsContactDialogCancel": "বাতিল",
+  "settingsContactInvalidNumber": "অনুগ্ৰহ কৰি এটা বৈধ ফোন নম্বৰ লিখক",
+
+  "howItWorksBulletWhatWeCheck": "আমি কি চাওঁ: আমি আপোনাৰ SMS পঢ়োঁ আৰু স্কেমৰ লক্ষণ বিচাৰোঁ — সন্দেহজনক লিঙ্ক, অতি তাড়াহুড়া বা ভয় দেখুৱা ভাষা, OTP বা বেংক তথ্য বিচৰা, আৰু এনে বাৰ্তা যি আপোনাৰ বেংক বা পৰিচিত সেৱাৰ দৰে সাজি আহে।",
+  "howItWorksBulletWhenWeAlert": "আমি কেতিয়া সতর্ক কৰোঁ: যদি কোনো বাৰ্তা ঝুঁকিপূৰ্ণ দেখায়, আমি আপোনাক জনাওঁ। অতি উচ্চ ঝুঁকিৰ বাৰ্তাৰ বাবে এপ বেকগ্ৰাউণ্ডত থাকিলেও পপ-আপ দেখুৱাব পাৰো আৰু বাৰ্তাটো \"মেছেজ\" টেবত দেখুওৱা হয়।",
+  "howItWorksBulletWhatToDo": "সতর্কতা দেখিলে কি কৰিব: বাৰ্তাৰ কোনো লিঙ্কত টেপ নকৰিব। আপুনি \"ই স্কেম\" বা \"ই সুৰক্ষিত\" বাছি আমি কেনেকৈ শিখোঁতে সহায় কৰিব পাৰে। সৰ্বশ্ৰেষ্ঠ পদক্ষেপ: সতর্কতা স্ক্ৰিন বা হোমৰ পৰা আপোনাৰ ভৰসাযোগ্য যোগাযোগক কল কৰক।",
+  "howItWorksBulletCallTrusted": "ভৰসাযোগ্য যোগাযোগক কেনেকৈ কল কৰিব: হোম স্ক্ৰিনৰ ডাঙৰ \"কল [নাম]\" বুটামত যিকোনো সময়ত টেপ কৰক — বিশেষকৈ যেতিয়া চিন্তাজনক বাৰ্তা আহে। আমি সম্ভাব্য স্কেম দেখুওৱা সতর্কতা স্ক্ৰিনৰপৰােও আপুনি কল কৰিব পাৰে।",
+  "howItWorksSeeWarningCta": "সতর্কতা কেনেকুৱা দেখা যায় চাওক",
+
+  "permissionsIntro": "এল্ডাৰ শিল্ডে অনুমতিসমূহ কেৱল স্কেমৰ পৰা ৰক্ষাৰ বাবে ব্যৱহাৰ কৰে। আপুনি যিকোনো অনুমতি নো দিবও পাৰে; তেনে হ’লে সুৰক্ষা অলপ কম হ’ব, কিন্তু এপ চলি থাকিব।",
+  "permissionsSmsTitle": "বাৰ্তা (SMS)",
+  "permissionsSmsBody": "আমি ইনকামিং SMS গ্ৰহণ কৰি তাত স্কেমৰ লক্ষণ (যেনে সন্দেহজনক লিঙ্ক, OTP ফিশিং, বেংক-সংক্রান্ত শব্দ) আছে নে নাই চাওঁ আৰু প্ৰয়োজন হ’লে আপোনাক সতর্ক কৰোঁ। কোনো বাৰ্তাৰ বিষয়বস্তু আপোনাৰ ডিভাইচৰ বাহিৰলৈ নাপঠোৱা হয়। আপুনি ছেটিংছৰ পৰা সকলো বিশ্লেষণ কৰা হিস্টৰি মচি পেলাব পাৰে।",
+  "permissionsPhoneStateTitle": "ফোন (অৱস্থা পঢ়া)",
+  "permissionsPhoneStateBody": "আমি জানিব লাগিছে আপুনি কেতিয়া কলত আছে, যাতে কল চলি থকা অৱস্থাত OTP আহিলে ঝুঁকিৰ স্তৰ বঢ়াব পাৰোঁ (এইটো এটা সাধাৰণ স্কেম পেটাৰ্ণ)। আমি কল ৰেকৰ্ড নকৰোঁ, অডিঅ’ নুশুঁ, আৰু কল লগ নাপঢ়োঁ।",
+  "permissionsPhoneCallTitle": "ফোন (কল কৰা)",
+  "permissionsPhoneCallBody": "যাতে আপুনি হোম বা সতর্কতা স্ক্ৰিনৰ পৰা \"ভৰসাযোগ্য যোগাযোগক কল কৰক\" বুটাম টেপ কৰিব পাৰে। এপ কেৱল তেতিয়াহে কল আৰম্ভ কৰে যেতিয়া আপুনি বুটাম টেপ কৰে, আৰু কেৱল সেই নম্বৰত যাক আপুনি ভৰসাযোগ্য যোগাযোগ হিচাপে যোগ কৰিছে।",
+  "permissionsNotificationsTitle": "নোটিফিকেশন",
+  "permissionsNotificationsBody": "যেতিয়া আমি সন্দেহজনক বা উচ্চ ঝুঁকিপূৰ্ণ বাৰ্তা পাঁও, তেতিয়া আপুনি যাতে সোনকালে জানিব পাৰে সেয়া নিশ্চিত কৰোঁ। আপুনি চিস্টেম ছেটিংছত নোটিফিকেশন অফ কৰিব পাৰে; তেতিয়াও আপুনি এপ ব্যৱহাৰ কৰিব পাৰিব।",
+  "permissionsOverlayTitle": "অন্য এপৰ ওপৰত দেখা দেখুৱানো (ঐচ্ছিক)",
+  "permissionsOverlayBody": "যদি আপুনি ছেটিংছত এণ্ড্ৰয়েড ওভাৰলে অনুমতি অন কৰে, তেন্তে উচ্চ ঝুঁকিৰ বাৰ্তা আহিলে এল্ডাৰ শিল্ডে অন্য এপৰ ওপৰতো ইমাৰ্জেঞ্চি সতর্কতা দেখুৱাব পাৰিব। এইটো সম্পূৰ্ণভাবে ঐচ্ছিক আৰু ব্যক্তিগত সুৰক্ষাৰ বাবে।",
+
+  "privacyTitle": "গোপনীয়তা নীতি",
+  "privacySection1Title": "1. আমি কোন",
+  "privacySection1Body": "এল্ডাৰ শিল্ড এটা এণ্ড্ৰয়েড এপ, যিয়ে ডিভাইচতেই বাৰ্তাসমূহ বিশ্লেষণ কৰি আৰু সন্দেহজনক লাগিলে সতর্ক কৰি, বয়োজ্যেষ্ঠ ব্যৱহাৰকাৰীক SMS আৰু কল-সংক্রান্ত স্কেমৰ পৰা বাচিবলৈ সহায় কৰে।",
+  "privacySection2Title": "2. আমি কোন ধৰণৰ তথ্য প্ৰসেচিং কৰোঁ",
+  "privacySection2Paragraphs": "সকলো প্ৰসেচিং আপোনাৰ ডিভাইচতেই হয়। আমি আপোনাৰ বাৰ্তা, কলৰ অৱস্থা বা অন্য কোনো ব্যক্তিগত তথ্য আমাৰ ছাৰ্ভাৰ বা তৃতীয় পক্ষলৈ পঠাই নাপঠাও।\n\nবাৰ্তা তথ্য: আপুনি SMS পালে, এপে সেই বাৰ্তাৰ প্ৰেৰণকাৰী, মূল পাঠ আৰু সময় পঢ়ে। এই তথ্য কেৱল ডিভাইচত চলা স্কেম ডিটেকশ্বনৰ বাবে ব্যৱহাৰ হয়। ফলাফল কেৱল আপোনাৰ ডিভাইচত সংৰক্ষণ হৈ থাকে। আপুনি যিকোনো সময়ত ছেটিংছ → সমস্ত হিস্টৰি মচি পেলাওক বাছি এইবোৰ আঁতৰাব পাৰে।\n\nক’ল অৱস্থা: এপে চায় আপুনি বৰ্তমানে কলত আছেনে নাই। আমি কল ৰেকৰ্ড নকৰোঁ, অডিঅ’ নুশুঁ, বা কল লগ নাপঢ়োঁ। কল অৱস্থা কেৱল ডিটেকশ্বন উন্নত কৰিবলৈ (যেনে কল চলি থকা অৱস্থাত OTP আহিলে আপনাক বেছি সতৰ্ক ক’বলৈ) ব্যৱহাৰ হয়।\n\nছেটিংছ আৰু ভৰসাযোগ্য যোগাযোগ: এইসকল কেৱল আপোনাৰ ডিভাইচৰ ছিকিউৰ ষ্ট’ৰেজত ৰখা হয়। ভৰসাযোগ্য যোগাযোগ কেৱল যাতে আপুনি \"ভৰসাযোগ্য যোগাযোগক কল কৰক\" বুটাম টেপ কৰি দ্রুত কল কৰিব পাৰে সেই উদ্দেশ্যে ব্যৱহাৰ হয়। আমি কেতিয়াও স্বয়ংক্ৰিয়ভাৱে তেখেতসকলক কল বা বাৰ্তা নাপঠাও।",
+  "privacySection3Title": "3. আমি কি নকৰোঁ",
+  "privacySection3Paragraphs": "আমি আপোনাৰ SMSৰ পাঠ, কলৰ অৱস্থা বা কন্টেক্ট লিষ্ট ইণ্টাৰনেটলৈ পঠাই নাপঠাও।\n\nআমি আপোনাৰ তথ্য বিজ्ञাপন দাতা বা ডেটা ব্ৰ’কাৰে বিক্ৰী, ভাড়া বা শ্বেয়াৰ নকৰোঁ।\n\nএপ ব্যৱহাৰ কৰিবলৈ আপোনাক একাউন্ট খুলিবলৈ বা ছাইন ইন কৰিবলৈ বাধ্য নকৰোঁ। প্ৰয়োজনীয় অনুমতি দিয়াৰ পিছতো এপ সম্পূৰ্ণভাবে অফলাইন চলি থাকিব পাৰে।\n\nআমি RCS/চেট বাৰ্তা নপঢ়োঁ বা বিশ্লেষণ নকৰোঁ; কেৱল সাধাৰণ SMS সমৰ্থিত।",
+  "privacySection4Title": "4. অনুমতি আৰু সেইবোৰ কিয় প্ৰয়োজন",
+  "privacySection4Paragraphs": "SMS (ৰিচিভ/ৰিড): ইনকামিং SMS পঢ়ি স্কেম পেটাৰ্ণ চিনাক্ত কৰি আৰু প্ৰয়োজন হ’লে আপনাক সতর্ক কৰাটো নিশ্চিত কৰিবলৈ।\n\nফোন (কল অৱস্থা পঢ়া): আপুনি কেতিয়া কলত আছেনে, সেইটো জানিবলৈ; যাতে কল চলি থাকোতে OTP আহিলে ই উচ্চ ঝুঁকি হিচাপে চিহ্নিত কৰিব পাৰোঁ। আমি কোনো কল ৰেকৰ্ড বা শুনা নকৰোঁ।\n\nফোন (কল কৰা): যাতে আপুনি \"ভৰসাযোগ্য যোগাযোগক কল কৰক\" বুটাম টেপ কৰি দ্রুত কল কৰিবলৈ সক্ষম হয়। আমি কেৱল আপুনি ভৰসাযোগ্য যোগাযোগ হিচাপে যোগ কৰা নম্বৰতহে আৰু কেৱল আপুনি বুটাম টেপ কৰিলে কল কৰোঁ।\n\nনোটিফিকেশন: সন্দেহজনক বা উচ্চ ঝুঁকিপূৰ্ণ বাৰ্তা পোৱা গেলে আপনাক সোনকালে জনাবলৈ।\n\nআপুনি \"এই প্ৰেৰণকাৰীক ব্লক কৰক\" বাছি ল’লে, এপে আপোনাৰ ডিফ’ল্ট মেছেজিং এপ খুলিব পাৰে; এল্ডাৰ শিল্ডে নিজে এপৰ পৰা কোনো SMS নাপঠায়।",
+  "privacySection5Title": "5. তথ্য কিমান দিন ৰখা হয় আৰু আপোনাৰ বিকল্প",
+  "privacySection5Paragraphs": "বিশ্লেষণ কৰা বাৰ্তা আৰু কাৰণ: এইসকল কেৱল আপোনাৰ ডিভাইচতে থাকে, যেতিয়ালৈ আপুনি ছেটিংছ → সমস্ত হিস্টৰি মচি পেলাওক নাছানিত।\n\nছেটিংছ আৰু ভৰসাযোগ্য যোগাযোগ: আপুনি সলনি, আঁতৰোৱা বা এপ আনইনষ্টল নকৰালৈকে ডিভাইচতেই থাকে।\n\nআমি আপোনাৰ কোনো তথ্যৰ কপি ছাৰ্ভাৰত জমা নেৰাখো, কিয়নো আমি ই একেটোৱেও সংগ্ৰহ নকৰো।",
+  "privacySection6Title": "6. শিশুসকল আৰু সংবেদনশীল ব্যৱহাৰকাৰী",
+  "privacySection6Paragraphs": "এই এপ মূলত বয়োজ্যেষ্ঠ আৰু অন্য সংবেদনশীল ব্যৱহাৰকাৰীক স্কেমৰ পৰা বাচিবলৈ সহায় কৰিবলৈ ডিজাইন কৰা হৈছে। আমি শিশুসমূহৰ তথ্য এনে ধৰণে সংগ্ৰহ নকৰোঁ যাৰ বাবে আইনগতভাবে পিতৃ-মাতৃৰ সম্মতিৰ প্ৰয়োজন হ’ব; এপে কোনো তথ্য ডিভাইচৰ বাহিৰলৈ নেপঠায়।\n\nআপুনি যদি কোনো অন্যলোকৰ (যেনে মাতাপিতাৰ) বাবে এই এপ ছেটআপ কৰি আছে, তেন্তে অনুমতি আৰু এই নীতিৰ বিষয়ে সৰল ভাষাত ব্যাখ্যা কৰিবৰ বাবে আমি সুপারিশ কৰোঁ।",
+  "privacySection7Title": "7. এই নীতিত পৰিবর্তন",
+  "privacySection7Paragraphs": "আমি যদি এই নীতিত পৰিবর্তন কৰোঁ (যেনে ভৱিষ্যতৰ সংস্কৰণত ঐচ্ছিক ক্লাউড ফিচাৰ যোগ কৰোঁ), তেন্তে আমি এই নথিপত্ৰ আপডেট কৰিম আৰু আইন বা ষ্ট’ৰ নীতিমালা অনুসৰি প্ৰয়োজন হ’লে আপনাক জনাম বা অনুমতি বিচাৰিম।",
+  "privacySection8Title": "8. যোগাযোগ",
+  "privacySection8Body": "এল্ডাৰ শিল্ড সম্পৰ্কিত গোপনীয়তা-সংক্রান্ত কোনো প্ৰশ্ন বা অনুৰোধ থাকিলে, অনুগ্ৰহ কৰি ইয়াত যোগাযোগ কৰক: [ইয়াত আপোনাৰ ইমেইল বা ছাপোৰ্ট URL লিখক]।",
+  "privacyLastUpdatedNote": "সর্বশেষ আপডেট: ব্লক 10। ৰিলিজৰ আগতে এই প্লেচহোল্ডাৰবোৰ বাস্তৱ তথ্যৰে সলনি কৰক।",
+
+  "aboutTagline": "বয়োজ্যেষ্ঠ ব্যৱহাৰকাৰীৰ বাবে ডিভাইচতে স্কেমৰ পৰা সুৰক্ষা।",
+
+  "messagesAppBarTitle": "বাৰ্তা",
+  "messagesFilterAll": "সকলো",
+  "messagesFilterHighRisk": "উচ্চ ঝুঁকি",
+  "messagesFilterAllSemanticsLabel": "সকলো বাৰ্তা দেখুৱাওক",
+  "messagesFilterAllSemanticsHint": "সকলো বিশ্লেষণ কৰা বাৰ্তা চাবলৈ ডাবল-টেপ কৰক।",
+  "messagesFilterHighRiskSemanticsLabel": "কেৱল উচ্চ ঝুঁকিৰ বাৰ্তা দেখুৱাওক",
+  "messagesFilterHighRiskSemanticsHint": "সৰ্বাধিক গুৰুত্বপূর্ণ সতর্কতাসমূহ চাবলৈ ডাবল-টেপ কৰক।",
+  "messagesErrorTitle": "বাৰ্তা লোড কৰোঁতে সমস্যাৰ সৃষ্টি হ’ল।",
+  "messagesErrorSubtitle": "পুনৰ চেষ্টা কৰিবলৈ তললৈ টানি ছাড়ক।",
+  "messagesEmptyTitle": "এতিয়ালৈকে কোনো বাৰ্তা বিশ্লেষণ কৰা হোৱা নাই। এল্ডাৰ শিল্ডে নতুন বাৰ্তা স্বয়ংক্ৰিয়ভাৱে চাব।",
+  "messagesEmptySubtitle": "যেতিয়া আমি কিবা সন্দেহজনক পাম, আমি আপোনাক জনাম আৰু আপুনি ইয়াৰ পৰা সেই বাৰ্তা খুলি চাব পাৰিব।",
+  "messagesRefreshSnackbar": "তালিকা আপডেট হ’ল",
+  "messagesLoadingHeader": "বাৰ্তা লোড হৈ আছে…",
+  "messagesDateToday": "আজি, {time}",
+  "messagesDateYesterday": "যোৱাকালী, {time}",
+  "messagesDateOther": "{month} {day}, {time}",
+  "@messagesDateToday": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@messagesDateYesterday": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@messagesDateOther": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      },
+      "day": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+
+  "onboardingStepOf": "পদক্ষেপ {step} / {total}",
+  "@onboardingStepOf": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingWelcomeBody1": "এল্ডাৰ শিল্ডে আপোনাৰ বাৰ্তা আৰু কলসমূহত নজৰ ৰাখে, যাতে স্কেম হ’লে আগতেই আপোনাক সতর্ক কৰিব পাৰে।",
+  "onboardingWelcomeBody2": "যদি আপুনি কেতিয়াবা নিশ্চিন্ত নহয়, তেন্তে এটা টেপতে ভৰসাযোগ্য ব্যক্তিজনক কল কৰিব পাৰে।",
+  "onboardingGetStarted": "আৰম্ভ কৰক",
+
+  "onboardingPermissionsTitle": "আমাক এক্সেছ কিয় লাগিব",
+  "onboardingPermissionsBulletMessages": "বাৰ্তা: যাতে আমি আপোনাৰ লেখা পঢ়ি স্কেম যেন লাগিলে আপোনাক সতর্ক কৰিব পাৰোঁ।",
+  "onboardingPermissionsBulletPhone": "ফোন: যাতে আমি জানো আপুনি কেতিয়া কলত আছে। স্কেমৰ লোকসকল সাধাৰণতে কল চলি থাকোতে OTP বিচাৰে।",
+  "onboardingPermissionsBody1": "তলৰ \"অনুমতি দিয়ক\" বুটাম টেপ কৰিলে, আপোনাৰ ডিভাইছে এইবোৰৰ অনুমতি বিচাৰিব: বাৰ্তা, ফোন আৰু নোটিফিকেশ্বন (এপ বন্ধ থকা সময়তো সম্ভাব্য স্কেমৰ বিষয়ে আপনাক জনাবলৈ)।",
+  "onboardingPermissionsBody2": "আমিও আপোনাৰ বাৰ্তা কেৱল স্কেম পৰীক্ষণৰ বাবে পঢ়ো, অন্য কোনো কাৰণতে নহয়।",
+  "onboardingPermissionsRetryWarning": "কিছুমান অনুমতি নাকচ কৰা হৈছে। আপুনি অনুমতি নিদিয়া পৰ্যন্ত সুৰক্ষা সীমিত থাকিব।",
+  "onboardingPermissionsPrimaryAllow": "অনুমতি দিয়ক",
+  "onboardingPermissionsPrimaryRetry": "পুনৰ চেষ্টা কৰক",
+  "onboardingSkipForNow": "এতিয়ালৈ এৰক",
+
+  "onboardingTrustedTitle": "এজন ভৰসাযোগ্য যোগাযোগ যোগ কৰক",
+  "onboardingTrustedBody1": "এনে এজনক বাছনি কৰক, যাক আপুনি চিন্তাজনক বাৰ্তা পালে কল কৰিব বিচাৰে — যেনে, পৰিয়ালৰ এজন সদস্য বা ওচৰৰ বন্ধু।",
+  "onboardingTrustedBody2": "তেওঁলোকক যোগ কৰাৰ পিছত, আপুনি হোম স্ক্ৰিন বা আমি স্কেম সতর্কতা দেখুওৱা স্ক্ৰিনৰ পৰা এটাহে টেপত এই ব্যক্তিজনক কল কৰিব পাৰে।",
+  "onboardingTrustedAddFromContacts": "যোগাযোগৰ পৰা যোগ কৰক",
+  "onboardingTrustedAddFromContactsUnavailable": "এই প্ৰিভিউ সংস্কৰণত ডিভাইচ কন্টেক্ট পিকাৰ এতিয়াও উপলব্ধ নহয়।",
+  "onboardingTrustedOrEnterManually": "নহ’লে নম্বৰ হাতেহাতে লিখক:",
+  "onboardingTrustedDone": "হৈ গ’ল",
+  "onboardingTrustedSeeWarningCta": "সতর্কতা কেনেকুৱা দেখা যায় চাওক",
+  "onboardingTrustedMissingFields": "অনুগ্ৰহ কৰি নাম আৰু নম্বৰ দুয়োটা লিখক",
+
+  "launchGateChecking": "পৰীক্ষা কৰি আছে…",
+
+  "exampleWarningBanner": "ই কেৱল এটা উদাহৰণ। কোনো বাস্তৱ বাৰ্তা বা এক্সন ন’হোৱা।",
+  "exampleWarningSnackbar": "ই কেৱল উদাহৰণ আছিল। কোনো এক্সন লোৱা হোৱা নাই।",
+  "exampleWarningButton": "বুজিলো — ই কেৱল উদাহৰণ আছিল",
+  "exampleWarningSenderUnknown": "অজ্ঞাত",
+  "exampleWarningBody": "আপোনাৰ বেংক একাউণ্ট 24 ঘণ্টাৰ ভিতৰত ব্লক কৰা হ’ব। ভেৰিফাই কৰিবলৈ ইয়াত ক্লিক কৰক: http://secure-bank-verify.com. এই তথ্য আন কোনোবাৰ সৈতে ভাগ নকৰিব।",
+  "exampleWarningReasonSuspiciousLink": "এটা সন্দেহজনক লিঙ্ক আছে",
+  "exampleWarningReasonPretendBank": "আপোনাৰ বেংকৰ দৰে সাজি কথা কৰিছে",
+  "exampleWarningReasonUrgentLanguage": "অতি তাড়াহুড়া বা ডাঙৰ ভয় দেখুওৱা ভাষা ব্যৱহাৰ কৰিছে",
+
+  "reasonShortUrl": "এটা সৰু বা সন্দেহজনক লিঙ্ক আছে",
+  "reasonOtpMention": "OTP বা এবাৰ ব্যৱহাৰযোগ্য কোড বিচাৰে বা উল্লেখ কৰিছে",
+  "reasonUrgentLanguage": "তাড়াহুড়া বা ভয় দেখুওৱা ভাষা ব্যৱহাৰ কৰিছে",
+  "reasonBankKyc": "বেংক একাউণ্ট, KYC বা পেমেণ্ট ডিটেইলৰ কথা কৈছে",
+  "reasonPaymentRequest": "আপোনাক ধন পঠিয়াবলৈ বা পেমেণ্ট অনুমোদন কৰিবলৈ ক‘ছে",
+  "reasonPrizeLottery": "ইনাম/লটাৰী স্কেম যেন লাগিছে",
+  "reasonParcelDelivery": "সন্দেহজনক পাৰ্সেল বা ডেলিভাৰী সমস্যাৰ কথা কৈছে",
+  "reasonCryptoInvestment": "বিপদজনক ক্ৰিপ্ত’ বিনিয়োগ বা নিশ্চিত লাভৰ প্রতিশ্ৰুতি দিছে",
+  "reasonSenderSuspicious": "প্ৰেৰণকাৰীৰ নাম অস্বাভাবিক বা সন্দেহজনক দেখি লাগে",
+  "reasonInCallOtp": "আপুনি কলত থকা ভিতৰতে OTP আহিছে — এইটো অতি সাধাৰণ স্কেম পেটাৰ্ণ",
+
+  "messageFromLabel": "প্ৰেৰণকাৰী: {sender}",
+  "@messageFromLabel": {
+    "placeholders": {
+      "sender": {
+        "type": "String"
+      }
+    }
+  },
+
+  "fullScreenWarningTitle": "সম্ভাব্য স্কেম",
+  "fullScreenWarningClosingNote": "এই স্ক্ৰিন বন্ধ কৰিলে আপোনাৰ ফোনৰ পৰা বাৰ্তাটো নোমচে।",
+  "fullScreenWarningDeleteAction": "বাৰ্তা মচি পেলাওক",
+  "fullScreenWarningDeleteSnackbar": "এল্ডাৰ শিল্ডৰ পৰা আঁতৰোৱা হ’ল। এতিয়া আপোনাৰ মেছেজিং এপ খুলি আছে যাতে আপুনি তাতেও ইচ্ছা কৰিলে মচি পেলাব পাৰে।",
+  "fullScreenWarningBlockSender": "এই প্ৰেৰণকাৰীক ব্লক কৰক (মেছেজিং এপ খোলিব)"
+}
+

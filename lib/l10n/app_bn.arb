@@ -91,7 +91,6 @@
   "languageKannadaName": "কন্নড়",
   "languageHindiName": "হিন্দি",
   "languageUrduName": "উর্দু",
-  "languageHindiName": "হিন্দি",
   "languageSectionSubtitle": "বর্তমান ভাষা: {languageName}",
   "@languageSectionSubtitle": {
     "description": "Subtitle showing currently selected language.",
