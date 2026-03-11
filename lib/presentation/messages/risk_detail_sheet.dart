@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/data/message_repository.dart';
 import 'package:elder_shield/domain/detector/heuristic_detector.dart';
@@ -75,7 +74,6 @@ class _RiskDetailSheetContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final repo = ref.read(messageRepositoryProvider);
-    final settings = ref.read(settingsServiceProvider);
 
     return DraggableScrollableSheet(
       initialChildSize: 0.7,

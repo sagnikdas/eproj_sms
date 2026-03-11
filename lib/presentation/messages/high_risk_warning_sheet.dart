@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/data/message_repository.dart';
-import 'package:elder_shield/presentation/messages/risk_detail_sheet.dart';
+import 'package:elder_shield/domain/detector/heuristic_detector.dart';
 import 'package:elder_shield/utils/snackbars.dart';
 
 /// Full-height bottom sheet for real-time high-risk alert (Block 7).
@@ -38,7 +37,6 @@ class _HighRiskWarningContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final repo = ref.read(messageRepositoryProvider);
-    final settings = ref.read(settingsServiceProvider);
     final theme = Theme.of(context);
     final errorBg = theme.colorScheme.error;
     final errorText = theme.colorScheme.onError;
@@ -56,6 +54,7 @@ class _HighRiskWarningContent extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Danger header banner
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 decoration: BoxDecoration(
@@ -98,55 +97,60 @@ class _HighRiskWarningContent extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 20),
+              // Sender and full message body (aligned with Risk Detail sheet)
               Text(
-                'From: ${message.sender}',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                message.sender,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
-                message.body.length > 200
-                    ? '${message.body.substring(0, 200)}…'
-                    : message.body,
+                message.body,
                 style: const TextStyle(fontSize: 16, height: 1.4),
               ),
+              const SizedBox(height: 16),
+              _RiskBandChip(band: message.band),
               if (message.reasons.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 Text(
-                  message.reasons.first,
-                  style: TextStyle(
-                    fontSize: 16,
+                  'Why this was flagged:',
+                  style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Colors.red.shade700,
                   ),
                 ),
-                if (message.reasons.length > 1) ...[
-                  const SizedBox(height: 8),
-                  ...message.reasons.skip(1).map((r) => Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('• ', style: TextStyle(fontSize: 16)),
-                            Expanded(
-                                child: Text(r,
-                                    style: const TextStyle(fontSize: 15))),
-                          ],
+                const SizedBox(height: 8),
+                ...message.reasons.map(
+                  (r) => Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('• ', style: TextStyle(fontSize: 16)),
+                        Expanded(
+                          child: Text(
+                            r,
+                            style: const TextStyle(fontSize: 15),
+                          ),
                         ),
-                      )),
-                ],
+                      ],
+                    ),
+                  ),
+                ),
               ],
               const SizedBox(height: 24),
-              // Primary safety actions first: Scam, then Call Trusted Contact
+              // Primary safety actions: Scam (red) and Safe (green)
               _ActionButton(
                 label: 'This is a Scam',
                 icon: Icons.report,
+                color: Colors.red,
                 onPressed: () async {
                   try {
                     await repo.saveFeedback(
-                        messageId: message.id, label: 'scam');
+                      messageId: message.id,
+                      label: 'scam',
+                    );
                   } catch (_) {
                     if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -164,36 +168,16 @@ class _HighRiskWarningContent extends ConsumerWidget {
                 },
               ),
               const SizedBox(height: 12),
-              FutureBuilder(
-                future: settings.getTrustedContacts(),
-                builder: (context, snap) {
-                  final contacts = snap.data ?? [];
-                  final first =
-                      contacts.isNotEmpty ? contacts.first : null;
-                  if (first == null) return const SizedBox.shrink();
-                  return _ActionButton(
-                    label:
-                        'Call ${first.name.isNotEmpty ? first.name : "Trusted Contact"}',
-                    icon: Icons.phone,
-                    onPressed: () async {
-                      final uri = Uri.parse(
-                          'tel:${first.number.replaceAll(RegExp(r'\s'), '')}');
-                      if (await canLaunchUrl(uri)) {
-                        await launchUrl(uri,
-                            mode: LaunchMode.externalApplication);
-                      }
-                    },
-                  );
-                },
-              ),
-              const SizedBox(height: 12),
               _ActionButton(
                 label: 'This is Safe',
                 icon: Icons.check_circle,
+                color: Colors.green,
                 onPressed: () async {
                   try {
                     await repo.saveFeedback(
-                        messageId: message.id, label: 'safe');
+                      messageId: message.id,
+                      label: 'safe',
+                    );
                   } catch (_) {
                     if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -206,34 +190,6 @@ class _HighRiskWarningContent extends ConsumerWidget {
                     Navigator.of(context).pop();
                   }
                 },
-              ),
-              const SizedBox(height: 12),
-              _ActionButton(
-                label: 'Delete message',
-                icon: Icons.delete_outline,
-                onPressed: () => confirmDeleteMessage(
-                  context,
-                  message: message,
-                  repo: repo,
-                  onDismiss: onDismiss,
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () async {
-                  final number = message.sender
-                      .replaceAll(RegExp(r'[^\d+]'), '');
-                  if (number.isEmpty) return;
-                  final uri = Uri.parse('sms:$number');
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri,
-                        mode: LaunchMode.externalApplication);
-                  }
-                },
-                child: const Text(
-                  'Block this sender (opens messaging app)',
-                  textAlign: TextAlign.center,
-                ),
               ),
               const SizedBox(height: 12),
               Center(
@@ -252,16 +208,62 @@ class _HighRiskWarningContent extends ConsumerWidget {
   }
 }
 
+class _RiskBandChip extends StatelessWidget {
+  const _RiskBandChip({required this.band});
+
+  final RiskBand band;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final (label, Color bg, Color fg) = switch (band) {
+      RiskBand.low => (
+          'Low risk',
+          colorScheme.surfaceContainerHighest,
+          colorScheme.onSurface,
+        ),
+      RiskBand.medium => (
+          'Medium risk — review',
+          colorScheme.tertiaryContainer,
+          colorScheme.onTertiaryContainer,
+        ),
+      RiskBand.high => (
+          'High risk — possible scam',
+          colorScheme.errorContainer,
+          colorScheme.onErrorContainer,
+        ),
+    };
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: fg,
+          fontSize: 16,
+        ),
+      ),
+    );
+  }
+}
+
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
     required this.label,
     required this.icon,
     required this.onPressed,
+    this.color,
   });
 
   final String label;
   final IconData icon;
   final VoidCallback onPressed;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +274,7 @@ class _ActionButton extends StatelessWidget {
         icon: Icon(icon),
         label: Text(label, style: const TextStyle(fontSize: 16)),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF1565C0),
+          backgroundColor: color ?? const Color(0xFF1565C0),
           foregroundColor: Colors.white,
         ),
       ),
