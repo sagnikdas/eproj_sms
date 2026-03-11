@@ -12,7 +12,7 @@ void main() {
         isInCall: false,
       );
       expect(result.band, RiskBand.low);
-      expect(result.score, lessThan(DetectorConstants.thresholdMedium));
+      expect(result.score, lessThan(HeuristicDetector.config.thresholdMedium));
       expect(result.reasons, isEmpty);
     });
 
@@ -178,7 +178,7 @@ void main() {
         body: 'Limited time sale on shoes at our store.',
         isInCall: false,
       );
-      expect(result.score, lessThan(DetectorConstants.thresholdMedium));
+      expect(result.score, lessThan(HeuristicDetector.config.thresholdMedium));
       expect(result.band, RiskBand.low);
     });
 
