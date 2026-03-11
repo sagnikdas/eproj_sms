@@ -14,7 +14,7 @@ import 'app.dart';
 // URL of the remotely hosted detector configuration JSON.
 // When pushed to GitHub, replace <user>, <repo>, and <branch> accordingly.
 const _detectorConfigUrl =
-    'https://raw.githubusercontent.com/<user>/<repo>/<branch>/config/detector-config.json';
+    'https://raw.githubusercontent.com/sagnikdas/eproj_sms/refs/heads/main/config/detector-config.json';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
