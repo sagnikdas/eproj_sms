@@ -15,6 +15,9 @@ import 'package:elder_shield/utils/haptic.dart';
 import 'package:elder_shield/utils/responsive.dart';
 import 'package:elder_shield/utils/snackbars.dart';
 
+/// Display name for English in the language list; never translated.
+const _languageDisplayNameEnglish = 'English';
+
 /// Settings: collapsible sections (Appearance, Text size, Legal, Sensitivity, Trusted contacts), theme, haptics.
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -239,7 +242,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     'ta' => l10n.languageTamilName,
                     'ml' => l10n.languageMalayalamName,
                     'te' => l10n.languageTeluguName,
-                    _ => l10n.languageEnglishName,
+                    _ => _languageDisplayNameEnglish,
                   },
                 ),
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -254,7 +257,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       RadioListTile<String>(
-                        title: Text(l10n.languageEnglishName),
+                        title: const Text(_languageDisplayNameEnglish),
                         value: 'en',
                         groupValue: _languageCode,
                         onChanged: (v) => v != null ? _setLanguage(v) : null,
