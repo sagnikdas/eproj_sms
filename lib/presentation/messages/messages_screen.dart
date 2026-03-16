@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elder_shield/l10n/app_localizations.dart';
 import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/core/design_tokens.dart';
-import 'package:elder_shield/data/message_repository.dart';
+import 'package:elder_shield/features/messages/data/message_repository.dart';
 import 'package:elder_shield/domain/detector/heuristic_detector.dart';
 import 'package:elder_shield/presentation/messages/risk_detail_sheet.dart';
 import 'package:elder_shield/presentation/widgets/elder_shield_app_bar.dart';
@@ -124,29 +124,34 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
               future: _fetchMessages(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(padding * 1.5),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            l10n.messagesErrorTitle,
-                            style: theme.textTheme.bodyLarge,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            l10n.messagesErrorSubtitle,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+              return Center(
+                child: Padding(
+                  padding: EdgeInsets.all(padding * 1.5),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        l10n.messagesErrorTitle,
+                        style: theme.textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  );
+                      const SizedBox(height: 8),
+                      AnimatedOpacity(
+                        duration: DesignTokens.animationNormal,
+                        curve: DesignTokens.animationEaseInOut,
+                        opacity: 1,
+                        child: Text(
+                          l10n.messagesErrorSubtitle,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return ListView(
@@ -432,71 +437,90 @@ class _MessageTile extends StatelessWidget {
     };
 
     final theme = Theme.of(context);
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-        side: BorderSide(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.6),
-        ),
-      ),
-      child: ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        title: Text(
-          message.sender,
-          style: theme.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600,
+    final heroTag = 'message-${message.id}';
+    return Hero(
+      tag: heroTag,
+      flightShuttleBuilder: (
+        flightContext,
+        animation,
+        flightDirection,
+        fromHeroContext,
+        toHeroContext,
+      ) {
+        return ScaleTransition(
+          scale: CurvedAnimation(
+            parent: animation,
+            curve: DesignTokens.animationEaseInOut,
+          ),
+          child: toHeroContext.widget,
+        );
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+          side: BorderSide(
+            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.6),
           ),
         ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text(
-            snippet,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
+        child: ListTile(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          title: Text(
+            message.sender,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
             ),
           ),
-        ),
-        trailing: FittedBox(
-          fit: BoxFit.scaleDown,
-          alignment: Alignment.centerRight,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: badgeBg,
-                  borderRadius:
-                      BorderRadius.circular(DesignTokens.radiusSmall),
-                ),
-                child: Text(
-                  badgeLabel,
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: badgeText,
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              snippet,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          trailing: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerRight,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: badgeBg,
+                    borderRadius:
+                        BorderRadius.circular(DesignTokens.radiusSmall),
+                  ),
+                  child: Text(
+                    badgeLabel,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: badgeText,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                dateStr,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                  fontSize: 12,
+                const SizedBox(height: 6),
+                Text(
+                  dateStr,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontSize: 12,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+          onTap: onTap,
         ),
-        onTap: onTap,
       ),
     );
   }

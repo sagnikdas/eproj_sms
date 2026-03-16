@@ -251,72 +251,105 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       : '${l10n.homeProtectionStatusLabel}: ${l10n.homeProtectionStatusPermissionsNeeded}',
                   readOnly: true,
                   child: ExcludeSemantics(
-                    child: AppCard(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.xl,
-                        vertical: AppSpacing.xl,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            l10n.homeProtectionStatusLabel,
-                            style:
-                                theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color:
-                                  theme.colorScheme.onSurfaceVariant,
+                    child: AnimatedContainer(
+                      duration: DesignTokens.animationNormal,
+                      curve: DesignTokens.animationEaseInOut,
+                      transformAlignment: Alignment.center,
+                      padding: EdgeInsets.zero,
+                      child: AppCard(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.xl,
+                          vertical: AppSpacing.xl,
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              l10n.homeProtectionStatusLabel,
+                              style: theme.textTheme.titleMedium
+                                  ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: theme
+                                    .colorScheme.onSurfaceVariant,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: AppSpacing.md),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                _permissionsGranted
-                                    ? Icons.shield_rounded
-                                    : Icons.shield_outlined,
-                                size: 52,
-                                color: _permissionsGranted
-                                    ? Colors.green
-                                    : Colors.amber.shade700,
-                              ),
-                              const SizedBox(
-                                  width: DesignTokens.s12),
-                              Flexible(
-                                child: Text(
-                                  _permissionsGranted
-                                      ? l10n.homeProtectionStatusProtected
-                                      : l10n.homeProtectionStatusPermissionsNeeded,
-                                  style: theme
-                                      .textTheme.titleLarge
-                                      ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: -0.2,
-                                  ),
-                                  overflow:
-                                      TextOverflow.ellipsis,
-                                  maxLines: 1,
+                            const SizedBox(height: AppSpacing.md),
+                            AnimatedSwitcher(
+                              duration:
+                                  DesignTokens.animationNormal,
+                              switchInCurve:
+                                  DesignTokens.animationEaseInOut,
+                              switchOutCurve:
+                                  DesignTokens.animationEaseInOut,
+                              child: Row(
+                                key: ValueKey<bool>(
+                                  _permissionsGranted,
                                 ),
+                                mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    _permissionsGranted
+                                        ? Icons.shield_rounded
+                                        : Icons.shield_outlined,
+                                    size: 52,
+                                    color: _permissionsGranted
+                                        ? Colors.green
+                                        : Colors.amber.shade700,
+                                  ),
+                                  const SizedBox(
+                                    width: DesignTokens.s12,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      _permissionsGranted
+                                          ? l10n
+                                              .homeProtectionStatusProtected
+                                          : l10n
+                                              .homeProtectionStatusPermissionsNeeded,
+                                      style: theme
+                                          .textTheme.titleLarge
+                                          ?.copyWith(
+                                        fontWeight:
+                                            FontWeight.bold,
+                                        letterSpacing: -0.2,
+                                      ),
+                                      overflow:
+                                          TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
 
-                if (!_permissionsGranted) ...[
-                  const SizedBox(height: AppSpacing.md),
-                  AppButton(
-                    label: l10n.homeEnableProtectionButton,
-                    onPressed: () {
-                      lightImpact();
-                      _ensurePermissionsAndStart();
-                    },
-                  ),
-                ],
+                AnimatedSwitcher(
+                  duration: DesignTokens.animationNormal,
+                  switchInCurve: DesignTokens.animationEaseInOut,
+                  switchOutCurve: DesignTokens.animationEaseInOut,
+                  child: !_permissionsGranted
+                      ? Column(
+                          key: const ValueKey('enable-permissions'),
+                          children: [
+                            const SizedBox(height: AppSpacing.md),
+                            AppButton(
+                              label:
+                                  l10n.homeEnableProtectionButton,
+                              onPressed: () {
+                                lightImpact();
+                                _ensurePermissionsAndStart();
+                              },
+                            ),
+                          ],
+                        )
+                      : const SizedBox.shrink(),
+                ),
 
                 const SizedBox(height: AppSpacing.xxl),
 
@@ -456,8 +489,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         clipBehavior: Clip.none,
                         children: [
                           AppButton(
-                            label: l10n
-                                .homeCallTrustedButtonLabel(
+                            label:
+                                l10n.homeCallTrustedButtonLabel(
                               _trustedContactName
                                           ?.isNotEmpty ==
                                       true
@@ -474,64 +507,73 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               _callTrustedContact();
                             },
                           ),
-                          if (_showCallButtonTooltip)
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              bottom: 72,
-                              child: Material(
-                                elevation: 2,
-                                shadowColor:
-                                    Colors.black26,
-                                borderRadius:
-                                    BorderRadius.circular(
-                                        DesignTokens
-                                            .radiusLarge),
-                                color: theme
-                                    .colorScheme
-                                    .surfaceContainerHighest,
-                                child: InkWell(
-                                  onTap: () {
-                                    selectionClick();
-                                    _dismissCallButtonTooltip();
-                                  },
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 72,
+                            child: AnimatedOpacity(
+                              duration:
+                                  DesignTokens.animationNormal,
+                              curve: DesignTokens.animationEaseOutCubic,
+                              opacity:
+                                  _showCallButtonTooltip ? 1 : 0,
+                              child: IgnorePointer(
+                                ignoring: !_showCallButtonTooltip,
+                                child: Material(
+                                  elevation: 2,
+                                  shadowColor: Colors.black26,
                                   borderRadius:
                                       BorderRadius.circular(
                                           DesignTokens
                                               .radiusLarge),
-                                  child: Padding(
-                                    padding: const EdgeInsets
-                                        .symmetric(
-                                      horizontal: 20,
-                                      vertical: 14,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons
-                                              .lightbulb_outline,
-                                          color: theme
-                                              .colorScheme
-                                              .primary,
-                                          size: 24,
-                                        ),
-                                        const SizedBox(
-                                            width: 12),
-                                        Expanded(
-                                          child: Text(
-                                            l10n
-                                                .homeCallTooltipText,
-                                            style: theme
-                                                .textTheme
-                                                .bodyMedium,
+                                  color: theme
+                                      .colorScheme
+                                      .surfaceContainerHighest,
+                                  child: InkWell(
+                                    onTap: () {
+                                      selectionClick();
+                                      _dismissCallButtonTooltip();
+                                    },
+                                    borderRadius:
+                                        BorderRadius.circular(
+                                            DesignTokens
+                                                .radiusLarge),
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets
+                                              .symmetric(
+                                        horizontal: 20,
+                                        vertical: 14,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons
+                                                .lightbulb_outline,
+                                            color: theme
+                                                .colorScheme
+                                                .primary,
+                                            size: 24,
                                           ),
-                                        ),
-                                      ],
+                                          const SizedBox(
+                                              width: 12),
+                                          Expanded(
+                                            child: Text(
+                                              l10n
+                                                  .homeCallTooltipText,
+                                              style: theme
+                                                  .textTheme
+                                                  .bodyMedium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
+                          ),
                         ],
                       ),
                     ),

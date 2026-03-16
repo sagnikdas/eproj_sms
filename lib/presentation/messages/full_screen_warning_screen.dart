@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:elder_shield/l10n/app_localizations.dart';
 import 'package:elder_shield/application/app_providers.dart';
-import 'package:elder_shield/data/message_repository.dart';
+import 'package:elder_shield/features/messages/data/message_repository.dart';
 import 'package:elder_shield/presentation/messages/reason_localizations.dart';
 
 /// Full-screen warning shown when the app is opened from the "possible scam"
@@ -92,12 +92,16 @@ class FullScreenWarningScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Text(
-                l10n.messageFromLabel(message.sender),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+              Hero(
+                tag: 'message-${message.id}',
+                child: Text(
+                  l10n.messageFromLabel(message.sender),
+                  style:
+                      Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                ),
               ),
               const SizedBox(height: 8),
               Text(

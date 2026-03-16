@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elder_shield/l10n/app_localizations.dart';
 import 'package:elder_shield/application/app_providers.dart';
-import 'package:elder_shield/data/message_repository.dart';
+import 'package:elder_shield/features/messages/data/message_repository.dart';
 import 'package:elder_shield/domain/detector/heuristic_detector.dart';
 import 'package:elder_shield/utils/snackbars.dart';
 import 'package:elder_shield/presentation/messages/reason_localizations.dart';
@@ -101,11 +101,14 @@ class _HighRiskWarningContent extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               // Sender and full message body (aligned with Risk Detail sheet)
-              Text(
-                message.sender,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+              Hero(
+                tag: 'message-${message.id}',
+                child: Text(
+                  message.sender,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
               ),
               const SizedBox(height: 8),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elder_shield/l10n/app_localizations.dart';
 import 'package:elder_shield/application/app_providers.dart';
-import 'package:elder_shield/data/message_repository.dart';
+import 'package:elder_shield/features/messages/data/message_repository.dart';
 import 'package:elder_shield/domain/detector/heuristic_detector.dart';
 import 'package:elder_shield/utils/snackbars.dart';
 import 'package:elder_shield/presentation/messages/reason_localizations.dart';
@@ -91,30 +91,36 @@ class _RiskDetailSheetContent extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      message.sender,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
+              Hero(
+                tag: 'message-${message.id}',
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        message.sender,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    tooltip: 'Delete message',
-                    color: Colors.red,
-                    icon: const Icon(Icons.delete_outline),
-                    onPressed: () => confirmDeleteMessage(
-                      context,
-                      message: message,
-                      repo: repo,
-                      onDismiss: onDismiss,
+                    IconButton(
+                      tooltip: 'Delete message',
+                      color: Colors.red,
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: () => confirmDeleteMessage(
+                        context,
+                        message: message,
+                        repo: repo,
+                        onDismiss: onDismiss,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 8),
               Text(
