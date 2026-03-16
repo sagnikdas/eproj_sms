@@ -6,8 +6,11 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/application/security_controller.dart';
 import 'package:elder_shield/core/design_tokens.dart';
+import 'package:elder_shield/core/theme/app_spacing.dart';
 import 'package:elder_shield/presentation/widgets/elder_shield_app_bar.dart';
 import 'package:elder_shield/services/settings_service.dart';
+import 'package:elder_shield/widgets/app_button.dart';
+import 'package:elder_shield/widgets/app_card.dart';
 import 'package:elder_shield/utils/haptic.dart';
 import 'package:elder_shield/utils/responsive.dart';
 import 'package:elder_shield/utils/snackbars.dart';
@@ -42,7 +45,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _loadTrustedContact();
     _loadTodayCount();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future<void>.delayed(const Duration(milliseconds: 800), _maybeShowCallButtonTooltip);
+      Future<void>.delayed(
+        const Duration(milliseconds: 800),
+        _maybeShowCallButtonTooltip,
+      );
     });
   }
 
@@ -50,7 +56,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (!mounted) return;
     if (await _settings.isCallButtonTooltipShown()) return;
     if (!mounted) return;
-    final hasTrusted = _trustedContactNumber != null && _trustedContactNumber!.trim().isNotEmpty;
+    final hasTrusted = _trustedContactNumber != null &&
+        _trustedContactNumber!.trim().isNotEmpty;
     if (!hasTrusted) return;
     if (!mounted) return;
     setState(() => _showCallButtonTooltip = true);
@@ -124,9 +131,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final smsStatus = await Permission.sms.status;
     final phoneStatus = await Permission.phone.status;
-
     final notificationStatus = await Permission.notification.status;
-    if (!smsStatus.isGranted || !phoneStatus.isGranted || !notificationStatus.isGranted) {
+
+    if (!smsStatus.isGranted ||
+        !phoneStatus.isGranted ||
+        !notificationStatus.isGranted) {
       final result = await [
         Permission.sms,
         Permission.phone,
@@ -135,11 +144,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
       final smsGranted = result[Permission.sms]?.isGranted ?? false;
       final phoneGranted = result[Permission.phone]?.isGranted ?? false;
-      final notificationGranted = result[Permission.notification]?.isGranted ?? true;
+      final notificationGranted =
+          result[Permission.notification]?.isGranted ?? true;
 
       if (!smsGranted || !phoneGranted || !notificationGranted) {
         if (mounted) setState(() => _permissionsGranted = false);
-        // If user has chosen "Don't ask again", guide them to app settings.
         final smsPerm = await Permission.sms.status;
         final phonePerm = await Permission.phone.status;
         if (smsPerm.isPermanentlyDenied || phonePerm.isPermanentlyDenied) {
@@ -147,14 +156,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           await showDialog<void>(
             context: context,
             builder: (ctx) => AlertDialog(
-              title: Text(AppLocalizations.of(context)!.permissionsDialogTitle),
+              title:
+                  Text(AppLocalizations.of(context)!.permissionsDialogTitle),
               content: Text(
                 AppLocalizations.of(context)!.permissionsDialogBody,
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(ctx).pop(),
-                  child: Text(AppLocalizations.of(context)!.commonCancel),
+                  child:
+                      Text(AppLocalizations.of(context)!.commonCancel),
                 ),
                 FilledButton(
                   onPressed: () {
@@ -162,7 +173,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     openAppSettings();
                   },
                   child: Text(
-                    AppLocalizations.of(context)!.permissionsDialogOpenSettings,
+                    AppLocalizations.of(context)!
+                        .permissionsDialogOpenSettings,
                   ),
                 ),
               ],
@@ -182,7 +194,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> _callTrustedContact() async {
     final number = _trustedContactNumber?.trim();
     if (number == null || number.isEmpty) return;
-    final uri = Uri.parse('tel:${number.replaceAll(RegExp(r'\s'), '')}');
+    final uri =
+        Uri.parse('tel:${number.replaceAll(RegExp(r'\s'), '')}');
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
@@ -196,14 +209,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         _loadTrustedContact();
       }
     });
+
     final hasTrusted = _trustedContacts.isNotEmpty;
-    final padding = horizontalPadding(context);
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final isDark = theme.brightness == Brightness.dark;
     final riskCardColor = _todayRiskCount > 0
-        ? (isDark ? Colors.orange.shade900.withValues(alpha: 0.3) : Colors.orange.shade50)
-        : (isDark ? theme.colorScheme.surfaceContainerHighest : Colors.grey.shade100);
+        ? (isDark
+            ? Colors.orange.shade900.withValues(alpha: 0.3)
+            : Colors.orange.shade50)
+        : (isDark
+            ? theme.colorScheme.surfaceContainerHighest
+            : Colors.grey.shade100);
 
     return Scaffold(
       appBar: ElderShieldAppBar(titleText: 'Elder Shield'),
@@ -220,11 +237,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
-            padding: EdgeInsets.all(padding),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: verticalPadding(context)),
+                const SizedBox(height: AppSpacing.xl),
+
+                // Protection status card
                 Semantics(
                   container: true,
                   label: _permissionsGranted
@@ -232,32 +251,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       : '${l10n.homeProtectionStatusLabel}: ${l10n.homeProtectionStatusPermissionsNeeded}',
                   readOnly: true,
                   child: ExcludeSemantics(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: padding * 1.25,
-                        vertical: DesignTokens.s24,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? theme.colorScheme.surfaceContainerHighest
-                            : theme.colorScheme.surfaceContainerLow,
-                        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-                        border: Border.all(
-                          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
-                          width: 1,
-                        ),
+                    child: AppCard(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xl,
+                        vertical: AppSpacing.xl,
                       ),
                       child: Column(
                         children: [
                           Text(
                             l10n.homeProtectionStatusLabel,
-                            style: theme.textTheme.titleMedium?.copyWith(
+                            style:
+                                theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.onSurfaceVariant,
+                              color:
+                                  theme.colorScheme.onSurfaceVariant,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: DesignTokens.s12),
+                          const SizedBox(height: AppSpacing.md),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -270,17 +281,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     ? Colors.green
                                     : Colors.amber.shade700,
                               ),
-                              const SizedBox(width: DesignTokens.s12),
+                              const SizedBox(
+                                  width: DesignTokens.s12),
                               Flexible(
                                 child: Text(
                                   _permissionsGranted
                                       ? l10n.homeProtectionStatusProtected
                                       : l10n.homeProtectionStatusPermissionsNeeded,
-                                  style: theme.textTheme.titleLarge?.copyWith(
+                                  style: theme
+                                      .textTheme.titleLarge
+                                      ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     letterSpacing: -0.2,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
+                                  overflow:
+                                      TextOverflow.ellipsis,
                                   maxLines: 1,
                                 ),
                               ),
@@ -291,50 +306,65 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
+
                 if (!_permissionsGranted) ...[
-                  const SizedBox(height: 12),
-                  ElevatedButton(
+                  const SizedBox(height: AppSpacing.md),
+                  AppButton(
+                    label: l10n.homeEnableProtectionButton,
                     onPressed: () {
                       lightImpact();
                       _ensurePermissionsAndStart();
                     },
-                    child: Text(l10n.homeEnableProtectionButton),
                   ),
                 ],
-                SizedBox(height: verticalPadding(context) * 1.5),
-                // Today's risk summary (tappable -> Messages tab)
+
+                const SizedBox(height: AppSpacing.xxl),
+
+                // Today's risk summary
                 Semantics(
                   container: true,
                   button: true,
                   label: _todayRiskCount > 0
-                      ? l10n.homeTodayRiskSummaryWithCount(_todayRiskCount)
+                      ? l10n.homeTodayRiskSummaryWithCount(
+                          _todayRiskCount,
+                        )
                       : l10n.homeTodayRiskSummaryNoRisk,
-                  hint: 'Double tap to open the Messages tab.',
+                  hint:
+                      'Double tap to open the Messages tab.',
                   child: ExcludeSemantics(
                     child: Material(
                       color: riskCardColor,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+                        borderRadius: BorderRadius.circular(
+                            DesignTokens.radiusLarge),
                         side: BorderSide(
-                          color: theme.colorScheme.outlineVariant
+                          color: theme
+                              .colorScheme.outlineVariant
                               .withValues(alpha: 0.6),
                         ),
                       ),
                       child: InkWell(
                         onTap: () {
                           selectionClick();
-                          ref.read(shellTabIndexProvider.notifier).state = 1;
+                          ref
+                              .read(
+                                  shellTabIndexProvider.notifier)
+                              .state = 1;
                         },
-                        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+                        borderRadius: BorderRadius.circular(
+                            DesignTokens.radiusLarge),
                         child: Padding(
-                          padding: EdgeInsets.all(padding * 0.75),
+                          padding: const EdgeInsets.all(
+                              AppSpacing.lg),
                           child: Row(
                             children: [
                               Expanded(
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  mainAxisSize:
+                                      MainAxisSize.min,
                                   children: [
                                     Text(
                                       _todayRiskCount > 0
@@ -342,22 +372,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                               _todayRiskCount,
                                             )
                                           : l10n.homeTodayRiskSummaryNoRisk,
-                                      style: theme.textTheme.bodyLarge?.copyWith(
+                                      style: theme.textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
                                         fontSize:
-                                            _todayRiskCount > 0 ? 20 : null,
-                                        fontWeight: _todayRiskCount > 0
-                                            ? FontWeight.w700
-                                            : null,
+                                            _todayRiskCount > 0
+                                                ? 20
+                                                : null,
+                                        fontWeight:
+                                            _todayRiskCount > 0
+                                                ? FontWeight
+                                                    .w700
+                                                : null,
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
+                                    const SizedBox(
+                                        height: 4),
                                     Text(
                                       l10n.homeTodayRiskTapToSeeMessages,
-                                      style:
-                                          theme.textTheme.bodySmall?.copyWith(
+                                      style: theme
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
                                         color: theme
-                                            .colorScheme.onSurfaceVariant,
-                                        fontStyle: FontStyle.italic,
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                        fontStyle:
+                                            FontStyle.italic,
                                       ),
                                     ),
                                   ],
@@ -366,14 +407,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               Icon(
                                 Icons.chevron_right_rounded,
                                 size: 26,
-                                color: theme.colorScheme.onSurfaceVariant,
+                                color: theme.colorScheme
+                                    .onSurfaceVariant,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 l10n.commonView,
-                                style: theme.textTheme.labelLarge?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
+                                style: theme
+                                    .textTheme.labelLarge
+                                    ?.copyWith(
+                                  color: theme
+                                      .colorScheme.primary,
+                                  fontWeight:
+                                      FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -383,61 +429,50 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 6),
+
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   l10n.homeAutoCheckInfo,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: theme
+                        .colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: verticalPadding(context) * 1.5),
-                // Large Call trusted contact button (min 56 dp)
+
+                const SizedBox(height: AppSpacing.xxl),
+
+                // Call trusted contact
                 if (hasTrusted)
                   Semantics(
                     container: true,
                     button: true,
                     label:
                         'Call ${_trustedContactName?.isNotEmpty == true ? _trustedContactName! : 'trusted contact'}',
-                    hint: 'Double tap to start a phone call.',
+                    hint:
+                        'Double tap to start a phone call.',
                     child: ExcludeSemantics(
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          SizedBox(
-                            height: 64,
-                            child: FilledButton.icon(
-                              onPressed: () {
-                                if (_showCallButtonTooltip) {
-                                  _dismissCallButtonTooltip();
-                                }
-                                selectionClick();
-                                _callTrustedContact();
-                              },
-                              icon: const Icon(Icons.phone_rounded, size: 26),
-                              label: Text(
-                                l10n.homeCallTrustedButtonLabel(
-                                  _trustedContactName?.isNotEmpty == true
-                                      ? _trustedContactName!
-                                      : l10n.homeTrustedContactFallbackName,
-                                ),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: -0.2,
-                                ),
-                              ),
-                              style: FilledButton.styleFrom(
-                                minimumSize: const Size.fromHeight(
-                                    DesignTokens.minTouchTarget),
-                                backgroundColor: theme.colorScheme.primary,
-                                foregroundColor: theme.colorScheme.onPrimary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(DesignTokens.radiusPill),
-                                ),
-                                padding: const EdgeInsets.symmetric(horizontal: 32),
-                              ),
+                          AppButton(
+                            label: l10n
+                                .homeCallTrustedButtonLabel(
+                              _trustedContactName
+                                          ?.isNotEmpty ==
+                                      true
+                                  ? _trustedContactName!
+                                  : l10n
+                                      .homeTrustedContactFallbackName,
                             ),
+                            icon: Icons.phone_rounded,
+                            onPressed: () {
+                              if (_showCallButtonTooltip) {
+                                _dismissCallButtonTooltip();
+                              }
+                              selectionClick();
+                              _callTrustedContact();
+                            },
                           ),
                           if (_showCallButtonTooltip)
                             Positioned(
@@ -446,29 +481,49 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               bottom: 72,
                               child: Material(
                                 elevation: 2,
-                                shadowColor: Colors.black26,
-                                borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-                                color:
-                                    theme.colorScheme.surfaceContainerHighest,
+                                shadowColor:
+                                    Colors.black26,
+                                borderRadius:
+                                    BorderRadius.circular(
+                                        DesignTokens
+                                            .radiusLarge),
+                                color: theme
+                                    .colorScheme
+                                    .surfaceContainerHighest,
                                 child: InkWell(
                                   onTap: () {
                                     selectionClick();
                                     _dismissCallButtonTooltip();
                                   },
-                                  borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+                                  borderRadius:
+                                      BorderRadius.circular(
+                                          DesignTokens
+                                              .radiusLarge),
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 14),
+                                    padding: const EdgeInsets
+                                        .symmetric(
+                                      horizontal: 20,
+                                      vertical: 14,
+                                    ),
                                     child: Row(
                                       children: [
-                                        Icon(Icons.lightbulb_outline,
-                                            color: theme.colorScheme.primary,
-                                            size: 24),
-                                        const SizedBox(width: 12),
+                                        Icon(
+                                          Icons
+                                              .lightbulb_outline,
+                                          color: theme
+                                              .colorScheme
+                                              .primary,
+                                          size: 24,
+                                        ),
+                                        const SizedBox(
+                                            width: 12),
                                         Expanded(
                                           child: Text(
-                                            l10n.homeCallTooltipText,
-                                            style: theme.textTheme.bodyMedium,
+                                            l10n
+                                                .homeCallTooltipText,
+                                            style: theme
+                                                .textTheme
+                                                .bodyMedium,
                                           ),
                                         ),
                                       ],
@@ -482,130 +537,182 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   )
                 else
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(padding),
-                      child: Column(
-                        children: [
-                          Text(
-                            l10n.homeAddTrustedIntro,
-                            style: theme.textTheme.bodyLarge,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 12),
-                          TextButton.icon(
+                  AppCard(
+                    child: Column(
+                      children: [
+                        Text(
+                          l10n.homeAddTrustedIntro,
+                          style: theme.textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                            height: AppSpacing.md),
+                        TextButton.icon(
+                          onPressed: () {
+                            selectionClick();
+                            ref
+                                .read(shellTabIndexProvider
+                                    .notifier)
+                                .state = 2;
+                          },
+                          icon:
+                              const Icon(Icons.person_add),
+                          label: Text(
+                              l10n.homeAddTrustedButton),
+                        ),
+                        const SizedBox(
+                            height: AppSpacing.sm),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton(
                             onPressed: () {
                               selectionClick();
-                              ref.read(shellTabIndexProvider.notifier).state = 2;
+                              setState(() {
+                                _showWhyTrustedContact =
+                                    !_showWhyTrustedContact;
+                              });
                             },
-                            icon: const Icon(Icons.person_add),
-                            label: Text(l10n.homeAddTrustedButton),
-                          ),
-                          const SizedBox(height: 4),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: TextButton(
-                              onPressed: () {
-                                selectionClick();
-                                setState(() {
-                                  _showWhyTrustedContact = !_showWhyTrustedContact;
-                                });
-                              },
-                              child: Text(
-                                _showWhyTrustedContact
-                                    ? l10n.homeWhyAddTrustedHide
-                                    : l10n.homeWhyAddTrustedShow,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant,
-                                  decoration: TextDecoration.underline,
-                                ),
+                            child: Text(
+                              _showWhyTrustedContact
+                                  ? l10n.homeWhyAddTrustedHide
+                                  : l10n.homeWhyAddTrustedShow,
+                              style: theme
+                                  .textTheme.bodySmall
+                                  ?.copyWith(
+                                color: theme
+                                    .colorScheme
+                                    .onSurfaceVariant,
+                                decoration:
+                                    TextDecoration
+                                        .underline,
                               ),
                             ),
                           ),
-                          if (_showWhyTrustedContact) ...[
-                            const SizedBox(height: 4),
-                            Text(
-                              l10n.homeWhyAddTrustedExplanation,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                                height: 1.4,
-                              ),
-                              textAlign: TextAlign.left,
+                        ),
+                        if (_showWhyTrustedContact) ...[
+                          const SizedBox(
+                              height: AppSpacing.sm),
+                          Text(
+                            l10n
+                                .homeWhyAddTrustedExplanation,
+                            style: theme
+                                .textTheme.bodySmall
+                                ?.copyWith(
+                              color: theme
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                              height: 1.4,
                             ),
-                          ],
+                            textAlign: TextAlign.left,
+                          ),
                         ],
-                      ),
+                      ],
                     ),
                   ),
+
                 if (_trustedContacts.isNotEmpty) ...[
-                  SizedBox(height: verticalPadding(context)),
+                  const SizedBox(height: AppSpacing.xl),
                   Text(
                     l10n.homeTrustedContactsHeader,
                     style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w600),
+                        ?.copyWith(
+                            fontWeight: FontWeight.w600),
                   ),
-                  const SizedBox(height: DesignTokens.s8),
+                  const SizedBox(
+                      height: DesignTokens.s8),
                   Column(
-                    children: _trustedContacts.asMap().entries.map((entry) {
+                    children: _trustedContacts
+                        .asMap()
+                        .entries
+                        .map((entry) {
                       final index = entry.key;
                       final contact = entry.value;
-                      final isSelected = index == _selectedTrustedIndex;
-                      final title =
-                          contact.name.isNotEmpty ? contact.name : contact.number;
+                      final isSelected =
+                          index == _selectedTrustedIndex;
+                      final title = contact.name.isNotEmpty
+                          ? contact.name
+                          : contact.number;
                       final subtitle =
-                          contact.name.isNotEmpty ? contact.number : null;
+                          contact.name.isNotEmpty
+                              ? contact.number
+                              : null;
                       return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        margin:
+                            const EdgeInsets.symmetric(
+                          vertical: 5,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
+                          borderRadius:
+                              BorderRadius.circular(
+                                  DesignTokens
+                                      .radiusMedium),
                           side: BorderSide(
                             color: isSelected
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.outlineVariant.withValues(alpha: 0.7),
+                                ? theme
+                                    .colorScheme.primary
+                                : theme.colorScheme
+                                    .outlineVariant
+                                    .withValues(
+                                        alpha: 0.7),
                             width: isSelected ? 2 : 1,
                           ),
                         ),
                         child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: DesignTokens.s16,
+                          contentPadding:
+                              const EdgeInsets
+                                  .symmetric(
+                            horizontal:
+                                DesignTokens.s16,
                             vertical: 10,
                           ),
                           leading: Icon(
-                            Icons.person_outline_rounded,
+                            Icons
+                                .person_outline_rounded,
                             color: isSelected
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.onSurfaceVariant,
+                                ? theme
+                                    .colorScheme.primary
+                                : theme.colorScheme
+                                    .onSurfaceVariant,
                           ),
                           title: Text(
                             title,
                             style: TextStyle(
-                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.w500,
                             ),
                           ),
                           subtitle: subtitle != null
                               ? Text(
                                   subtitle,
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.onSurfaceVariant,
+                                  style: theme
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                    color: theme
+                                        .colorScheme
+                                        .onSurfaceVariant,
                                   ),
                                 )
                               : null,
                           trailing: isSelected
                               ? Icon(
-                                  Icons.check_circle_rounded,
-                                  color: theme.colorScheme.primary,
+                                  Icons
+                                      .check_circle_rounded,
+                                  color: theme
+                                      .colorScheme.primary,
                                   size: 24,
                                 )
                               : null,
                           onTap: () {
                             setState(() {
-                              _selectedTrustedIndex = index;
-                              _trustedContactName = contact.name;
-                              _trustedContactNumber = contact.number;
+                              _selectedTrustedIndex =
+                                  index;
+                              _trustedContactName =
+                                  contact.name;
+                              _trustedContactNumber =
+                                  contact.number;
                             });
                           },
                         ),

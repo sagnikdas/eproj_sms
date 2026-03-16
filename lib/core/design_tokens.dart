@@ -16,11 +16,13 @@ class DesignTokens {
   static const Color riskHigh = Color(0xFFD32F2F); // red
 
   // Spacing scale
+  static const double s4 = 4;
   static const double s8 = 8;
   static const double s12 = 12;
   static const double s16 = 16;
   static const double s24 = 24;
   static const double s32 = 32;
+  static const double s40 = 40;
 
   // Radii (modern rounded corners)
   static const double radiusSmall = 8;
@@ -46,5 +48,9 @@ class DesignTokens {
   // Animation
   static const Duration animationFast = Duration(milliseconds: 150);
   static const Duration animationNormal = Duration(milliseconds: 250);
+  static const Duration animationSlow = Duration(milliseconds: 350);
+
+  static const Curve animationEaseInOut = Curves.easeInOut;
+  static const Curve animationEaseOutCubic = Curves.easeOutCubic;
 }
 

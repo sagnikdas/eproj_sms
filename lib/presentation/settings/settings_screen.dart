@@ -4,6 +4,7 @@ import 'package:elder_shield/l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/core/design_tokens.dart';
+import 'package:elder_shield/widgets/app_card.dart';
 import 'package:elder_shield/platform/overlay_alerts.dart';
 import 'package:elder_shield/presentation/settings/about_screen.dart';
 import 'package:elder_shield/presentation/settings/how_it_works_screen.dart';
@@ -174,12 +175,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         padding: EdgeInsets.symmetric(horizontal: padding, vertical: DesignTokens.s16),
         children: [
           // Appearance (theme)
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
-            ),
+          AppCard(
             margin: const EdgeInsets.only(bottom: 12),
             child: ExpansionTile(
               leading: Icon(Icons.palette_outlined, color: theme.colorScheme.primary, size: 24),
@@ -218,12 +214,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           // Language
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
-            ),
+          AppCard(
             margin: const EdgeInsets.only(bottom: 12),
             child: ExpansionTile(
               leading: Icon(Icons.language_rounded, color: theme.colorScheme.primary, size: 24),
@@ -317,12 +308,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           // Text size
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
-            ),
+          AppCard(
             margin: const EdgeInsets.only(bottom: 12),
             child: ExpansionTile(
               leading: Icon(Icons.text_fields_rounded, color: theme.colorScheme.primary, size: 24),
@@ -373,12 +359,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           // Legal & information
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
-            ),
+          AppCard(
             margin: const EdgeInsets.only(bottom: 12),
             child: ExpansionTile(
               leading: Icon(Icons.gavel_rounded, color: theme.colorScheme.primary, size: 24),
@@ -409,12 +390,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           // Sensitivity
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
-            ),
+          AppCard(
             margin: const EdgeInsets.only(bottom: 12),
             child: ExpansionTile(
               leading: Icon(Icons.tune_rounded, color: theme.colorScheme.primary, size: 24),
@@ -460,12 +436,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           // Trusted contacts
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
-            ),
+          AppCard(
             margin: const EdgeInsets.only(bottom: 12),
             child: ExpansionTile(
               leading: Icon(Icons.contacts_outlined, color: theme.colorScheme.primary, size: 24),
@@ -578,12 +549,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           ), // Trusted contacts Card
           // Advanced & info
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-              side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
-            ),
+          AppCard(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Column(
