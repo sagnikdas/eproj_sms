@@ -12,14 +12,14 @@ class SettingsState {
     required this.languageCode,
   });
 
-  final String sensitivityMode;
+  final SensitivityMode sensitivityMode;
   final String themeMode;
   final bool overlayEnabled;
   final List<TrustedContact> contacts;
   final String languageCode;
 
   SettingsState copyWith({
-    String? sensitivityMode,
+    SensitivityMode? sensitivityMode,
     String? themeMode,
     bool? overlayEnabled,
     List<TrustedContact>? contacts,
@@ -53,7 +53,7 @@ class SettingsController extends AutoDisposeAsyncNotifier<SettingsState> {
     );
   }
 
-  Future<void> setSensitivity(String mode) async {
+  Future<void> setSensitivity(SensitivityMode mode) async {
     final settings = ref.read(settingsServiceProvider);
     await settings.setSensitivityMode(mode);
     final current = state.valueOrNull;

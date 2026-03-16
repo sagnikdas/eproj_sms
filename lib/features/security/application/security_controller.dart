@@ -13,8 +13,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Updated by [SecurityController] on every call-state event.
 final isInCallProvider = StateProvider<bool>((ref) => false);
 
-/// Anti-duplicate: don't alert twice for the same message within this window (ms).
-const _dedupeWindowMs = 60 * 1000;
+/// Anti-duplicate: don't alert twice for the same message within this window.
+const _dedupeWindow = Duration(minutes: 1);
 
 /// The [SecurityController] subscribes to native events, runs detection,
 /// persists results, and triggers notifications + in-app high-risk sheet.
@@ -25,16 +25,14 @@ class SecurityController {
   final _detector = const HeuristicDetector();
   StreamSubscription<NativeEvent>? _sub;
 
-  /// Keys "sender|body|timestamp" we've already alerted for (with expiry).
-  final _recentAlertKeys = <String>[];
-  static const _maxDedupeKeys = 100;
+  /// Maps dedup key → expiry time. O(1) lookup and automatic TTL via expiry check.
+  final _recentAlertKeys = <String, DateTime>{};
 
   void start() {
     _sub = NativeEventStream.instance.events.listen(
       _onEvent,
       onError: (Object err) {
-        // ignore: avoid_print
-        print('[SecurityController] stream error: $err');
+        debugPrint('[SecurityController] stream error: $err');
       },
     );
   }
@@ -54,14 +52,15 @@ class SecurityController {
   }
 
   void _handleSms(SmsEvent sms) {
+    if (sms.body.trim().isEmpty) return;
+
     final inCall = _ref.read(isInCallProvider);
     final result = _detector.analyze(
       sender: sms.sender,
       body: sms.body,
       isInCall: inCall,
     );
-    // ignore: avoid_print
-    print('[SecurityController] SMS from ${sms.sender} → $result');
+    debugPrint('[SecurityController] SMS from ${sms.sender} → $result');
 
     final repo = _ref.read(messageRepositoryProvider);
     unawaited(
@@ -80,8 +79,7 @@ class SecurityController {
                 result: result,
               ))
           .catchError((Object e) {
-        // ignore: avoid_print
-        print('[SecurityController] persist/alert error: $e');
+        debugPrint('[SecurityController] persist/alert error: $e');
       }),
     );
   }
@@ -94,15 +92,11 @@ class SecurityController {
     required DetectionResult result,
   }) async {
     final key = '$sender|$timestamp|${body.hashCode}';
-    if (_recentAlertKeys.contains(key)) return;
-    if (_recentAlertKeys.length >= _maxDedupeKeys) {
-      _recentAlertKeys.removeAt(0);
-    }
-    _recentAlertKeys.add(key);
-    Future.delayed(
-      const Duration(milliseconds: _dedupeWindowMs),
-      () => _recentAlertKeys.remove(key),
-    );
+    final now = DateTime.now();
+    // Purge expired entries to prevent unbounded growth.
+    _recentAlertKeys.removeWhere((_, expiry) => expiry.isBefore(now));
+    if (_recentAlertKeys.containsKey(key)) return;
+    _recentAlertKeys[key] = now.add(_dedupeWindow);
 
     final band = result.band;
     if (band == RiskBand.low) return;
@@ -113,7 +107,7 @@ class SecurityController {
       final context =
           WidgetsBinding.instance.platformDispatcher.implicitView == null
               ? null
-              : WidgetsBinding.instance.renderViewElement;
+              : WidgetsBinding.instance.rootElement;
       final l10n = context != null ? AppLocalizations.of(context) : null;
       final title = band == RiskBand.high
           ? (l10n?.highRiskHeaderTitle ??
@@ -150,10 +144,9 @@ class SecurityController {
 
   void _handleCallState(CallStateEvent call) {
     final inCall =
-        call.state == 'OFFHOOK' || call.state == 'RINGING';
+        call.state == CallState.offhook || call.state == CallState.ringing;
     _ref.read(isInCallProvider.notifier).state = inCall;
-    // ignore: avoid_print
-    print('[SecurityController] Call state → ${call.state}');
+    debugPrint('[SecurityController] Call state → ${call.state}');
   }
 }
 

@@ -6,6 +6,7 @@ import 'package:elder_shield/l10n/app_localizations.dart';
 import 'package:elder_shield/application/app_providers.dart';
 import 'package:elder_shield/presentation/messages/example_warning_sheet.dart';
 import 'package:elder_shield/services/settings_service.dart';
+import 'package:elder_shield/widgets/contact_picker_sheet.dart';
 import 'package:elder_shield/utils/haptic.dart';
 import 'package:elder_shield/utils/snackbars.dart';
 
@@ -57,7 +58,9 @@ class _OnboardingTrustedContactScreenState
     }
 
     // Load contacts with phone numbers and show a simple picker.
-    final contacts = await FlutterContacts.getAll();
+    final contacts = await FlutterContacts.getAll(
+      properties: {ContactProperty.phone, ContactProperty.name},
+    );
     if (!context.mounted) return;
 
     final contactsWithPhones =
@@ -71,20 +74,8 @@ class _OnboardingTrustedContactScreenState
 
     final contact = await showModalBottomSheet<Contact?>(
       context: context,
-      builder: (ctx) => SafeArea(
-        child: ListView.builder(
-          itemCount: contactsWithPhones.length,
-          itemBuilder: (ctx, index) {
-            final c = contactsWithPhones[index];
-            final number = c.phones.isNotEmpty ? c.phones.first.number : '';
-            return ListTile(
-              title: Text(c.displayName ?? ''),
-              subtitle: Text(number),
-              onTap: () => Navigator.of(ctx).pop(c),
-            );
-          },
-        ),
-      ),
+      isScrollControlled: true,
+      builder: (_) => ContactPickerSheet(contacts: contactsWithPhones),
     );
     if (contact == null) return;
 

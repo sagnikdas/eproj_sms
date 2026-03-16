@@ -29,17 +29,34 @@ class SmsEvent {
       'SmsEvent(sender: $sender, ts: $timestamp, body: ${body.length > 40 ? '${body.substring(0, 40)}…' : body})';
 }
 
+/// Typed call state; mirrors the values sent by the Android native layer.
+enum CallState {
+  idle,
+  ringing,
+  offhook;
+
+  static CallState fromString(String? raw) {
+    switch (raw?.toUpperCase()) {
+      case 'RINGING':
+        return CallState.ringing;
+      case 'OFFHOOK':
+        return CallState.offhook;
+      default:
+        return CallState.idle;
+    }
+  }
+}
+
 /// Parsed payload for a phone-call state change event.
 class CallStateEvent {
-  /// Values: 'IDLE' | 'RINGING' | 'OFFHOOK'
-  final String state;
+  final CallState state;
   final String number;
 
   const CallStateEvent({required this.state, required this.number});
 
   factory CallStateEvent.fromMap(Map<Object?, Object?> map) {
     return CallStateEvent(
-      state: '${map['state'] ?? 'IDLE'}',
+      state: CallState.fromString(map['state'] as String?),
       number: '${map['number'] ?? ''}',
     );
   }

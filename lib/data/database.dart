@@ -56,6 +56,17 @@ class AppDatabase {
         FOREIGN KEY(message_id) REFERENCES $tableMessages(id) ON DELETE CASCADE
       )
     ''');
+
+    // Indexes for common query patterns.
+    await db.execute(
+      'CREATE INDEX idx_messages_timestamp ON $tableMessages(timestamp DESC)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_messages_band ON $tableMessages(band)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_reasons_message_id ON $tableReasons(message_id)',
+    );
   }
 
   Future<void> close() async {

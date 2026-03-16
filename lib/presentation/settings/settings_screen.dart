@@ -17,6 +17,7 @@ import 'package:elder_shield/features/settings/data/settings_service.dart';
 import 'package:elder_shield/utils/haptic.dart';
 import 'package:elder_shield/utils/responsive.dart';
 import 'package:elder_shield/utils/snackbars.dart';
+import 'package:elder_shield/widgets/contact_picker_sheet.dart';
 
 /// Display name for English in the language list; never translated.
 const _languageDisplayNameEnglish = 'English';
@@ -50,7 +51,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     ref.read(themeModeProvider.notifier).state = mode;
   }
 
-  Future<void> _setSensitivity(String mode) async {
+  Future<void> _setSensitivity(SensitivityMode mode) async {
     selectionClick();
     await ref.read(settingsControllerProvider.notifier).setSensitivity(mode);
   }
@@ -391,10 +392,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               title: Text(l10n.settingsSensitivityTitle, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
               subtitle: Text(
                 switch (_sensitivityMode) {
-                  'conservative' => l10n.settingsSensitivityLabelConservative,
-                  'balanced' => l10n.settingsSensitivityLabelBalanced,
-                  'sensitive' => l10n.settingsSensitivityLabelSensitive,
-                  _ => _sensitivityMode,
+                  SensitivityMode.conservative => l10n.settingsSensitivityLabelConservative,
+                  SensitivityMode.balanced => l10n.settingsSensitivityLabelBalanced,
+                  SensitivityMode.sensitive => l10n.settingsSensitivityLabelSensitive,
                 },
                 style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
               ),
@@ -403,20 +403,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                   child: Column(
-                    children: ['conservative', 'balanced', 'sensitive'].map((mode) {
+                    children: SensitivityMode.values.map((mode) {
                       final desc = switch (mode) {
-                        'conservative' => l10n.settingsSensitivityDescConservative,
-                        'balanced' => l10n.settingsSensitivityDescBalanced,
-                        'sensitive' => l10n.settingsSensitivityDescSensitive,
-                        _ => '',
+                        SensitivityMode.conservative => l10n.settingsSensitivityDescConservative,
+                        SensitivityMode.balanced => l10n.settingsSensitivityDescBalanced,
+                        SensitivityMode.sensitive => l10n.settingsSensitivityDescSensitive,
                       };
                       final label = switch (mode) {
-                        'conservative' => l10n.settingsSensitivityLabelConservative,
-                        'balanced' => l10n.settingsSensitivityLabelBalanced,
-                        'sensitive' => l10n.settingsSensitivityLabelSensitive,
-                        _ => mode[0].toUpperCase() + mode.substring(1),
+                        SensitivityMode.conservative => l10n.settingsSensitivityLabelConservative,
+                        SensitivityMode.balanced => l10n.settingsSensitivityLabelBalanced,
+                        SensitivityMode.sensitive => l10n.settingsSensitivityLabelSensitive,
                       };
-                      return RadioListTile<String>(
+                      return RadioListTile<SensitivityMode>(
                         title: Text(label),
                         subtitle: Text(desc, style: const TextStyle(fontSize: 13)),
                         value: mode,
@@ -754,7 +752,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       return;
     }
 
-    final contacts = await FlutterContacts.getAll();
+    final contacts = await FlutterContacts.getAll(
+      properties: {ContactProperty.phone, ContactProperty.name},
+    );
     if (!mounted) return;
 
     final contactsWithPhones =
@@ -768,21 +768,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     final contact = await showModalBottomSheet<Contact?>(
       context: context,
-      builder: (ctx) => SafeArea(
-        child: ListView.builder(
-          itemCount: contactsWithPhones.length,
-          itemBuilder: (ctx, index) {
-            final c = contactsWithPhones[index];
-            final number =
-                c.phones.isNotEmpty ? c.phones.first.number : '';
-            return ListTile(
-              title: Text(c.displayName ?? ''),
-              subtitle: Text(number),
-              onTap: () => Navigator.of(ctx).pop(c),
-            );
-          },
-        ),
-      ),
+      isScrollControlled: true,
+      builder: (_) => ContactPickerSheet(contacts: contactsWithPhones),
     );
     if (contact == null) return;
 

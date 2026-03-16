@@ -17,6 +17,24 @@ class TrustedContact {
       );
 }
 
+/// Sensitivity level for the scam detector.
+enum SensitivityMode {
+  conservative,
+  balanced,
+  sensitive;
+
+  static SensitivityMode fromString(String? raw) {
+    switch (raw) {
+      case 'balanced':
+        return SensitivityMode.balanced;
+      case 'sensitive':
+        return SensitivityMode.sensitive;
+      default:
+        return SensitivityMode.conservative;
+    }
+  }
+}
+
 /// Keys used in secure storage.
 class SettingsKeys {
   static const onboardingComplete = 'onboarding_complete';
@@ -76,16 +94,16 @@ class SettingsService {
     );
   }
 
-  /// Get current sensitivity mode. Defaults to 'conservative' per v1 spec.
-  Future<String> getSensitivityMode() async {
-    return await _storage.read(key: SettingsKeys.sensitivityMode) ??
-        'conservative';
+  /// Get current sensitivity mode. Defaults to [SensitivityMode.conservative].
+  Future<SensitivityMode> getSensitivityMode() async {
+    final raw = await _storage.read(key: SettingsKeys.sensitivityMode);
+    return SensitivityMode.fromString(raw);
   }
 
-  Future<void> setSensitivityMode(String mode) async {
+  Future<void> setSensitivityMode(SensitivityMode mode) async {
     await _storage.write(
       key: SettingsKeys.sensitivityMode,
-      value: mode,
+      value: mode.name,
     );
   }
 
