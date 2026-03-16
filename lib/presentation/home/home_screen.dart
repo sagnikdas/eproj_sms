@@ -35,12 +35,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   late final SecurityController _securityController;
   late final SettingsService _settings;
   int _selectedTrustedIndex = 0;
+  late final ProviderSubscription<int> _shellTabSub;
 
   @override
   void initState() {
     super.initState();
     _securityController = ref.read(securityControllerProvider);
     _settings = ref.read(settingsServiceProvider);
+    // Keep trusted contacts in sync when user navigates back to Home tab.
+    _shellTabSub = ref.listenManual<int>(shellTabIndexProvider, (previous, next) {
+      if (next == 0) {
+        _loadTrustedContact();
+      }
+    });
     _ensurePermissionsAndStart();
     _loadTrustedContact();
     _loadTodayCount();
@@ -202,14 +209,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // Keep trusted contacts in sync when user navigates back to Home tab.
-    ref.listen<int>(shellTabIndexProvider, (previous, next) {
-      if (next == 0) {
-        _loadTrustedContact();
-      }
-    });
+  void dispose() {
+    _shellTabSub.close();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final hasTrusted = _trustedContacts.isNotEmpty;
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
