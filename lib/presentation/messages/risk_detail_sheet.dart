@@ -7,6 +7,7 @@ import 'package:elder_shield/features/messages/data/message_repository.dart';
 import 'package:elder_shield/domain/detector/heuristic_detector.dart';
 import 'package:elder_shield/utils/snackbars.dart';
 import 'package:elder_shield/presentation/messages/reason_localizations.dart';
+import 'package:elder_shield/presentation/widgets/linkified_text.dart';
 
 /// Risk detail bottom sheet: message, reasons, actions (Scam / Safe / Call Trusted / Block).
 void showRiskDetailSheet(
@@ -124,7 +125,7 @@ class _RiskDetailSheetContent extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
+              LinkifiedText(
                 message.body,
                 style: const TextStyle(fontSize: 16, height: 1.4),
               ),

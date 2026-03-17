@@ -11,6 +11,7 @@ import 'package:elder_shield/platform/whitelist_channel.dart';
 import 'package:elder_shield/utils/sender_utils.dart';
 import 'package:elder_shield/utils/snackbars.dart';
 import 'package:elder_shield/presentation/messages/reason_localizations.dart';
+import 'package:elder_shield/presentation/widgets/linkified_text.dart';
 
 /// Full-height bottom sheet for real-time high-risk alert (Block 7).
 /// Same actions as Risk Detail: This is a Scam / This is Safe / Call Trusted / Block sender.
@@ -117,7 +118,7 @@ class _HighRiskWarningContent extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
+              LinkifiedText(
                 message.body,
                 style: const TextStyle(fontSize: 16, height: 1.4),
               ),
