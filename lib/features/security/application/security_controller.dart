@@ -108,6 +108,15 @@ class SecurityController {
 
     final band = result.band;
     if (band == RiskBand.low) return;
+
+    // Suppress alerts for senders the user has previously marked safe.
+    // The message is still saved to history; only the alert is silenced.
+    final repo = _ref.read(messageRepositoryProvider);
+    if (await repo.hasSafeFeedback(sender)) {
+      debugPrint('[SecurityController] $sender has safe feedback — suppressing alert');
+      return;
+    }
+
     final appInForeground = _ref.read(appInForegroundProvider);
 
     if (appInForeground) {

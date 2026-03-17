@@ -149,6 +149,20 @@ class MessageRepository {
     });
   }
 
+  /// Returns true if the sender has at least one message previously marked 'safe'.
+  /// Used to suppress alerts for senders the user has already trusted via feedback.
+  Future<bool> hasSafeFeedback(String sender) async {
+    final db = await _db.database;
+    final rows = await db.query(
+      AppDatabase.tableMessages,
+      columns: const ['id'],
+      where: "sender = ? AND feedback_label = 'safe'",
+      whereArgs: [sender],
+      limit: 1,
+    );
+    return rows.isNotEmpty;
+  }
+
   /// Save user feedback label for a message (e.g. user marks scam/safe).
   Future<void> saveFeedback({
     required int messageId,
