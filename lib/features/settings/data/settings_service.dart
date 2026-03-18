@@ -46,6 +46,10 @@ class SettingsKeys {
       'trusted_contacts'; // JSON array of {name, number}
   static const whitelistedSenders =
       'whitelisted_senders'; // JSON array of normalized sender strings
+  static const guardianContact =
+      'guardian_contact'; // JSON object {name, number} — the caregiver who receives alerts
+  static const protectedPersonName =
+      'protected_person_name'; // e.g. "Maa", "Papa", custom name
   static const fontScale = 'font_scale'; // double as string, e.g. '1.0'. 1.0 = 100%.
   static const themeMode = 'theme_mode'; // 'light', 'dark', 'system'
   static const languageCode = 'language_code'; // 'en', 'bn', 'kn', etc.
@@ -158,6 +162,49 @@ class SettingsService {
       key: SettingsKeys.whitelistedSenders,
       value: jsonEncode(senders),
     );
+  }
+
+  /// Guardian contact — the caregiver who receives WhatsApp/SMS alerts for high-risk messages.
+  /// Stored as JSON using the [TrustedContact] model.
+  Future<TrustedContact?> getGuardianContact() async {
+    final raw = await _storage.read(key: SettingsKeys.guardianContact);
+    if (raw == null || raw.isEmpty) return null;
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is Map<String, dynamic>) {
+        final contact = TrustedContact.fromJson(decoded);
+        if (contact.number.isEmpty) return null;
+        return contact;
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  Future<void> setGuardianContact(TrustedContact? contact) async {
+    if (contact == null) {
+      await _storage.delete(key: SettingsKeys.guardianContact);
+    } else {
+      await _storage.write(
+        key: SettingsKeys.guardianContact,
+        value: jsonEncode(contact.toJson()),
+      );
+    }
+  }
+
+  /// Name of the person being protected (e.g. "Maa", "Papa", custom name).
+  Future<String?> getProtectedPersonName() async {
+    return _storage.read(key: SettingsKeys.protectedPersonName);
+  }
+
+  Future<void> setProtectedPersonName(String? name) async {
+    if (name == null) {
+      await _storage.delete(key: SettingsKeys.protectedPersonName);
+    } else {
+      await _storage.write(
+        key: SettingsKeys.protectedPersonName,
+        value: name,
+      );
+    }
   }
 
   /// Text scale factor for the whole app (1.0 = 100%). User-adjustable in Settings.

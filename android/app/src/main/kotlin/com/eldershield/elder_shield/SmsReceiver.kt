@@ -81,6 +81,19 @@ class SmsReceiver : BroadcastReceiver() {
                 showHighRiskNotification(context, sender, body, timestamp)
                 maybeShowOverlay(context, sender, body, timestamp)
                 vibrateStrongly(context)
+
+                // Alert guardian via WhatsApp/SMS (if configured).
+                // WhatsAppIntentHelper reads guardian info from SharedPreferences
+                // and handles its own rate limiting.
+                try {
+                    WhatsAppIntentHelper.sendGuardianAlert(
+                        context = context.applicationContext,
+                        senderID = sender,
+                        timestamp = timestamp
+                    )
+                } catch (e: Exception) {
+                    Log.e(tag, "Guardian alert failed", e)
+                }
             }
         }
     }
