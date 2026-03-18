@@ -22,6 +22,7 @@ class MainActivity : FlutterActivity() {
         private const val LAUNCH_CHANNEL = "elder_shield/launch"
         private const val SYSTEM_CHANNEL = "elder_shield/system"
         private const val WHITELIST_CHANNEL = "elder_shield/whitelist"
+        private const val GUARDIAN_CHANNEL = "elder_shield/guardian"
         private const val TAG = "MainActivity"
 
         @Volatile
@@ -124,6 +125,30 @@ class MainActivity : FlutterActivity() {
                 result.success(null)
             } else {
                 result.notImplemented()
+            }
+        }
+
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            GUARDIAN_CHANNEL
+        ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "syncGuardian" -> {
+                    @Suppress("UNCHECKED_CAST")
+                    val args = call.arguments as? Map<String, Any?> ?: emptyMap()
+                    val guardianNumber = args["guardianNumber"] as? String ?: ""
+                    val guardianName = args["guardianName"] as? String ?: ""
+                    val protectedPersonName = args["protectedPersonName"] as? String ?: ""
+                    getSharedPreferences("elder_shield_prefs", MODE_PRIVATE)
+                        .edit()
+                        .putString("guardian_number", guardianNumber)
+                        .putString("guardian_name", guardianName)
+                        .putString("protected_person_name", protectedPersonName)
+                        .apply()
+                    Log.d(TAG, "Guardian info synced: guardian=$guardianName, protected=$protectedPersonName")
+                    result.success(null)
+                }
+                else -> result.notImplemented()
             }
         }
 

@@ -5,6 +5,7 @@ import 'package:elder_shield/domain/detector/heuristic_detector.dart';
 import 'package:elder_shield/features/messages/data/message_repository.dart';
 import 'package:elder_shield/l10n/app_localizations.dart';
 import 'package:elder_shield/platform/native_event_stream.dart';
+import 'package:elder_shield/services/guardian_alert_service.dart';
 import 'package:elder_shield/services/notification_service.dart';
 import 'package:elder_shield/utils/sender_utils.dart';
 import 'package:flutter/widgets.dart';
@@ -162,6 +163,18 @@ class SecurityController {
       );
       _ref.read(pendingHighRiskMessageProvider.notifier).state =
           message;
+
+      // Alert guardian via WhatsApp/SMS (if configured). Rate limiting
+      // is handled inside GuardianAlertService.
+      try {
+        await _ref.read(guardianAlertServiceProvider).alertGuardian(
+              senderID: sender,
+              riskLevel: 'high',
+              timestamp: DateTime.fromMillisecondsSinceEpoch(timestamp),
+            );
+      } catch (e) {
+        debugPrint('[SecurityController] Guardian alert error: $e');
+      }
     }
   }
 
