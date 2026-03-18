@@ -2,6 +2,7 @@ package com.eldershield.elder_shield
 
 import android.content.Context
 import android.util.Log
+import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 
@@ -11,8 +12,7 @@ import androidx.work.WorkerParameters
  *
  * The Flutter [HeartbeatService] registers two periodic tasks via the
  * workmanager plugin — one for the daily check-in and one for the weekly
- * summary. Both tasks call this worker. The task type is identified by the
- * input data key [KEY_TASK_TYPE].
+ * summary. Both tasks call this worker.
  *
  * Data is synced from Flutter to SharedPreferences by
  * [MainActivity]'s `elder_shield/heartbeat` MethodChannel before this
@@ -40,7 +40,7 @@ class HeartbeatWorker(context: Context, params: WorkerParameters) :
         const val TYPE_WEEKLY = "weekly"
     }
 
-    override fun doWork(): Result {
+    override fun doWork(): ListenableWorker.Result {
         val prefs = applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val guardianNumber = prefs.getString(KEY_GUARDIAN_NUMBER, "") ?: ""
         val protectedName = prefs.getString(KEY_PROTECTED_NAME, "your family member") ?: "your family member"
@@ -48,7 +48,7 @@ class HeartbeatWorker(context: Context, params: WorkerParameters) :
 
         if (guardianNumber.isBlank()) {
             Log.d(TAG, "No guardian number configured — skipping heartbeat")
-            return Result.success()
+            return ListenableWorker.Result.success()
         }
 
         return try {
@@ -71,10 +71,10 @@ class HeartbeatWorker(context: Context, params: WorkerParameters) :
             } else {
                 Log.w(TAG, "Heartbeat message delivery failed [$dataType]")
             }
-            Result.success()
+            ListenableWorker.Result.success()
         } catch (e: Exception) {
             Log.e(TAG, "HeartbeatWorker error", e)
-            Result.retry()
+            ListenableWorker.Result.retry()
         }
     }
 

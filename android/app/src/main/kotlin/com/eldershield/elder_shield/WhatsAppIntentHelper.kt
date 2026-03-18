@@ -35,6 +35,23 @@ object WhatsAppIntentHelper {
     private const val MAX_ALERTS_PER_DAY = 10
 
     /**
+     * Send an arbitrary text message to [recipientNumber] via WhatsApp or SMS.
+     * No rate limiting — used for scheduled heartbeat/summary messages.
+     *
+     * @return true if an intent was successfully fired
+     */
+    fun sendTextMessage(
+        context: Context,
+        recipientNumber: String,
+        message: String,
+    ): Boolean {
+        if (recipientNumber.isBlank()) return false
+        val cleanNumber = cleanPhoneNumber(recipientNumber)
+        val sent = trySendWhatsApp(context, cleanNumber, message)
+        return if (sent) true else trySendSms(context, recipientNumber, message)
+    }
+
+    /**
      * Send a guardian alert for a high-risk SMS detected in the background.
      * Reads guardian info from SharedPreferences (synced from Flutter).
      *
