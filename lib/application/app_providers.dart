@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:elder_shield/data/database.dart';
 import 'package:elder_shield/features/messages/data/message_repository.dart';
 import 'package:elder_shield/features/settings/data/settings_service.dart';
+import 'package:elder_shield/services/heartbeat_service.dart';
 import 'package:elder_shield/services/subscription_service.dart';
 
 /// When non-null, the app shows the high-risk warning sheet (Block 7).
@@ -57,4 +58,12 @@ final subscriptionServiceProvider = Provider<SubscriptionService>((ref) {
 /// Stream of premium subscription status (Guardian Plan).
 final isPremiumProvider = StreamProvider<bool>((ref) {
   return ref.watch(subscriptionServiceProvider).isPremiumStream;
+});
+
+/// HeartbeatService instance — manages WorkManager periodic tasks for daily
+/// check-ins and weekly summaries sent to the configured guardian contact.
+final heartbeatServiceProvider = Provider<HeartbeatService>((ref) {
+  final settings = ref.watch(settingsServiceProvider);
+  final db = ref.watch(appDatabaseProvider);
+  return HeartbeatService(settings, db);
 });

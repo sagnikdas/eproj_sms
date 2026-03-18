@@ -32,6 +32,7 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
       _loadLanguage();
       _loadWhitelist();
       _initSubscription();
+      _initHeartbeat();
     });
   }
 
@@ -77,6 +78,29 @@ class _ElderShieldAppState extends ConsumerState<ElderShieldApp> {
     } catch (e) {
       // Non-fatal: subscription init failure should never crash the app.
       debugPrint('[App] Subscription init error: $e');
+    }
+  }
+
+  /// Initializes the heartbeat service if the user has a guardian configured
+  /// and a premium subscription active.
+  Future<void> _initHeartbeat() async {
+    try {
+      final settings = ref.read(settingsServiceProvider);
+      final isPremium = await settings.getIsPremiumCached();
+      if (!isPremium) return;
+      final contacts = await settings.getTrustedContacts();
+      if (contacts.isEmpty) return;
+      final guardian = contacts.first;
+      if (guardian.number.isEmpty) return;
+      final name = await settings.getProtectedPersonName() ?? '';
+      final service = ref.read(heartbeatServiceProvider);
+      await service.initialize(
+        guardianNumber: guardian.number,
+        protectedPersonName: name,
+      );
+    } catch (e) {
+      // Non-fatal: heartbeat init failure should never crash the app.
+      debugPrint('[App] Heartbeat init error: $e');
     }
   }
 
