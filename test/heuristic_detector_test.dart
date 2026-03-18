@@ -267,30 +267,32 @@ void main() {
     });
 
     test('Bengali reward scam → medium or high risk', () {
+      // reward (0.15) + urgency via জরুরি (0.20) + suspect sender (0.10) = 0.45 → medium
       final result = detector.analyze(
-        sender: 'PROMO',
+        sender: 'PROMO-NOTICE',
         body:
-            'অভিনন্দন বিজয়ী! আপনি জিতেছেন লটারি পুরস্কার। এখনই দাবি করুন।',
+            'অভিনন্দন বিজয়ী! আপনি জিতেছেন লটারি পুরস্কার। জরুরি — এখনই দাবি করুন।',
         isInCall: false,
       );
       expect(result.band, anyOf(RiskBand.medium, RiskBand.high));
       expect(
         result.reasons,
-        contains('Mentions a reward, prize, or lottery (likely scam)'),
+        contains('Looks like a prize or lottery reward scam'),
       );
     });
 
     test('Telugu parcel scam → medium or high risk', () {
+      // parcel (0.15) + urgency via వెంటనే (0.20) + suspect sender (0.10) = 0.45 → medium
       final result = detector.analyze(
-        sender: 'COURIER',
+        sender: 'SHIP-NOTICE',
         body:
-            'పార్సెల్ డెలివరీ విఫలమైంది. కస్టమ్స్ క్లియరెన్స్ కోసం డెలివరీ చార్జ్ చెల్లించండి.',
+            'పార్సెల్ డెలివరీ విఫలమైంది. వెంటనే కస్టమ్స్ క్లియరెన్స్ కోసం డెలివరీ చార్జ్ చెల్లించండి.',
         isInCall: false,
       );
       expect(result.band, anyOf(RiskBand.medium, RiskBand.high));
       expect(
         result.reasons,
-        contains('Mentions a parcel or delivery issue (likely scam)'),
+        contains('Mentions a suspicious parcel or delivery issue'),
       );
     });
 
@@ -317,7 +319,7 @@ void main() {
       );
       expect(
         result.reasons,
-        contains('Mentions cryptocurrency investment (likely scam)'),
+        contains('Mentions risky crypto investment or guaranteed returns'),
       );
     });
 
