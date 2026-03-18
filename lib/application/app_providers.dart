@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:elder_shield/data/database.dart';
 import 'package:elder_shield/features/messages/data/message_repository.dart';
 import 'package:elder_shield/features/settings/data/settings_service.dart';
+import 'package:elder_shield/services/heartbeat_service.dart';
 
 /// When non-null, the app shows the high-risk warning sheet (Block 7).
 /// SecurityController sets this; [HighRiskAlertListener] shows the sheet and clears.
@@ -45,3 +46,11 @@ final themeModeProvider = StateProvider<String>((ref) => 'system');
 
 /// Current app language code: 'en', 'bn', 'kn', etc. Null = follow system locale.
 final languageCodeProvider = StateProvider<String?>((ref) => null);
+
+/// HeartbeatService instance — manages WorkManager periodic tasks for daily
+/// check-ins and weekly summaries sent to the configured guardian contact.
+final heartbeatServiceProvider = Provider<HeartbeatService>((ref) {
+  final settings = ref.watch(settingsServiceProvider);
+  final db = ref.watch(appDatabaseProvider);
+  return HeartbeatService(settings, db);
+});

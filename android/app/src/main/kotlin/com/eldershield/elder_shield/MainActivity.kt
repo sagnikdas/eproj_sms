@@ -22,6 +22,7 @@ class MainActivity : FlutterActivity() {
         private const val LAUNCH_CHANNEL = "elder_shield/launch"
         private const val SYSTEM_CHANNEL = "elder_shield/system"
         private const val WHITELIST_CHANNEL = "elder_shield/whitelist"
+        private const val HEARTBEAT_CHANNEL = "elder_shield/heartbeat"
         private const val TAG = "MainActivity"
 
         @Volatile
@@ -124,6 +125,63 @@ class MainActivity : FlutterActivity() {
                 result.success(null)
             } else {
                 result.notImplemented()
+            }
+        }
+
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            HEARTBEAT_CHANNEL
+        ).setMethodCallHandler { call, result ->
+            val prefs = getSharedPreferences("elder_shield_prefs", MODE_PRIVATE)
+            when (call.method) {
+                "syncGuardianInfo" -> {
+                    @Suppress("UNCHECKED_CAST")
+                    val args = call.arguments as? Map<String, Any?> ?: emptyMap()
+                    val guardianNumber = args["guardianNumber"] as? String ?: ""
+                    val protectedPersonName = args["protectedPersonName"] as? String ?: ""
+                    prefs.edit()
+                        .putString(HeartbeatWorker.KEY_GUARDIAN_NUMBER, guardianNumber)
+                        .putString(HeartbeatWorker.KEY_PROTECTED_NAME, protectedPersonName)
+                        .apply()
+                    Log.d(TAG, "Heartbeat guardian info synced")
+                    result.success(null)
+                }
+                "syncHeartbeatData" -> {
+                    @Suppress("UNCHECKED_CAST")
+                    val args = call.arguments as? Map<String, Any?> ?: emptyMap()
+                    val type = args["type"] as? String ?: HeartbeatWorker.TYPE_DAILY
+                    val dataJson = args["data"] as? String ?: "{}"
+                    // Parse and persist the key fields for HeartbeatWorker.
+                    try {
+                        val json = org.json.JSONObject(dataJson)
+                        val editor = prefs.edit().putString(HeartbeatWorker.KEY_DATA_TYPE, type)
+                        if (type == HeartbeatWorker.TYPE_DAILY) {
+                            editor.putInt(HeartbeatWorker.KEY_SUSPICIOUS_COUNT,
+                                json.optInt("suspiciousCount", 0))
+                        } else {
+                            editor.putInt(HeartbeatWorker.KEY_TOTAL_SCANNED,
+                                json.optInt("totalScanned", 0))
+                            editor.putInt(HeartbeatWorker.KEY_FLAGGED_COUNT,
+                                json.optInt("flaggedCount", 0))
+                            editor.putInt(HeartbeatWorker.KEY_HIGH_RISK_COUNT,
+                                json.optInt("highRiskCount", 0))
+                            val threats = json.optJSONArray("topThreatTypes")
+                            if (threats != null) {
+                                val list = (0 until threats.length()).map { threats.getString(it) }
+                                editor.putString(HeartbeatWorker.KEY_TOP_THREATS, list.joinToString(", "))
+                            }
+                        }
+                        editor.apply()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to parse heartbeat data", e)
+                    }
+                    result.success(null)
+                }
+                "getLastHeartbeatTime" -> {
+                    val lastTime = prefs.getLong(HeartbeatWorker.KEY_LAST_SENT_TIME, 0L)
+                    result.success(lastTime)
+                }
+                else -> result.notImplemented()
             }
         }
 
