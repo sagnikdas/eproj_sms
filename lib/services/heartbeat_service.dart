@@ -139,9 +139,9 @@ class HeartbeatService {
       frequency: const Duration(hours: 24),
       initialDelay: _delayUntilNextTenAm(),
       constraints: Constraints(
-        networkType: NetworkType.not_required,
+        networkType: NetworkType.notRequired,
       ),
-      existingWorkPolicy: ExistingWorkPolicy.replace,
+      existingWorkPolicy: ExistingPeriodicWorkPolicy.replace,
     );
 
     // Register weekly summary — also runs every 24 hours, but the callback
@@ -153,9 +153,9 @@ class HeartbeatService {
       frequency: const Duration(hours: 24),
       initialDelay: _delayUntilNextSundayTenAm(),
       constraints: Constraints(
-        networkType: NetworkType.not_required,
+        networkType: NetworkType.notRequired,
       ),
-      existingWorkPolicy: ExistingWorkPolicy.replace,
+      existingWorkPolicy: ExistingPeriodicWorkPolicy.replace,
     );
   }
 
