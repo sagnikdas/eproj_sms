@@ -54,7 +54,6 @@ dependencies:
   in_app_purchase: ^3.2.0
   workmanager: ^0.5.2
   flutter_contacts:
-  workmanager: ^0.5.2
 
 dev_dependencies:
   flutter_test:
